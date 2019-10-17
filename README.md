@@ -1,13 +1,16 @@
-# DevReachCompanion
-A repo containing the DevReachCompanion app, REST API code and DevOps YAML used for 'One Dev Powerhouse' talk at DevReach 2019.
+# DevReach2019
+A repo containing the code and scripts used for 'One Dev Powerhouse' talk at DevReach 2019.
 
-## DevOps
+## Azure DevOps
 
 #### Build Pipelines
 
-| Master   | Dev      |
-|----------|----------|
-| [![Master](https://dev.azure.com/lance/DevReach%20Companion/_apis/build/status/Complete%20YAML%20Build?branchName=master)](https://dev.azure.com/lance/DevReach%20Companion/_build/latest?definitionId=37&branchName=master) | [![Dev](https://dev.azure.com/lance/DevReach%20Companion/_apis/build/status/Complete%20YAML%20Build?branchName=dev)](https://dev.azure.com/lance/DevReach%20Companion/_build/latest?definitionId=37&branchName=dev) |
+
+| Branch | Status   |
+|--------|----------|
+| Dev  | [![Dev](https://dev.azure.com/lance/DevReach%20Companion/_apis/build/status/Complete%20YAML%20Build?branchName=dev)](https://dev.azure.com/lance/DevReach%20Companion/_build/latest?definitionId=37&branchName=dev) |
+| Master | [![Master](https://dev.azure.com/lance/DevReach%20Companion/_apis/build/status/Complete%20YAML%20Build?branchName=master)](https://dev.azure.com/lance/DevReach%20Companion/_build/latest?definitionId=37&branchName=master)   |
+
 
 #### Release Pipelines
 
@@ -18,9 +21,13 @@ A repo containing the DevReachCompanion app, REST API code and DevOps YAML used 
 | iOS | ![AppCenter iOS](https://vsrm.dev.azure.com/lance/_apis/public/Release/badge/7dd01a63-05a2-436b-b30a-3a2ddc2327bb/2/2) | ![TestFlight](https://vsrm.dev.azure.com/lance/_apis/public/Release/badge/7dd01a63-05a2-436b-b30a-3a2ddc2327bb/2/13) | ![AppStore](https://vsrm.dev.azure.com/lance/_apis/public/Release/badge/7dd01a63-05a2-436b-b30a-3a2ddc2327bb/2/14) |
 | UWP | ![DevCenter Beta Flight](https://vsrm.dev.azure.com/lance/_apis/public/Release/badge/7dd01a63-05a2-436b-b30a-3a2ddc2327bb/2/5) | ![DevCenter Beta](https://vsrm.dev.azure.com/lance/_apis/public/Release/badge/7dd01a63-05a2-436b-b30a-3a2ddc2327bb/2/11) | ![DevCenter Release](https://vsrm.dev.azure.com/lance/_apis/public/Release/badge/7dd01a63-05a2-436b-b30a-3a2ddc2327bb/2/12) |
 | Web API | n/a | n/a | ![Azure App Service](https://vsrm.dev.azure.com/lance/_apis/public/Release/badge/7dd01a63-05a2-436b-b30a-3a2ddc2327bb/2/6) |
-| GitHub                  | n/a | n/a | ![GitHub](https://vsrm.dev.azure.com/lance/_apis/public/Release/badge/7dd01a63-05a2-436b-b30a-3a2ddc2327bb/2/7) |
+| GitHub                  | n/a | n/a | ![GitHub](https://vsrm.dev.azure.com/lance/_apis/public/Release/badge/7dd01a63-05a2-436b-b30a-3a2ddc2327bb/2/26) |
 
-## Solution Structure
+
+
+
+
+## Code
 
 There are 7 projects in the solution:
 
@@ -34,4 +41,4 @@ There are 7 projects in the solution:
   * .NET Standard Class Library
   * Unit Tests
 
-If you plan on building and deploying this, visit the ApiKeys.cs class in order to insert your Azure account information.
+> If you're building from source, visit the **ApiKeys.cs** class and insert your Azure and AppCenter information.
