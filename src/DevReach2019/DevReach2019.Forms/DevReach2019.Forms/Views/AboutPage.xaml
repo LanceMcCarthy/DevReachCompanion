@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="DevReach2019.Forms.Views.AboutPage"
+             xmlns:vm="clr-namespace:DevReach2019.Forms.ViewModels"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource LightBackgroundColor}">
+
+    <ContentPage.Resources>
+        <Style x:Key="UrlTextStyle"
+               TargetType="Label">
+            <Setter Property="TextColor"
+                    Value="{StaticResource DevReachDarkBlue}" />
+            <Setter Property="HorizontalOptions"
+                    Value="Center" />
+            <Setter Property="FontSize"
+                    Value="Body" />
+            <Setter Property="Margin"
+                    Value="0,0,0,5" />
+            <Setter Property="TextDecorations"
+                    Value="Underline"/>
+        </Style>
+
+        <Style x:Key="BodySpanStyle" 
+               TargetType="Span">
+            <Setter Property="TextColor"
+                    Value="{StaticResource DarkGrayTextColor}"/>
+            <Setter Property="FontSize"
+                    Value="Body" />
+        </Style>
+
+        <Style x:Key="BoldBodySpanStyle"
+               BasedOn="{StaticResource BodySpanStyle}"
+               TargetType="Span">
+            <Setter Property="FontAttributes"
+                    Value="Bold" />
+        </Style>
+    </ContentPage.Resources>
+
+    <d:ContentPage.BindingContext>
+        <vm:AboutViewModel />
+    </d:ContentPage.BindingContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackLayout BackgroundColor="{StaticResource MediumTranslucentBackgroundColor}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                <ContentView Padding="0,40,0,40" VerticalOptions="FillAndExpand">
+                    <Image Source="event_logo.png" VerticalOptions="Center" HeightRequest="64" />
+                </ContentView>
+            </StackLayout>
+        </StackLayout>
+        
+        <ScrollView Grid.Row="1">
+            <StackLayout Padding="15,10,15,0">
+                <StackLayout Orientation="Horizontal"
+                             Margin="0,0,0,5">
+                    <Label Text="{Binding AppName}"
+                           TextColor="{StaticResource DevReachDarkTextColor}"
+                           FontSize="22"/>
+                    <Label Text="{Binding AppVersion}"
+                           TextColor="{StaticResource DevReachDarkTextColor}"
+                           FontSize="22"/>
+                </StackLayout>
+
+                <Label Text="{Binding AppDescription}"
+                       TextColor="{StaticResource DarkGrayTextColor}"
+                       FontSize="Body"
+                       LineBreakMode="WordWrap" />
+
+                <Label LineBreakMode="WordWrap"
+                       Margin="{OnPlatform Android='0,0,0,10', iOS='0,0,0,20', UWP='0,0,0,40'}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="It was built by Lance McCarthy for his"
+                                  Style="{StaticResource BodySpanStyle}" />
+                            <Span Text=" One Dev Powerhouse "
+                                  TextColor="{StaticResource DevReachAgendaSelectedBlue}"
+                                  Style="{StaticResource BoldBodySpanStyle}"
+                                  TextDecorations="Underline">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GoToSessionCommand}" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                            <Span Text="session. It demonstrates the ability for one developer to build, test and distribute several projects to 4 platforms!"
+                                  Style="{StaticResource BodySpanStyle}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label Text="Xamarin →"
+                       Style="{StaticResource UrlTextStyle}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                              CommandParameter="xamarin" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="Telerik UI for Xamarin →"
+                       Style="{StaticResource UrlTextStyle}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                              CommandParameter="telerik" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="Web API Swagger →"
+                       Style="{StaticResource UrlTextStyle}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                              CommandParameter="web_api" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="Explore the Source Code →"
+                       Style="{StaticResource UrlTextStyle}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                              CommandParameter="github" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="DevOps: Build Pipelines →"
+                       Style="{StaticResource UrlTextStyle}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                              CommandParameter="devops_builds" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="DevOps: Release Pipelines →"
+                       Style="{StaticResource UrlTextStyle}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                              CommandParameter="devops_releases" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Text="{Binding TelerikVersion, StringFormat='Built with Telerik UI for Xamarin {0}'}"
+                       TextColor="{StaticResource DarkGrayTextColor}"
+                       FontAttributes="Italic"
+                       FontSize="Caption"
+                       HorizontalOptions="Center"
+                       Margin="0,20,0,0" />
+
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+    
+</ContentPage>

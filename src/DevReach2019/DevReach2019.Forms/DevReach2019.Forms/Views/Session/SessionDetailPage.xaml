@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:vm="clr-namespace:DevReach2019.Forms.ViewModels.Sessions;assembly=DevReach2019.Forms"
+             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Class="DevReach2019.Forms.Views.Session.SessionDetailPage"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource LightBackgroundColor}">
+
+    <d:ContentPage.BindingContext>
+        <vm:SessionDetailViewModel />
+    </d:ContentPage.BindingContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackLayout BackgroundColor="{StaticResource MediumTranslucentBackgroundColor}"
+                     IsVisible="{Binding SelectedSession.SessionType, Converter={StaticResource NullToVisibleConverter}}"
+                     Padding="10"
+                     Grid.Row="0">
+            <Label Text="{Binding SelectedSession.SessionType}"
+                   TextColor="{StaticResource DevReachAgendaLightTeal}"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   HorizontalTextAlignment="Center" />
+        </StackLayout>
+
+        <StackLayout Padding="10,0,10,0"
+                     Grid.Row="1">
+            <StackLayout Orientation="Horizontal"
+                         Spacing="3">
+                <Label Text="When:"
+                       FontSize="Medium" />
+                <Label Text="{Binding SelectedSession.StartTime, StringFormat='{0:MM/dd}'}"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource DevReachDarkBlue}"
+                       FontSize="Medium"
+                       HorizontalTextAlignment="Center" />
+
+                <Label Text="at"
+                       FontSize="Medium" />
+                <Label Text="{Binding SelectedSession.StartTime, StringFormat='{0:t}'}"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource DevReachDarkBlue}"
+                       FontSize="Medium" />
+
+                <Label Text="to"
+                       FontSize="Medium" />
+                <Label Text="{Binding SelectedSession.EndTime, StringFormat='{0:t}'}"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource DevReachDarkBlue}"
+                       FontSize="Medium" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal"
+                         IsVisible="{Binding SelectedSession.Room, Converter={StaticResource NullToVisibleConverter}}">
+                <Label Text="Where:"
+                       FontSize="Medium" />
+                <Label Text="{Binding SelectedSession.Room}"
+                       FontAttributes="Bold"
+                       LineBreakMode="WordWrap"
+                       FontSize="Medium" />
+            </StackLayout>
+
+            <Label Text="Topic:"
+                   FontSize="Medium"
+                   IsVisible="{Binding SelectedSession.Topic, Converter={StaticResource NullToVisibleConverter}}" />
+            <dataControls:NonVirtualizedItemsControl ItemsSource="{Binding SelectedSession.Topic}"
+                                                     IsVisible="{Binding SelectedSession.Topic, Converter={StaticResource NullToVisibleConverter}}"
+                                                     SelectionMode="None"
+                                                     Orientation="Horizontal">
+                <dataControls:NonVirtualizedItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <primitives:RadBorder BackgroundColor="{StaticResource DevReachDarkTextColor}"
+                                              CornerRadius="5"
+                                              Padding="5,3">
+                            <Label Text="{Binding }"
+                                   TextColor="{StaticResource DevReachAgendaLightTeal}"
+                                   FontSize="Medium" />
+                        </primitives:RadBorder>
+                    </DataTemplate>
+                </dataControls:NonVirtualizedItemsControl.ItemTemplate>
+            </dataControls:NonVirtualizedItemsControl>
+
+            <Label Text="Technology:"
+                   FontSize="Medium"
+                   IsVisible="{Binding SelectedSession.Technology, Converter={StaticResource NullToVisibleConverter}}" />
+            <dataControls:NonVirtualizedItemsControl ItemsSource="{Binding SelectedSession.Technology}"
+                                                     IsVisible="{Binding SelectedSession.Technology, Converter={StaticResource NullToVisibleConverter}}"
+                                                     SelectionMode="None"
+                                                     Orientation="Horizontal">
+                <dataControls:NonVirtualizedItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <primitives:RadBorder BackgroundColor="{StaticResource DevReachLightBlue}"
+                                              CornerRadius="5"
+                                              Padding="5,3">
+                            <Label Text="{Binding }"
+                                   TextColor="{StaticResource DevReachDarkTextColor}"
+                                   FontSize="Medium" />
+                        </primitives:RadBorder>
+                    </DataTemplate>
+                </dataControls:NonVirtualizedItemsControl.ItemTemplate>
+            </dataControls:NonVirtualizedItemsControl>
+
+            <Label Text="Speaker(s):"
+                   FontSize="Medium" />
+        </StackLayout>
+
+        <ListView ItemsSource="{Binding Speakers}"
+                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                  HasUnevenRows="True"
+                  IsPullToRefreshEnabled="True"
+                  RefreshCommand="{Binding RefreshSpeakersCommand}"
+                  ItemSelected="OnItemSelected"
+                  Grid.Row="2" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid BackgroundColor="{StaticResource MediumTranslucentBackgroundColor}"
+                              Margin="10,5,10,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <ff:CachedImage x:Name="ProfileImage"
+                                            Source="{Binding ImageUrl, Mode=OneTime}"
+                                            LoadingPlaceholder="ProfileImagePlaceholder_Loading_150.png"
+                                            ErrorPlaceholder="ProfileImagePlaceholder_Error_150.png"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill"
+                                            Aspect="AspectFill"
+                                            WidthRequest="120"
+                                            HeightRequest="120"
+                                            DownsampleToViewSize="True"
+                                            FadeAnimationForCachedImages="False"
+                                            FadeAnimationEnabled="True"
+                                            Grid.Column="0" />
+
+                            <primitives:RadBorder Grid.Column="1">
+                                <StackLayout Padding="10"
+                                             Spacing="0">
+                                    <Label Text="{Binding Name, Mode=OneTime}"
+                                           TextColor="{StaticResource DevReachLightBlue}"
+                                           FontAttributes="Bold"
+                                           FontSize="Medium" />
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Company, StringFormat='{0} |', Mode=OneTime}"
+                                               TextColor="{StaticResource DevReachAgendaLightGray}"
+                                               LineBreakMode="NoWrap" />
+                                        <Label Text="{Binding Position, Mode=OneTime}"
+                                               TextColor="{StaticResource DevReachAgendaLightGray}"
+                                               LineBreakMode="NoWrap" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </primitives:RadBorder>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Style="{StaticResource CloseModalButtonStyle}"
+                IsVisible="{Binding IsModalButtonVisible}"
+                Grid.Row="2"
+                Clicked="CloseButton_OnClicked" />
+    </Grid>
+</ContentPage>

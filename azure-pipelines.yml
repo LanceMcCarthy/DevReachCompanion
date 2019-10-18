@@ -1,0 +1,296 @@
+# Notes and quick resources
+# Pool config https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema
+# Microsoft agents https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops#use-a-microsoft-hosted-agent
+# UWP Walkthrough https://docs.microsoft.com/en-us/windows/uwp/packaging/auto-build-package-uwp-apps
+
+trigger:
+  branches:
+    include:
+    - master
+    exclude:
+    - dev
+
+pr: none
+
+# Shared variables
+variables:
+  buildConfiguration: 'Release'
+  major: '1'
+  minor: '0'
+  revision: $[counter(variables['minor'], 1)]
+  app_version: '$(major).$(minor).$(revision)'
+
+jobs:
+- job: 'Build_ASPNET_WebAPI'
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    buildPlatform: 'x86'
+    web_solution: 'src/DevReach2019/DevReach2019_WebApi.sln'
+    test_projectFolder: 'src\DevReach2019\DevReach2019.MobileAppService.Tests'
+
+  steps:
+  - task: NuGetToolInstaller@1
+
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore'
+    inputs:
+      restoreSolution: '$(web_solution)'
+
+  - task: richardfennellBM.BM-VSTS-Versioning-Task.Version-Assemblies-Task.VersionAssemblies@2
+    displayName: 'Version Assemblies'
+    inputs:
+      Path: '$(Build.SourcesDirectory)'
+      VersionNumber: '$(app_version).0'
+
+  - task: VSBuild@1
+    displayName: 'Build ASPNET Project'
+    inputs:
+      solution: '$(web_solution)'
+      vsVersion: '16.0'
+      msbuildArgs: '/p:DeployOnBuild=true 
+                    /p:WebPublishMethod=Package 
+                    /p:PackageAsSingleFile=true 
+                    /p:SkipInvalidConfigurations=true 
+                    /p:PackageLocation="$(build.artifactstagingdirectory)\\"'
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
+
+  - task: VSTest@2
+    displayName: 'API Endpoint Tests'
+    inputs:
+      testAssemblyVer2: |
+        $(test_projectFolder)\**\*test*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
+
+  - task: PublishSymbols@2
+    displayName: 'Publish symbols path'
+    inputs:
+      SearchPattern: '**\bin\**\*.pdb'
+      PublishSymbols: false
+    continueOnError: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: webapi_drop'
+    inputs:
+      ArtifactName: 'webapi_drop'
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+    condition: succeededOrFailed()
+
+########################################################################################################
+
+- job: 'Build_iOS'
+  pool:
+    vmImage: 'macOS-10.14'
+
+  variables:
+    MONO_VERSION: '6_4_0'
+    NETCORE_VERSION: '3.0.x'
+    XCODE_VERSION: 11
+    infoPlist_path: 'src/DevReach2019/DevReach2019.Forms/DevReach2019.Forms.iOS/Info.plist'
+    ios_solution: 'src/DevReach2019/DevReach2019_iOS.sln'
+    ios_appFiles: '**/*.ipa'
+
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Select $(NETCORE_VERSION)'
+    inputs:
+      version: '$(NETCORE_VERSION)'
+
+  - task: Bash@3
+    displayName: 'Set Mono $(MONO_VERSION)'
+    inputs:
+      targetType: 'inline'
+      script: |
+        SYMLINK=$(MONO_VERSION)
+        MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
+        echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
+        echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+        echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
+
+  - task: Bash@3
+    displayName: 'Select Xamarin SDK to $(MONO_VERSION)'
+    inputs:
+      targetType: 'inline'
+      script: |
+        sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(MONO_VERSION)
+
+  - task: InstallAppleCertificate@2
+    displayName: 'Install an Apple certificate'
+    inputs:
+      certSecureFile: '$(apple.certificate.fileName)'
+      certPwd: '$(apple.certificate.password)'
+
+  - task: InstallAppleProvisioningProfile@1
+    displayName: 'Install an Apple provisioning profile'
+    inputs:
+      provProfileSecureFile: '$(apple.provisioning.fileName)'
+
+  - task: NuGetToolInstaller@1
+    displayName: 'Install NuGet 4.x'
+    inputs:
+      versionSpec: 4.x
+
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore'
+    inputs:
+      restoreSolution: '$(ios_solution)'
+      feedsToUse: config
+      nugetConfigPath: 'src/DevReach2019/nuget.config'
+      externalFeedCredentials: Telerik
+
+  - task: vs-publisher-473885.motz-mobile-buildtasks.ios-bundle-version.ios-bundle-version@1
+    displayName: 'Bump iOS Bundle VersionName and VersionCode to $(AppVersion)'
+    inputs:
+      sourcePath: '$(infoPlist_path)'
+      versionCode: '$(app_version)'
+      versionName: '$(app_version)'
+      printFile: false
+
+  - task: XamariniOS@2
+    displayName: 'Build Xamarin.iOS project'
+    inputs:
+      solutionFile: '$(ios_solution)'
+      configuration: '$(buildConfiguration)'
+      signingIdentity: '$(apple_release_codesignIdentity)'
+      signingProvisioningProfileID: '$(apple_release_provisioningUUID)'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(build.artifactStagingDirectory)'
+    inputs:
+      SourceFolder: '$(system.defaultWorkingDirectory)'
+      Contents: '$(ios_appFiles)'
+      TargetFolder: '$(build.artifactStagingDirectory)'
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: ios_drop'
+    inputs:
+      ArtifactName: 'ios_drop'
+      PathtoPublish: '$(build.artifactStagingDirectory)'
+    condition: succeededOrFailed()
+
+########################################################################################################
+
+- job: 'Build_Android'
+  pool:
+    vmImage: 'windows-2019'
+
+  variables:
+    android_solution: 'src/DevReach2019/DevReach2019_All.sln'
+    android_project: 'src/DevReach2019/DevReach2019.Forms/DevReach2019.Forms.Android/DevReach2019.Forms.Android.csproj'
+    android_appFiles: '$(build.binariesDirectory)/$(buildConfiguration)/*.apk'
+
+  steps:
+  - task: NuGetToolInstaller@1
+
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore'
+    inputs:
+      restoreSolution: '$(android_solution)'
+      feedsToUse: config
+      nugetConfigPath: 'src/DevReach2019/nuget.config'
+      externalFeedCredentials: Telerik
+
+  - task: richardfennellBM.BM-VSTS-Versioning-Task.Version-AndroidManifest-Task.VersionAndroidManifest@2
+    displayName: 'Version Android Manifest $(app_version)'
+    inputs:
+      Path: '$(Build.SourcesDirectory)'
+      VersionNumber: '$(app_version)'
+
+  - task: XamarinAndroid@1
+    displayName: 'Build Xamarin.Android Project'
+    inputs:
+      projectFile: '$(android_project)'
+      outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+      configuration: '$(buildConfiguration)'
+
+  - task: AndroidSigning@3
+    displayName: 'Signing and aligning APK file(s)'
+    inputs:
+      apkFiles: '$(android_appFiles)'
+      apksignerKeystoreFile: '$(android.keystore.fileName)'
+      apksignerKeystorePassword: '$(android.keystore.password)'
+      apksignerKeystoreAlias: $(android.keystore.alias)
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: android_drop'
+    inputs:
+      ArtifactName: 'android_drop'
+      PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    condition: succeededOrFailed()
+
+########################################################################################################
+
+- job: 'Build_UWP'
+  pool:
+    vmImage: 'windows-latest'
+    
+  variables:
+    buildPlatform: 'x86'
+    uwp_solution: 'src/DevReach2019/DevReach2019_UWP.sln'
+
+  steps:
+  - task: DownloadSecureFile@1
+    displayName: 'Downloading PFX Secure File'
+    name: 'codeSigningPfxSecureFile'
+    inputs:
+      secureFile: '$(signingCert.secureFilePath)'
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Installing PFX file to the agent's certificate store."
+        $pfxpath = '$(codeSigningPfxSecureFile.secureFilePath)'
+        $password = '$(signingCert.password)'
+        Add-Type -AssemblyName System.Security
+        $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
+        $cert.Import($pfxpath, $password, [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]"PersistKeySet")
+        $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "MY", CurrentUser
+        $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
+        $store.Add($cert)
+        $store.Close()
+
+  - task: NuGetToolInstaller@1
+  
+  - task: NuGetCommand@2
+    displayName: 'NuGet Restore'
+    inputs:
+      restoreSolution: '$(uwp_solution)'
+      feedsToUse: config
+      nugetConfigPath: src/DevReach2019/nuget.config
+      externalFeedCredentials: Telerik
+
+  - task: richardfennellBM.BM-VSTS-Versioning-Task.Version-APPX-Task.VersionAPPX@2
+    displayName: 'Version APPX'
+    inputs:
+      VersionNumber: '$(app_version).0'
+
+  - task: VSBuild@1
+    displayName: 'Build UWP Project'
+    inputs:
+      solution: '$(uwp_solution)'
+      vsVersion: '16.0'
+      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" 
+                    /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackages\\" 
+                    /p:AppxBundle=Always 
+                    /p:UapAppxPackageBuildMode=StoreUpload
+                    /p:PackageCertificateKeyFile="$(codeSigningPfxSecureFile.secureFilePath)" 
+                    /p:PackageCertificateThumbprint="$(signingCert.thumbprint)" 
+                    /p:PackageCertificatePassword="$(signingCert.password)"'
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish artifact: uwp_drop'
+    inputs:
+      ArtifactName: 'uwp_drop'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\AppxPackages'
+    condition: succeededOrFailed()
+
+########################################################################################################

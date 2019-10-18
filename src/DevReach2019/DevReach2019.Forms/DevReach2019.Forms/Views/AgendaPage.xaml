@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:input="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             xmlns:viewModels="clr-namespace:DevReach2019.Forms.ViewModels;assembly=DevReach2019.Forms"
+             xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             mc:Ignorable="d"
+             x:Class="DevReach2019.Forms.Views.AgendaPage"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource LightBackgroundColor}">
+
+    <d:ContentPage.BindingContext>
+        <viewModels:AgendaViewModel />
+    </d:ContentPage.BindingContext>
+
+    <Grid>
+        <input:RadCalendar x:Name="AgendaCalendar"
+                           ViewMode="Day"
+                           SchedulingUiEnabled="True"
+                           AppointmentsSource="{Binding AgendaItems}"
+                           SelectionMode="None">
+            <input:RadCalendar.DayViewSettings>
+                <input:DayViewSettings DayStartTime="08:30:00"
+                                       DayEndTime="20:30:00"
+                                       TimelineInterval="1:00">
+                    <input:DayViewSettings.AppointmentContentTemplate>
+                        <DataTemplate>
+                            <primitives:RadBorder BorderColor="{Binding SessionTechColor, Mode=OneTime}"
+                                                  BackgroundColor="{Binding Color, Mode=OneTime}"
+                                                  BorderThickness="5,0,0,0"
+                                                  Padding="5">
+                                <StackLayout Spacing="5">
+                                    <Label Text="{Binding Title, Mode=OneTime}"
+                                           TextColor="{Binding TitleColor, Mode=OneTime}"
+                                           LineBreakMode="TailTruncation"
+                                           FontAttributes="Bold" />
+                                    <Label Text="{Binding Detail, Mode=OneTime}"
+                                           TextColor="{Binding DetailColor, Mode=OneTime}"
+                                           LineBreakMode="TailTruncation"
+                                           FontSize="Micro" />
+                                </StackLayout>
+                            </primitives:RadBorder>
+                        </DataTemplate>
+                    </input:DayViewSettings.AppointmentContentTemplate>
+                </input:DayViewSettings>
+            </input:RadCalendar.DayViewSettings>
+        </input:RadCalendar>
+
+        <Button x:Name="CloseModalButton"
+                Style="{StaticResource CloseModalButtonStyle}"
+                IsVisible="True"
+                Clicked="CloseButton_OnClicked" />
+    </Grid>
+</ContentPage>

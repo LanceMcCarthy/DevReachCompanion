@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:speakerViewModels="clr-namespace:DevReach2019.Forms.ViewModels.Speakers;assembly=DevReach2019.Forms"
+             xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:listView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:behaviors="clr-namespace:DevReach2019.Forms.Behaviors;assembly=DevReach2019.Forms"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             mc:Ignorable="d"
+             x:Class="DevReach2019.Forms.Views.Speaker.SpeakersPage"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource LightBackgroundColor}">
+
+    <d:ContentPage.BindingContext>
+        <speakerViewModels:SpeakersViewModel />
+    </d:ContentPage.BindingContext>
+
+    <Grid>
+        <dataControls:RadListView x:Name="SpeakersListView"
+                                  ItemsSource="{Binding Speakers}"
+                                  ItemTapped="RadListView_OnItemTapped"
+                                  IsPullToRefreshEnabled="True"
+                                  Style="{StaticResource BaseListViewStyle}">
+            <dataControls:RadListView.Behaviors>
+                <behaviors:EventToCommandBehavior EventName="RefreshRequested"
+                                                  Command="{Binding LoadSpeakersCommand}"
+                                                  CommandParameter="{x:Reference SpeakersListView}" />
+            </dataControls:RadListView.Behaviors>
+            <dataControls:RadListView.LayoutDefinition>
+                <listView:ListViewGridLayout HorizontalItemSpacing="10"
+                                             ItemLength="150"
+                                             VerticalItemSpacing="10">
+                    <listView:ListViewGridLayout.SpanCount>
+                        <OnIdiom x:TypeArguments="system:Int32">
+                            <OnIdiom.Phone>2</OnIdiom.Phone>
+                            <OnIdiom.Tablet>3</OnIdiom.Tablet>
+                            <OnIdiom.Desktop>4</OnIdiom.Desktop>
+                        </OnIdiom>
+                    </listView:ListViewGridLayout.SpanCount>
+                </listView:ListViewGridLayout>
+            </dataControls:RadListView.LayoutDefinition>
+            <dataControls:RadListView.ItemTemplate>
+                <DataTemplate>
+                    <listView:ListViewTemplateCell BindingContextChanged="BindableObject_OnBindingContextChanged">
+                        <Grid>
+                            <ff:CachedImage x:Name="ProfileImage"
+                                            Source="{Binding ImageUrl, Mode=OneTime}"
+                                            LoadingPlaceholder="ProfileImagePlaceholder_Loading_150.png"
+                                            ErrorPlaceholder="ProfileImagePlaceholder_Error_150.png"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill"
+                                            Aspect="AspectFill"
+                                            WidthRequest="120"
+                                            HeightRequest="120"
+                                            DownsampleToViewSize="True"
+                                            FadeAnimationForCachedImages="False"
+                                            FadeAnimationEnabled="True"/>
+
+                            <primitives:RadBorder BorderThickness="0"
+                                                  VerticalOptions="End"
+                                                  HorizontalOptions="Fill"
+                                                  Margin="0,0,0,0">
+                                <StackLayout Padding="5,2,5,3"
+                                             Spacing="0"
+                                             BackgroundColor="{StaticResource MediumTranslucentBackgroundColor}">
+                                    <Label Text="{Binding Name, Mode=OneTime}"
+                                           TextColor="{StaticResource DevReachYellow}"
+                                           FontAttributes="Bold"
+                                           FontSize="12" />
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Company, StringFormat='{0} |', Mode=OneTime}"
+                                               TextColor="{StaticResource DevReachAgendaLightGray}"
+                                               LineBreakMode="NoWrap"
+                                               FontSize="10" />
+                                        <Label Text="{Binding Position, Mode=OneTime}"
+                                               TextColor="{StaticResource DevReachAgendaLightGray}"
+                                               LineBreakMode="NoWrap"
+                                               FontSize="10" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </primitives:RadBorder>
+                        </Grid>
+                    </listView:ListViewTemplateCell>
+                </DataTemplate>
+            </dataControls:RadListView.ItemTemplate>
+        </dataControls:RadListView>
+
+        <primitives:RadBusyIndicator IsBusy="{Binding IsBusy}"
+                                     IsVisible="{Binding IsBusy}"
+                                     Style="{StaticResource BusyIndicatorStyle}" />
+    </Grid>
+</ContentPage>

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            mc:Ignorable="d"
+            xmlns:views="clr-namespace:DevReach2019.Forms.Views"
+            xmlns:speaker="clr-namespace:DevReach2019.Forms.Views.Speaker;assembly=DevReach2019.Forms"
+            xmlns:session="clr-namespace:DevReach2019.Forms.Views.Session;assembly=DevReach2019.Forms"
+            x:Class="DevReach2019.Forms.Views.MainPage"
+            BarBackgroundColor="{StaticResource DevReachDarkBlue}"
+            BarTextColor="{StaticResource DevReachLightTextColor}"
+            SelectedTabColor="{StaticResource DevReachLightBlue}"
+            UnselectedTabColor="{StaticResource DevReachLightTextColor}"
+            BackgroundColor="{StaticResource LightBackgroundColor}">
+
+    <TabbedPage.Children>
+        <NavigationPage x:Name="SpeakersNavPage"
+                        Title="Speakers"
+                        BackgroundColor="{StaticResource LightBackgroundColor}">
+            <NavigationPage.IconImageSource>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="iOS">
+                        <On.Value>
+                            <FileImageSource File="tab_speakers.png"/>
+                        </On.Value>
+                    </On>
+                </OnPlatform>
+            </NavigationPage.IconImageSource>
+            <x:Arguments>
+                <speaker:SpeakersPage />
+            </x:Arguments>
+        </NavigationPage>
+
+        <NavigationPage x:Name="SessionsNavPage"
+                        Title="Sessions" 
+                        BackgroundColor="{StaticResource LightBackgroundColor}">
+            <NavigationPage.IconImageSource>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="iOS">
+                        <On.Value>
+                            <FileImageSource File="tab_feed.png"/>
+                        </On.Value>
+                    </On>
+                </OnPlatform>
+            </NavigationPage.IconImageSource>
+            <x:Arguments>
+                <session:SessionsPage />
+            </x:Arguments>
+        </NavigationPage>
+
+        <NavigationPage x:Name="AboutNavPage"
+                        Title="About"
+                        BackgroundColor="{StaticResource LightBackgroundColor}">
+            <NavigationPage.IconImageSource>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="iOS">
+                        <On.Value>
+                            <FileImageSource File="tab_about.png"/>
+                        </On.Value>
+                    </On>
+                </OnPlatform>
+            </NavigationPage.IconImageSource>
+            <x:Arguments>
+                <views:AboutPage />
+            </x:Arguments>
+        </NavigationPage>
+    </TabbedPage.Children>
+</TabbedPage>

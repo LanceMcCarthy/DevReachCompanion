@@ -3,7 +3,7 @@ A repo containing the code and scripts used for 'One Dev Powerhouse' talk at Dev
 
 | Windows 10 | Google Play  |  Appl App Store  |
 |---|---| ---|
-| <a href='//www.microsoft.com/store/apps/9MZNMK3MPV8R?cid=storebadge&ocid=badge'><img src='https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png' alt='Get it on Microsoft Store' width='150'/></a> | <a href='http://play.google.com/store/apps/details?id=com.LancelotSoftware.DevReachCompanion'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width='150'/></a> | <a href='https://apps.apple.com/us/app/devreach-companion/id1483349010?ls=1'><img alt='Get it on App Store' src='https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?kind=iossoftware' width='150'/></a> |
+| <a href='//www.microsoft.com/store/apps/9MZNMK3MPV8R?cid=storebadge&ocid=badge'><img src='https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png' alt='Get it on Microsoft Store' width='150'/></a> | <a href='http://play.google.com/store/apps/details?id=com.LancelotSoftware.DevReachCompanion'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width='150'/></a> | <a href='https://apps.apple.com/us/app/devreach-companion/1483349010'><img alt='Get it on App Store' src='https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?kind=iossoftware' width='150'/></a> |
 
 
 
@@ -44,7 +44,6 @@ There are 7 projects in the solution:
   * UWP
   * Xamarin.iOS
   * Xamarin.Android
-  * .NET Standard Class Library
-  * Unit Tests
+  * .NET Standard 2.0 Class Library
 
 > If you're building from source, visit the **ApiKeys.cs** class and insert your Azure and AppCenter information.

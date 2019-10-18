@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:vm="clr-namespace:DevReach2019.Forms.ViewModels.Speakers;assembly=DevReach2019.Forms"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             mc:Ignorable="d"
+             x:Class="DevReach2019.Forms.Views.Speaker.SpeakerDetailPage"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource LightBackgroundColor}">
+
+    <d:ContentPage.BindingContext>
+        <vm:SpeakerDetailViewModel/>
+    </d:ContentPage.BindingContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <primitives:RadBorder x:Name="HeaderTintBorder" 
+                              BackgroundColor="{StaticResource MediumTranslucentBackgroundColor}"
+                              BorderThickness="0"/>
+
+            <forms:CachedImage Source="{Binding SelectedSpeaker.ImageUrl, Mode=OneTime}"
+                           LoadingPlaceholder="ProfileImagePlaceholder_Loading_150.png"
+                           ErrorPlaceholder="ProfileImagePlaceholder_Error_150.png"
+                           DownsampleToViewSize="True"
+                           FadeAnimationForCachedImages="False"
+                           FadeAnimationEnabled="True"
+                           Grid.Row="0">
+            <forms:CachedImage.Aspect>
+                <OnIdiom x:TypeArguments="Aspect">
+                    <OnIdiom.Phone>AspectFill</OnIdiom.Phone>
+                    <OnIdiom.Tablet>AspectFit</OnIdiom.Tablet>
+                    <OnIdiom.Desktop>AspectFit</OnIdiom.Desktop>
+                </OnIdiom>
+            </forms:CachedImage.Aspect>
+            <forms:CachedImage.HeightRequest>
+                <OnIdiom x:TypeArguments="system:Double">
+                    <OnIdiom.Phone>250</OnIdiom.Phone>
+                    <OnIdiom.Tablet>400</OnIdiom.Tablet>
+                    <OnIdiom.Desktop>400</OnIdiom.Desktop>
+                </OnIdiom>
+            </forms:CachedImage.HeightRequest>
+        </forms:CachedImage>
+
+        <primitives:RadBorder Padding="10,5"
+                              VerticalOptions="End"
+                              HorizontalOptions="Fill"
+                              BackgroundColor="{StaticResource MediumTranslucentBackgroundColor}"
+                              Grid.Row="0">
+            <StackLayout Orientation="Horizontal">
+                <Label Text="{Binding SelectedSpeaker.Company, StringFormat='{0} |', Mode=OneTime}"
+                       TextColor="{StaticResource DevReachLightBlue}" />
+                <Label Text="{Binding SelectedSpeaker.Position, Mode=OneTime}"
+                       TextColor="{StaticResource DevReachYellow}" />
+            </StackLayout>
+        </primitives:RadBorder>
+
+        <primitives:RadAccordion Grid.Row="1">
+            <primitives:AccordionItem>
+                <primitives:AccordionItem.Header>
+                    <primitives:AccordionItemHeader IndicatorFontSize="20"
+                                                    IndicatorColor="{StaticResource DarkBaseColor}">
+                        <Label Text="ABOUT"
+                               FontSize="16"
+                               TextColor="{StaticResource DarkBaseColor}"
+                               Margin="0,5" />
+                    </primitives:AccordionItemHeader>
+                </primitives:AccordionItem.Header>
+                <primitives:AccordionItem.Content>
+                    <ScrollView>
+                        <Label Text="{Binding SelectedSpeaker.Bio, Mode=OneTime}"
+                               TextColor="{StaticResource DarkGrayTextColor}"
+                               LineBreakMode="WordWrap"
+                               FontSize="Small"
+                               Margin="10,10,10,10" />
+                    </ScrollView>
+                </primitives:AccordionItem.Content>
+            </primitives:AccordionItem>
+
+            <primitives:AccordionItem HeaderText="Sessions"
+                                      IsExpanded="True">
+                <primitives:AccordionItem.Header>
+                    <primitives:AccordionItemHeader IndicatorFontSize="20"
+                                                    IndicatorColor="{StaticResource DarkBaseColor}">
+                        <Label Text="SESSIONS"
+                               FontSize="16"
+                               TextColor="{StaticResource DarkBaseColor}"
+                               Margin="0,5" />
+                    </primitives:AccordionItemHeader>
+                </primitives:AccordionItem.Header>
+                <primitives:AccordionItem.Content>
+                    <ListView ItemsSource="{Binding SelectedSpeaker.Sessions}"
+                              IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                              HasUnevenRows="True"
+                              IsPullToRefreshEnabled="True"
+                              RefreshCommand="{Binding RefreshSessionsCommand}"
+                              CachingStrategy="RecycleElement"
+                              ItemSelected="OnItemSelected">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Padding="10">
+                                        <Label Text="{Binding Title}"
+                                               TextColor="{StaticResource DevReachDarkTextColor}"
+                                               LineBreakMode="WordWrap"
+                                               FontSize="20" />
+
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding StartTime, StringFormat='{0:MM/dd}'}"
+                                                   FontSize="Small"
+                                                   FontAttributes="Bold" />
+                                            <Label Text="at"
+                                                   FontSize="Small" />
+                                            <Label Text="{Binding StartTime, StringFormat='{0:t} -'}"
+                                                   FontSize="Small"
+                                                   FontAttributes="Bold" />
+                                            <Label Text="{Binding EndTime, StringFormat='{0:t}'}"
+                                                   FontSize="Small"
+                                                   FontAttributes="Bold" />
+                                            <Label Text="in"
+                                                   FontSize="Small" />
+                                            <Label Text="{Binding Room}"
+                                                   FontSize="Small"
+                                                   FontAttributes="Bold"/>
+                                        </StackLayout>
+
+                                        <dataControls:NonVirtualizedItemsControl Orientation="Horizontal"
+                                                                                 ItemsSource="{Binding Technology}"
+                                                                                 SelectionMode="None">
+                                            <dataControls:NonVirtualizedItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <primitives:RadBorder BackgroundColor="{StaticResource DevReachLightBlue}"
+                                                                          CornerRadius="5"
+                                                                          Padding="5,2">
+                                                        <Label Text="{Binding }"
+                                                               TextColor="{StaticResource DevReachDarkTextColor}" />
+                                                    </primitives:RadBorder>
+                                                </DataTemplate>
+                                            </dataControls:NonVirtualizedItemsControl.ItemTemplate>
+                                        </dataControls:NonVirtualizedItemsControl>
+
+                                        <dataControls:NonVirtualizedItemsControl Orientation="Horizontal"
+                                                                                 ItemsSource="{Binding Topic}"
+                                                                                 SelectionMode="None">
+                                            <dataControls:NonVirtualizedItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <primitives:RadBorder BackgroundColor="{StaticResource DevReachDarkTextColor}"
+                                                                          CornerRadius="5"
+                                                                          Padding="5,2">
+                                                        <Label Text="{Binding }"
+                                                               TextColor="{StaticResource DevReachAgendaLightTeal}" />
+                                                    </primitives:RadBorder>
+                                                </DataTemplate>
+                                            </dataControls:NonVirtualizedItemsControl.ItemTemplate>
+                                        </dataControls:NonVirtualizedItemsControl>
+
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Type"
+                                                   FontSize="Small" />
+                                            <Label Text="{Binding SessionType}"
+                                                   FontSize="Small" 
+                                                   FontAttributes="Bold"/>
+                                        </StackLayout>
+                                        
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </primitives:AccordionItem.Content>
+            </primitives:AccordionItem>
+        </primitives:RadAccordion>
+
+        <Button Style="{StaticResource CloseModalButtonStyle}"
+                IsVisible="{Binding IsModalButtonVisible}"
+                Grid.Row="1"
+                Clicked="CloseButton_OnClicked" />
+    </Grid>
+</ContentPage>

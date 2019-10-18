@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:converters="clr-namespace:DevReach2019.Forms.Converters;assembly=DevReach2019.Forms"
+             xmlns:input="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             xmlns:chart="clr-namespace:Telerik.XamarinForms.Chart;assembly=Telerik.XamarinForms.Chart"
+             xmlns:pdfViewer="clr-namespace:Telerik.XamarinForms.PdfViewer;assembly=Telerik.XamarinForms.PdfViewer"
+             xmlns:conversationalUi="clr-namespace:Telerik.XamarinForms.ConversationalUI;assembly=Telerik.XamarinForms.ConversationalUI"
+             xmlns:imageEditor="clr-namespace:Telerik.XamarinForms.ImageEditor;assembly=Telerik.XamarinForms.ImageEditor"
+             xmlns:dataGrid="clr-namespace:Telerik.XamarinForms.DataGrid;assembly=Telerik.XamarinForms.DataGrid"
+             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:styles="clr-namespace:DevReach2019.Forms.Styles;assembly=DevReach2019.Forms"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             mc:Ignorable="d"
+             x:Class="DevReach2019.Forms.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary MergedWith="styles:BlueTheme" />
+                <ResourceDictionary MergedWith="input:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="primitives:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="chart:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="dataControls:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="dataGrid:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="imageEditor:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="conversationalUi:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="pdfViewer:TelerikThemeStyles" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Color x:Key="DevReachDarkBlue">#00299E</Color>
+            <Color x:Key="DevReachLightBlue">#7FDBE6</Color>
+            <Color x:Key="DevReachGreen">#00FF00</Color>
+
+            <Color x:Key="DevReachMediumBlue">#0022FF</Color>
+            <Color x:Key="DevReachYellow">#FFFD7A</Color>
+
+            <Color x:Key="DevReachLightTextColor">#FFFFFF</Color>
+            <Color x:Key="DarkGrayTextColor">#4d4d4d</Color>
+            <Color x:Key="DevReachDarkTextColor">#000021</Color>
+
+            <Color x:Key="DevReachAgendaSelectedBlue">#238BFF</Color>
+            <Color x:Key="DevReachAgendaDarkTeal">#7FDBE6</Color>
+            <Color x:Key="DevReachAgendaLightTeal">#E5FBFE</Color>
+            <Color x:Key="DevReachAgendaLightGray">#F0F2FB</Color>
+
+            <Color x:Key="LightBackgroundColor">#FAFAFA</Color>
+            <Color x:Key="DarkBaseColor">#003366</Color>
+
+            <Color x:Key="LightTranslucentBackgroundColor">#CCEAEAEC</Color>
+            <Color x:Key="MediumTranslucentBackgroundColor">#AA000000</Color>
+
+            <OnPlatform x:Key="IconsFont"
+                        x:TypeArguments="x:String">
+                <On Platform="iOS">telerikfontexamples</On>
+                <On Platform="Android">Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
+                <On Platform="UWP">/Assets/Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
+            </OnPlatform>
+
+            <x:String x:Key="TrashIcon">&#xE827;</x:String>
+            <x:String x:Key="ImageIcon">&#xE84A;</x:String>
+            <x:String x:Key="HorizontalEllipsisIcon">&#xE80C;</x:String>
+            <x:String x:Key="VerticalEllipsisIcon">&#xE807;</x:String>
+            <x:String x:Key="SolidStarIcon">&#xE805;</x:String>
+            <x:String x:Key="EmptyStarIcon">&#xE801;</x:String>
+            <x:String x:Key="SolidGearIcon">&#xE80F;</x:String>
+            <x:String x:Key="EmptyGearIcon">&#xE822;</x:String>
+            <x:String x:Key="DayViewIcon">&#xE861;</x:String>
+            <x:String x:Key="MultiDayViewIcon">&#xE862;</x:String>
+            <x:String x:Key="SolidCloseIcon">&#xE851;</x:String>
+            <x:String x:Key="SolidInfoIcon">&#xE815;</x:String>
+
+            <converters:ListToStringConverter x:Key="ListToStringConverter" />
+            <converters:EmptyOrNullToVisibleConverter x:Key="NullToVisibleConverter" />
+            <converters:EmptyOrNullToVisibleConverter x:Key="InvertedNullToVisibleConverter" ShowWhenNull="True" />
+
+            <Style x:Key="BusyIndicatorStyle"
+                   TargetType="primitives:RadBusyIndicator">
+                <Setter Property="AnimationType"
+                        Value="Animation6" />
+                <Setter Property="AnimationContentHeightRequest"
+                        Value="100" />
+                <Setter Property="AnimationContentWidthRequest"
+                        Value="100" />
+                <Setter Property="HorizontalOptions"
+                        Value="Fill" />
+                <Setter Property="VerticalOptions"
+                        Value="Fill" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource LightTranslucentBackgroundColor}" />
+                <Setter Property="AnimationContentColor"
+                        Value="{StaticResource DevReachDarkBlue}" />
+            </Style>
+
+            <Style x:Key="BaseListViewStyle"
+                   TargetType="dataControls:RadListView">
+                <Setter Property="Margin"
+                        Value="{OnPlatform Android='0', UWP='16,0', iOS='3,0'}" />
+                <Setter Property="SelectionMode"
+                        Value="None" />
+            </Style>
+
+            <Style x:Key="ImageBorderCircleStyle"
+                   TargetType="primitives:RadBorder">
+                <Setter Property="BorderThickness"
+                        Value="2" />
+                <Setter Property="CornerRadius"
+                        Value="90" />
+                <Setter Property="BorderColor"
+                        Value="#C0C0C0" />
+            </Style>
+
+            <Style x:Key="ImageBorderSquareStyle"
+                   TargetType="primitives:RadBorder"
+                   BasedOn="{StaticResource ImageBorderCircleStyle}">
+                <Setter Property="CornerRadius"
+                        Value="0" />
+            </Style>
+
+            <Style x:Key="BaseRadButtonStyle"
+                   TargetType="input:RadButton">
+                <Setter Property="BorderThickness"
+                        Value="0" />
+            </Style>
+
+            <Style x:Key="IconButtonStyle"
+                   TargetType="input:RadButton"
+                   BasedOn="{StaticResource BaseRadButtonStyle}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource IconsFont}" />
+            </Style>
+
+            <Style x:Key="RoundIconButtonStyle"
+                   TargetType="input:RadButton"
+                   BasedOn="{StaticResource IconButtonStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource MediumTranslucentBackgroundColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource DevReachAgendaDarkTeal}" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="system:Double">
+                            <On Platform="iOS"
+                                Value="32" />
+                            <On Platform="Android"
+                                Value="38" />
+                            <On Platform="UWP"
+                                Value="38" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="system:Double">
+                            <On Platform="iOS"
+                                Value="60" />
+                            <On Platform="Android"
+                                Value="75" />
+                            <On Platform="UWP"
+                                Value="75" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="system:Double">
+                            <On Platform="iOS"
+                                Value="60" />
+                            <On Platform="Android"
+                                Value="75" />
+                            <On Platform="UWP"
+                                Value="75" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="CornerRadius">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="system:Int32">
+                            <On Platform="iOS"
+                                Value="30" />
+                            <On Platform="Android"
+                                Value="90" />
+                            <On Platform="UWP"
+                                Value="90" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="Thickness">
+                            <On Platform="iOS"
+                                Value="10" />
+                            <On Platform="Android"
+                                Value="5" />
+                            <On Platform="UWP"
+                                Value="10" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="CloseModalButtonStyle"
+                   TargetType="input:RadButton"
+                   BasedOn="{StaticResource RoundIconButtonStyle}">
+                <Setter Property="Text"
+                        Value="{StaticResource SolidCloseIcon}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource DevReachDarkBlue}" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource LightTranslucentBackgroundColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="End" />
+                <Setter Property="IsVisible"
+                        Value="False" />
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="system:Double">
+                            <On Platform="iOS"
+                                Value="32" />
+                            <On Platform="Android"
+                                Value="38" />
+                            <On Platform="UWP"
+                                Value="38" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="Thickness">
+                            <On Platform="iOS"
+                                Value="0,0,0,20" />
+                            <On Platform="Android"
+                                Value="5" />
+                            <On Platform="UWP"
+                                Value="10" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
