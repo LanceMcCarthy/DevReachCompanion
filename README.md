@@ -46,4 +46,4 @@ There are 7 projects in the solution:
   * Xamarin.Android
   * .NET Standard 2.0 Class Library
 
-> If you're building from source, visit the **ApiKeys.cs** class and insert your Azure and AppCenter information.
+> **IMPORTANT**: If you're building from source, open the `DevReach2019.Forms/Common/ServiceKeys.cs` class and update the placeholder values with your Azure and AppCenter information.
