@@ -137,7 +137,7 @@ namespace DevReach2019.MobileAppService.Helpers
                     Technology = new List<string> { ".NET" },
                     Topic = new List<string> { "Mobile", "Web", "Tools/Frameworks" },
                     StartTime = new DateTime(2019, 10, 22, 10, 30, 0),
-                    EndTime = new DateTime(2019, 10, 22, 10, 20, 0),
+                    EndTime = new DateTime(2019, 10, 22, 11, 20, 0),
                     Room = "Panorama",
                     Description = "Developing cross-platform applications is complex. Some frameworks allow us to share the business logic layer. Some go further and allow us to share the UI layer, usually limited to the lowest common denominator. But even then – working with device hardware still requires not only error-prone platform-specific code but also developers familiar with each of the target platforms to maintain it. What if there was a framework, which would allow you to write all your code in C#/XAML, with full styling and templating capabilities, with a single API to access device hardware? Meet the Uno Platform - your C#/XAML apps on Android, iOS, and WebAssembly!"
                 },

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using DevReach2019.Forms.Models;
 using DevReach2019.Forms.Services;
@@ -13,6 +14,7 @@ namespace DevReach2019.Forms.ViewModels.Sessions
     {
         private Session selectedSession;
         private bool isModalButtonVisible;
+        private bool _isDescriptionPopupOpen;
 
         public SessionDetailViewModel() { }
 
@@ -20,10 +22,18 @@ namespace DevReach2019.Forms.ViewModels.Sessions
         {
             RefreshSpeakersCommand = new Command(async () => await RefreshSpeakersAsync());
 
+            TogglePopupCommand = new Command(TogglePopup);
+
             Title = item?.Title;
             SelectedSession = item;
 
             IsModalButtonVisible = isModal;
+        }
+
+        private void TogglePopup()
+        {
+            IsDescriptionPopupOpen = !IsDescriptionPopupOpen;
+            Debug.WriteLine($"IsDescriptionPopupOpen Changed - {IsDescriptionPopupOpen}");
         }
 
         public Session SelectedSession
@@ -38,9 +48,17 @@ namespace DevReach2019.Forms.ViewModels.Sessions
             set => SetProperty(ref isModalButtonVisible, value);
         }
 
+        public bool IsDescriptionPopupOpen
+        {
+            get => _isDescriptionPopupOpen;
+            set => SetProperty(ref _isDescriptionPopupOpen, value);
+        }
+
         public ObservableCollection<Speaker> Speakers { get; } = new ObservableCollection<Speaker>();
 
         public Command RefreshSpeakersCommand { get; set; }
+
+        public Command TogglePopupCommand { get; set; }
 
         public async Task RefreshSpeakersAsync()
         {

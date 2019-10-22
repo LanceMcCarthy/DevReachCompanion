@@ -7,6 +7,7 @@
              xmlns:vm="clr-namespace:DevReach2019.Forms.ViewModels.Sessions;assembly=DevReach2019.Forms"
              xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:input="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
              mc:Ignorable="d"
              x:Class="DevReach2019.Forms.Views.Session.SessionDetailPage"
              Title="{Binding Title}"
@@ -27,11 +28,53 @@
                      IsVisible="{Binding SelectedSession.SessionType, Converter={StaticResource NullToVisibleConverter}}"
                      Padding="10"
                      Grid.Row="0">
-            <Label Text="{Binding SelectedSession.SessionType}"
-                   TextColor="{StaticResource DevReachAgendaLightTeal}"
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Label Text="{Binding SelectedSession.SessionType}"
+                   TextColor="{StaticResource DevReachLightTextColor}"
                    FontAttributes="Bold"
                    FontSize="Medium"
                    HorizontalTextAlignment="Center" />
+                <input:RadButton Text="{StaticResource SolidInfoIcon}" 
+                                 FontFamily="{StaticResource IconsFont}"
+                                 TextColor="{StaticResource DevReachLightTextColor}"
+                                 Margin="5,0,0,0"
+                                 BorderThickness="0"
+                                 CornerRadius="30"
+                                 WidthRequest="20"
+                                 HeightRequest="20"
+                                 Padding="0"
+                                 Command="{Binding TogglePopupCommand}"
+                                 BackgroundColor="Transparent"
+                                 FontSize="20">
+                    <primitives:RadPopup.Popup>
+                        <primitives:RadPopup IsOpen="{Binding IsDescriptionPopupOpen, Mode=TwoWay}" 
+                                             IsModal="True"
+                                             OutsideBackgroundColor="{StaticResource MediumTranslucentBackgroundColor}">
+                            <primitives:RadBorder CornerRadius="25" BackgroundColor="{StaticResource LightBackgroundColor}" Padding="10" Margin="10">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <ScrollView>
+                                        <Label Text="{Binding SelectedSession.Description}"
+                                               FontSize="Body"
+                                               TextColor="{StaticResource DarkGrayTextColor}"/>
+                                    </ScrollView>
+
+                                    <input:RadButton Text="close"
+                                                     CornerRadius="25"
+                                                     Command="{Binding TogglePopupCommand}"
+                                                     Margin="0,5,0,0"
+                                                     Grid.Row="1" />
+                                </Grid>
+                            </primitives:RadBorder>
+                            
+                        </primitives:RadPopup>
+                    </primitives:RadPopup.Popup>
+                </input:RadButton>
+            </StackLayout>
         </StackLayout>
 
         <StackLayout Padding="10,0,10,0"
@@ -74,6 +117,7 @@
             <Label Text="Topic:"
                    FontSize="Medium"
                    IsVisible="{Binding SelectedSession.Topic, Converter={StaticResource NullToVisibleConverter}}" />
+
             <dataControls:NonVirtualizedItemsControl ItemsSource="{Binding SelectedSession.Topic}"
                                                      IsVisible="{Binding SelectedSession.Topic, Converter={StaticResource NullToVisibleConverter}}"
                                                      SelectionMode="None"
@@ -94,6 +138,7 @@
             <Label Text="Technology:"
                    FontSize="Medium"
                    IsVisible="{Binding SelectedSession.Technology, Converter={StaticResource NullToVisibleConverter}}" />
+
             <dataControls:NonVirtualizedItemsControl ItemsSource="{Binding SelectedSession.Technology}"
                                                      IsVisible="{Binding SelectedSession.Technology, Converter={StaticResource NullToVisibleConverter}}"
                                                      SelectionMode="None"
