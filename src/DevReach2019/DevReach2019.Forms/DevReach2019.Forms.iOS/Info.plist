@@ -42,5 +42,7 @@
 	<string>User calendar is not used by this app.</string>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 </dict>
 </plist>
