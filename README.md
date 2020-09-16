@@ -4,11 +4,11 @@ This repository holds my projects for each DevReach conference. Nested inside sr
 
 ## DevReach 2019
 
-In the [**src\DevReach2019**](https://github.com/LanceMcCarthy/DevReachCompanion/tree/master/src/DevReach2019) folder, you will find a **Xamarin.Forms** solution, with an **ASP.NET Core 3.1** project, all leveraging **Azure DevOps** to build and release all four applications.
+In the [**src\DevReach2019**](https://github.com/LanceMcCarthy/DevReachCompanion/tree/main/src/DevReach2019) folder, you will find a **Xamarin.Forms** solution, with an **ASP.NET Core 3.1** project, all leveraging **Azure DevOps** to build and release all four applications.
 
 You'll not only find links to the DevOps build and releases, but also links to the production applications in their respective app Stores.
 
 ## DevReach 2020
 
-For 2020, I am demonstrating the use of GitHub Actions CI-CD workflows! You will find the source code in [**src\DevReach2020**](https://github.com/LanceMcCarthy/DevReachCompanion/tree/master/src/DevReach2020) folder and see `.github/Workflows` folder for the workflows.
+For 2020, I am demonstrating the use of GitHub Actions CI-CD workflows! You will find the source code in [**src\DevReach2020**](https://github.com/LanceMcCarthy/DevReachCompanion/tree/main/src/DevReach2020) folder and see `.github/Workflows` folder for the workflows.
 

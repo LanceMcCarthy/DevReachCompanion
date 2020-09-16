@@ -11,8 +11,7 @@ A repo containing the code and scripts used for 'One Dev Powerhouse' talk at Dev
 
 | Branch | Status   |
 |--------|----------|
-| Dev  | [![Dev](https://dev.azure.com/lance/DevReach%20Companion/_apis/build/status/Complete%20YAML%20Build?branchName=dev)](https://dev.azure.com/lance/DevReach%20Companion/_build/latest?definitionId=37&branchName=dev) |
-| Master | [![Master](https://dev.azure.com/lance/DevReach%20Companion/_apis/build/status/Complete%20YAML%20Build?branchName=master)](https://dev.azure.com/lance/DevReach%20Companion/_build/latest?definitionId=37&branchName=master)   |
+| dr-2019 | [![Master](https://dev.azure.com/lance/DevReach%20Companion/_apis/build/status/Complete%20YAML%20Build?branchName=dr-2019)](https://dev.azure.com/lance/DevReach%20Companion/_build/latest?definitionId=37&branchName=dr-2019) |
 
 #### Release Pipelines
 
