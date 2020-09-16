@@ -3,7 +3,7 @@ name: Xamarin.Forms
 on:
   push:
     branches:
-    - master
+    - main
 
 jobs:
   windows-build:
