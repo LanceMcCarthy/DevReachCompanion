@@ -28,7 +28,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.1
 
     - name: NuGet Restore
-      run: nuget restore src\DevReach2020 -ConfigFile src\DevReach2020\nuget.config
+      run: nuget restore "src\DevReach2020\DevReach2020.Forms_UWPOnly.sln" -ConfigFile "src\DevReach2020\nuget.config"
 
     - name: Decode the pfx
       run: |
@@ -72,7 +72,7 @@ jobs:
         fetch-depth: 0  
     
     - name: NuGet Restore
-      run: nuget restore src\DevReach2020 -ConfigFile src\DevReach2020\nuget.config
+      run: nuget restore "src\DevReach2020\DevReach2020.Forms_UWPOnly.sln" -ConfigFile "src\DevReach2020\nuget.config"
     
     - name: Build Android Project
       run: msbuild src\DevReach2020\DevReach2020.Forms\Android\DevReach2020.Forms.Android.csproj /p:SolutionDir=src\DevReach2020 /p:Configuration=Debug /p:Platform="AnyCPU" /verbosity:normal /t:Rebuild
@@ -102,7 +102,7 @@ jobs:
         fetch-depth: 0  
     
     - name: Restore NuGet packages
-      run: nuget restore src\DevReach2020\DevReach2020.Forms_iOSOnly.sln -ConfigFile src\DevReach2020\nuget.config
+      run: nuget restore "src\DevReach2020\DevReach2020.Forms_iOSOnly.sln" -ConfigFile "src\DevReach2020\nuget.config"
     
     - name: Build iOS Project
       run: msbuild src\DevReach2020\DevReach2020.Forms\iOS\DevReach2020.Forms.iOS.csproj  /p:SolutionDir=src\DevReach2020 /p:Configuration=Debug /p:Platform=iPhoneSimulator /verbosity:normal /t:Rebuild
