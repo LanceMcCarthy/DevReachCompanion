@@ -14,7 +14,7 @@ jobs:
       Telerik_Username: ${{ secrets.TELERIK_USERNAME }}
       Telerik_Password: ${{ secrets.TELERIK_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
-      Solution_Path: src\DevReach2020\DevReach2020.Forms.UWPOnly.sln
+      Solution_Path: src\DevReach2020\DevReach2020.Forms_UWPOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\UWP
       Project_Path: src\DevReach2020\DevReach2020.Forms\UWP\DevReach2020.Forms.UWP.csproj
 
@@ -60,14 +60,15 @@ jobs:
         path: ${{ env.Project_Directory }}\AppPackages
 
   android-build:
-    runs-on: windows-latest
+    runs-on: macos-latest
     env:
       Configuration: Debug
       Signing_Certificate: LancelotSoftwareLLC.pfx
       Telerik_Username: ${{ secrets.TELERIK_USERNAME }}
       Telerik_Password: ${{ secrets.TELERIK_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
-      Solution_Path: src\DevReach2020\DevReach2020.Forms.AndroidOnly.sln
+      Solution_Directory: src\DevReach2020
+      Solution_Path: src\DevReach2020\DevReach2020.Forms_AndroidOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\Android
       Project_Path: src\DevReach2020\DevReach2020.Forms\Android\DevReach2020.Forms.Android.csproj
       
@@ -77,28 +78,17 @@ jobs:
       with:
         fetch-depth: 0  
     
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.302  
-    
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.1
-    
     - name: NuGet Restore
-      run: dotnet restore $env:Solution_Path --configfile $env:NuGetConfig_Path --runtime $env:RID
-      env:
-        RID: any # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog 
+      run: nuget restore $env:Solution_Path -ConfigFile $env:NuGetConfig_Path
     
     - name: Build Android Project
-      run: msbuild $env:Solution_Path /p:Configuration=$env:Configuration /p:Platform="any cpu"
+      run: msbuild $env:Project_Path /p:SolutionDir=$env:Solution_Directory /p:Configuration=$env:Configuration /p:Platform="AnyCPU" /verbosity:normal /t:Rebuild
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: Android Artifacts
-        path: ${{ env.Project_Directory }}\bin\Debug
+        path: ${{ env.Project_Directory }}\bin
 
   ios-build:
     runs-on: macos-latest
@@ -107,9 +97,10 @@ jobs:
       Telerik_Username: ${{ secrets.TELERIK_USERNAME }}
       Telerik_Password: ${{ secrets.TELERIK_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
-      Solution_Path: src\DevReach2020\DevReach2020.Forms.iOSOnly.sln
+      Solution_Directory: src\DevReach2020
+      Solution_Path: src\DevReach2020\DevReach2020.Forms_iOSOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\iOS
-      iOS_Project_Path: src\DevReach2020\DevReach2020.Forms\iOS\DevReach2020.Forms.iOS.csproj 
+      Project_Path: src\DevReach2020\DevReach2020.Forms\iOS\DevReach2020.Forms.iOS.csproj 
 
     steps:
     - name: Checkout
@@ -117,24 +108,14 @@ jobs:
       with:
         fetch-depth: 0  
     
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.302  
-    
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.1
-    
-    - name: NuGet Restore
-      run: dotnet restore $env:Project_Path --configfile $env:NuGetConfig_Path --runtime $env:RID
-      env:
-        RID: any # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog 
+    - name: Restore NuGet packages
+      run: nuget restore $env:Solution_Path -ConfigFile $env:NuGetConfig_Path
     
     - name: Build iOS Project
-      run: msbuild $env:Project_Path /p:Configuration=$env:Configuration /p:Platform="iPhoneSimulator"
+      run: msbuild $env:Project_Path /p:SolutionDir=$env:Solution_Directory /p:Configuration=Debug /p:Platform=iPhoneSimulator
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Android Artifacts
-        path: ${{ env.Project_Directory }}\bin\iPhoneSimulator\Debug
+        name: iOS Artifacts
+        path: ${{ env.Project_Directory }}\bin
