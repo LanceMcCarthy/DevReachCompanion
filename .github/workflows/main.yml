@@ -14,6 +14,7 @@ jobs:
       Telerik_Username: ${{ secrets.TELERIK_USERNAME }}
       Telerik_Password: ${{ secrets.TELERIK_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
+      Solution_Path: src\DevReach2020\DevReach2020.Forms.UWPOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\UWP
       Project_Path: src\DevReach2020\DevReach2020.Forms\UWP\DevReach2020.Forms.UWP.csproj
 
@@ -32,7 +33,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.1
 
     - name: NuGet Restore
-      run: dotnet restore $env:Project_Path --configfile $env:NuGetConfig_Path --runtime $env:RID
+      run: dotnet restore $env:Solution_Path --configfile $env:NuGetConfig_Path --runtime $env:RID
       env:
         RID: win-x86 # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
 
@@ -43,7 +44,7 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
     - name: Build UWP Project
-      run: msbuild $env:Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=$env:Signing_Certificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      run: msbuild $env:Solution_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=$env:Signing_Certificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
         Appx_Bundle: Always
         Appx_Bundle_Platforms: x86
@@ -66,6 +67,7 @@ jobs:
       Telerik_Username: ${{ secrets.TELERIK_USERNAME }}
       Telerik_Password: ${{ secrets.TELERIK_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
+      Solution_Path: src\DevReach2020\DevReach2020.Forms.AndroidOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\Android
       Project_Path: src\DevReach2020\DevReach2020.Forms\Android\DevReach2020.Forms.Android.csproj
       
@@ -85,12 +87,12 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.1
     
     - name: NuGet Restore
-      run: dotnet restore $env:Project_Path --configfile $env:NuGetConfig_Path --runtime $env:RID
+      run: dotnet restore $env:Solution_Path --configfile $env:NuGetConfig_Path --runtime $env:RID
       env:
         RID: any # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog 
     
     - name: Build Android Project
-      run: msbuild $env:Project_Path /p:Configuration=$env:Configuration /p:Platform="any cpu"
+      run: msbuild $env:Solution_Path /p:Configuration=$env:Configuration /p:Platform="any cpu"
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
@@ -105,6 +107,7 @@ jobs:
       Telerik_Username: ${{ secrets.TELERIK_USERNAME }}
       Telerik_Password: ${{ secrets.TELERIK_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
+      Solution_Path: src\DevReach2020\DevReach2020.Forms.iOSOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\iOS
       iOS_Project_Path: src\DevReach2020\DevReach2020.Forms\iOS\DevReach2020.Forms.iOS.csproj 
 
