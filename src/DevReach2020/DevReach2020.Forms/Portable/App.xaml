@@ -1,10 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms"
+<dryIoc:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dryIoc="http://prismlibrary.com"
              x:Class="DevReach2020.Forms.Portable.App">
-	<Application.Resources>
+    <Application.Resources>
+        <Color x:Key="PrimaryColor">#7E7D81</Color>
+        <Color x:Key="AccentColor">#00A5F2</Color>
+        <Color x:Key="TextColor">White</Color>
 
-		<!-- Application resource dictionary -->
+        <Style TargetType="TabbedPage">
+            <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}" />
+            <Setter Property="BarTextColor" Value="{StaticResource TextColor}" />
+            <Setter Property="SelectedTabColor" Value="{StaticResource AccentColor}" />
+            <Setter Property="UnselectedTabColor" Value="{StaticResource PrimaryColor}" />
+        </Style>
 
-	</Application.Resources>
-</Application>
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}" />
+            <Setter Property="BarTextColor" Value="{StaticResource TextColor}" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}" />
+            <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+            <Setter Property="CornerRadius" Value="15" />
+        </Style>
+
+        <Style TargetType="Button" x:Key="DarkButton">
+            <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+            <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+            <Setter Property="CornerRadius" Value="15" />
+        </Style>
+    </Application.Resources>
+</dryIoc:PrismApplication>

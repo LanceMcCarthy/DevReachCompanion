@@ -1,34 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using DevReach2020.Forms.Portable.ViewModels;
+using DevReach2020.Forms.Portable.Views;
+using Prism.Ioc;
 using Xamarin.Forms;
 
 namespace DevReach2020.Forms.Portable
 {
-    public partial class App : Application
+    public partial class App
     {
         public App()
         {
+        }
+
+        protected override async void OnInitialized()
+        {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            var result = await NavigationService.NavigateAsync("NavigationPage/MainPage");
+
+            if (!result.Success)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
         }
 
-        protected override void OnStart()
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // Handle when your app starts
-        }
-
-        protected override void OnSleep()
-        {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
+            containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<MainPage, MainViewModel>();
+            containerRegistry.RegisterForNavigation<LiveStreamPage, LiveStreamViewModel>();
         }
     }
 }

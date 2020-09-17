@@ -102,6 +102,9 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Prism.DryIoc.Forms">
+      <Version>7.2.0.1422</Version>
+    </PackageReference>
     <PackageReference Include="Telerik.UI.for.Xamarin">
       <Version>2020.3.916.1</Version>
     </PackageReference>
