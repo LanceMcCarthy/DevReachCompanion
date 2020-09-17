@@ -24,18 +24,11 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.302
-
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.1
 
     - name: NuGet Restore
-      run: dotnet restore $env:Solution_Path --configfile $env:NuGetConfig_Path --runtime $env:RID
-      env:
-        RID: win-x86 # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
+      run: nuget restore src\DevReach2020 -ConfigFile src\DevReach2020\nuget.config
 
     - name: Decode the pfx
       run: |
@@ -79,10 +72,10 @@ jobs:
         fetch-depth: 0  
     
     - name: NuGet Restore
-      run: nuget restore $env:Solution_Path -ConfigFile $env:NuGetConfig_Path
+      run: nuget restore src\DevReach2020 -ConfigFile src\DevReach2020\nuget.config
     
     - name: Build Android Project
-      run: msbuild $env:Project_Path /p:SolutionDir=$env:Solution_Directory /p:Configuration=$env:Configuration /p:Platform="AnyCPU" /verbosity:normal /t:Rebuild
+      run: msbuild src\DevReach2020\DevReach2020.Forms\Android\DevReach2020.Forms.Android.csproj /p:SolutionDir=src\DevReach2020 /p:Configuration=Debug /p:Platform="AnyCPU" /verbosity:normal /t:Rebuild
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
@@ -109,10 +102,10 @@ jobs:
         fetch-depth: 0  
     
     - name: Restore NuGet packages
-      run: nuget restore $env:Solution_Path -ConfigFile $env:NuGetConfig_Path
+      run: nuget restore src\DevReach2020\DevReach2020.Forms_iOSOnly.sln -ConfigFile src\DevReach2020\nuget.config
     
     - name: Build iOS Project
-      run: msbuild $env:Project_Path /p:SolutionDir=$env:Solution_Directory /p:Configuration=Debug /p:Platform=iPhoneSimulator
+      run: msbuild src\DevReach2020\DevReach2020.Forms\iOS\DevReach2020.Forms.iOS.csproj  /p:SolutionDir=src\DevReach2020 /p:Configuration=Debug /p:Platform=iPhoneSimulator /verbosity:normal /t:Rebuild
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
