@@ -11,8 +11,8 @@ jobs:
     env:
       Configuration: Debug
       Signing_Certificate: LancelotSoftwareLLC.pfx
-      Telerik_Username: ${{ secrets.TELERIK_USERNAME }}
-      Telerik_Password: ${{ secrets.TELERIK_PASSWORD }}
+      Telerik_Username: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      Telerik_Password: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
       Solution_Path: src\DevReach2020\DevReach2020.Forms_UWPOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\UWP
@@ -57,8 +57,8 @@ jobs:
     env:
       Configuration: Debug
       Signing_Certificate: LancelotSoftwareLLC.pfx
-      Telerik_Username: ${{ secrets.TELERIK_USERNAME }}
-      Telerik_Password: ${{ secrets.TELERIK_PASSWORD }}
+      Telerik_Username: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      Telerik_Password: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
       Solution_Directory: src\DevReach2020
       Solution_Path: src\DevReach2020\DevReach2020.Forms_AndroidOnly.sln
@@ -72,7 +72,9 @@ jobs:
         fetch-depth: 0  
     
     - name: NuGet Restore
-      run: nuget restore "src\DevReach2020\DevReach2020.Forms_UWPOnly.sln" -ConfigFile "src\DevReach2020\nuget.config"
+      run: |
+        nuget sources add -Name TelerikNuGetFeed -Source https://nuget.telerik.com/nuget -Username $env:Telerik_Username -Password $env:Telerik_Password -StorePasswordInClearText
+        nuget restore "src/DevReach2020/DevReach2020.Forms_AndroidOnly.sln"
     
     - name: Build Android Project
       run: msbuild src\DevReach2020\DevReach2020.Forms\Android\DevReach2020.Forms.Android.csproj /p:SolutionDir=src\DevReach2020 /p:Configuration=Debug /p:Platform="AnyCPU" /verbosity:normal /t:Rebuild
@@ -87,8 +89,8 @@ jobs:
     runs-on: macos-latest
     env:
       Configuration: Debug
-      Telerik_Username: ${{ secrets.TELERIK_USERNAME }}
-      Telerik_Password: ${{ secrets.TELERIK_PASSWORD }}
+      Telerik_Username: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      Telerik_Password: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
       Solution_Directory: src\DevReach2020
       Solution_Path: src\DevReach2020\DevReach2020.Forms_iOSOnly.sln
@@ -102,7 +104,9 @@ jobs:
         fetch-depth: 0  
     
     - name: Restore NuGet packages
-      run: nuget restore "src\DevReach2020\DevReach2020.Forms_iOSOnly.sln" -ConfigFile "src\DevReach2020\nuget.config"
+      run: |
+        nuget sources add -Name TelerikNuGetFeed -Source https://nuget.telerik.com/nuget -Username ${{ secrets.TELERIK_ACCOUNT_USERNAME }} -Password ${{ secrets.TELERIK_ACCOUNT_PASSWORD }} -StorePasswordInClearText
+        nuget restore "src/DevReach2020/DevReach2020.Forms_iOSOnly.sln"
     
     - name: Build iOS Project
       run: msbuild src\DevReach2020\DevReach2020.Forms\iOS\DevReach2020.Forms.iOS.csproj  /p:SolutionDir=src\DevReach2020 /p:Configuration=Debug /p:Platform=iPhoneSimulator /verbosity:normal /t:Rebuild
