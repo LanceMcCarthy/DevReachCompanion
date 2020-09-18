@@ -11,8 +11,6 @@ jobs:
     env:
       Configuration: Debug
       Signing_Certificate: LancelotSoftwareLLC.pfx
-      Telerik_Username: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
-      Telerik_Password: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
       Solution_Path: src\DevReach2020\DevReach2020.Forms_UWPOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\UWP
@@ -28,7 +26,9 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.1
 
     - name: NuGet Restore
-      run: nuget restore "src\DevReach2020\DevReach2020.Forms_UWPOnly.sln" -ConfigFile "src\DevReach2020\nuget.config"
+      run: |
+        nuget sources add -Name TelerikNuGetFeed -Source https://nuget.telerik.com/nuget -Username ${{ secrets.TELERIK_ACCOUNT_USERNAME }} -Password ${{ secrets.TELERIK_ACCOUNT_PASSWORD }} -StorePasswordInClearText
+        nuget restore ${{ env.Solution_Path }} -source "https://api.nuget.org/v3/index.json;https://nuget.telerik.com/nuget"
 
     - name: Decode the pfx
       run: |
@@ -53,13 +53,10 @@ jobs:
         path: ${{ env.Project_Directory }}\AppPackages
 
   android-build:
-    runs-on: macos-latest
+    runs-on: windows-latest
     env:
       Configuration: Debug
-      Signing_Certificate: LancelotSoftwareLLC.pfx
-      Telerik_Username: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
-      Telerik_Password: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
-      NuGetConfig_Path: src\DevReach2020\nuget.config
+      Platform: AnyCPU
       Solution_Directory: src\DevReach2020
       Solution_Path: src\DevReach2020\DevReach2020.Forms_AndroidOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\Android
@@ -71,13 +68,16 @@ jobs:
       with:
         fetch-depth: 0  
     
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.1
+    
     - name: NuGet Restore
       run: |
-        nuget sources add -Name TelerikNuGetFeed -Source https://nuget.telerik.com/nuget -Username $env:Telerik_Username -Password $env:Telerik_Password -StorePasswordInClearText
-        nuget restore "src/DevReach2020/DevReach2020.Forms_AndroidOnly.sln"
+        nuget sources add -Name TelerikNuGetFeed -Source https://nuget.telerik.com/nuget -Username ${{ secrets.TELERIK_ACCOUNT_USERNAME }} -Password ${{ secrets.TELERIK_ACCOUNT_PASSWORD }} -StorePasswordInClearText
+        nuget restore ${{ env.Solution_Path }} -source "https://api.nuget.org/v3/index.json;https://nuget.telerik.com/nuget"
     
     - name: Build Android Project
-      run: msbuild src\DevReach2020\DevReach2020.Forms\Android\DevReach2020.Forms.Android.csproj /p:SolutionDir=src\DevReach2020 /p:Configuration=Debug /p:Platform="AnyCPU" /verbosity:normal /t:Rebuild
+      run: msbuild ${{ env.Project_Path }} /p:SolutionDir=${{ env.Solution_Directory }} /p:Configuration=${{ env.Configuration }} /p:Platform=${{ env.Platform }} /verbosity:normal /t:Rebuild
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
@@ -89,9 +89,7 @@ jobs:
     runs-on: macos-latest
     env:
       Configuration: Debug
-      Telerik_Username: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
-      Telerik_Password: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
-      NuGetConfig_Path: src\DevReach2020\nuget.config
+      Platform: iPhoneSimulator
       Solution_Directory: src\DevReach2020
       Solution_Path: src\DevReach2020\DevReach2020.Forms_iOSOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\iOS
@@ -106,10 +104,10 @@ jobs:
     - name: Restore NuGet packages
       run: |
         nuget sources add -Name TelerikNuGetFeed -Source https://nuget.telerik.com/nuget -Username ${{ secrets.TELERIK_ACCOUNT_USERNAME }} -Password ${{ secrets.TELERIK_ACCOUNT_PASSWORD }} -StorePasswordInClearText
-        nuget restore "src/DevReach2020/DevReach2020.Forms_iOSOnly.sln"
+        nuget restore ${{ env.Solution_Path }} -source "https://api.nuget.org/v3/index.json;https://nuget.telerik.com/nuget"
     
     - name: Build iOS Project
-      run: msbuild src\DevReach2020\DevReach2020.Forms\iOS\DevReach2020.Forms.iOS.csproj  /p:SolutionDir=src\DevReach2020 /p:Configuration=Debug /p:Platform=iPhoneSimulator /verbosity:normal /t:Rebuild
+      run: msbuild ${{ env.Project_Path }} /p:SolutionDir=${{ env.Solution_Directory }} /p:Configuration=${{ env.Configuration }} /p:Platform=${{ env.Platform }} /verbosity:normal /t:Rebuild
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
