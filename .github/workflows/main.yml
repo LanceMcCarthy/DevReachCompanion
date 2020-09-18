@@ -6,11 +6,15 @@ on:
     - main
 
 jobs:
+  # UWP project build
   windows-build:
     runs-on: windows-latest
     env:
       Configuration: Debug
+      Platform: x86
       Signing_Certificate: LancelotSoftwareLLC.pfx
+      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
       Solution_Path: src\DevReach2020\DevReach2020.Forms_UWPOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\UWP
@@ -26,9 +30,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.1
 
     - name: NuGet Restore
-      run: |
-        nuget sources add -Name TelerikNuGetFeed -Source https://nuget.telerik.com/nuget -Username ${{ secrets.TELERIK_ACCOUNT_USERNAME }} -Password ${{ secrets.TELERIK_ACCOUNT_PASSWORD }} -StorePasswordInClearText
-        nuget restore ${{ env.Solution_Path }} -source "https://api.nuget.org/v3/index.json;https://nuget.telerik.com/nuget"
+      run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
 
     - name: Decode the pfx
       run: |
@@ -52,11 +54,15 @@ jobs:
         name: UWP Artifacts
         path: ${{ env.Project_Directory }}\AppPackages
 
+  # Xamarin.Android project build
   android-build:
     runs-on: windows-latest
     env:
       Configuration: Debug
       Platform: AnyCPU
+      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
+      NuGetConfig_Path: src\DevReach2020\nuget.config
       Solution_Directory: src\DevReach2020
       Solution_Path: src\DevReach2020\DevReach2020.Forms_AndroidOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\Android
@@ -72,9 +78,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.1
     
     - name: NuGet Restore
-      run: |
-        nuget sources add -Name TelerikNuGetFeed -Source https://nuget.telerik.com/nuget -Username ${{ secrets.TELERIK_ACCOUNT_USERNAME }} -Password ${{ secrets.TELERIK_ACCOUNT_PASSWORD }} -StorePasswordInClearText
-        nuget restore ${{ env.Solution_Path }} -source "https://api.nuget.org/v3/index.json;https://nuget.telerik.com/nuget"
+      run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
     
     - name: Build Android Project
       run: msbuild ${{ env.Project_Path }} /p:SolutionDir=${{ env.Solution_Directory }} /p:Configuration=${{ env.Configuration }} /p:Platform=${{ env.Platform }} /verbosity:normal /t:Rebuild
@@ -85,15 +89,20 @@ jobs:
         name: Android Artifacts
         path: ${{ env.Project_Directory }}\bin
 
+  # Xamarin.iOS project build
   ios-build:
     runs-on: macos-latest
+    # Note: MacOS needs forward slashes for dir separators
     env:
       Configuration: Debug
       Platform: iPhoneSimulator
-      Solution_Directory: src\DevReach2020
-      Solution_Path: src\DevReach2020\DevReach2020.Forms_iOSOnly.sln
-      Project_Directory: src\DevReach2020\DevReach2020.Forms\iOS
-      Project_Path: src\DevReach2020\DevReach2020.Forms\iOS\DevReach2020.Forms.iOS.csproj 
+      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
+      NuGetConfig_Path: src/DevReach2020/nuget.config
+      Solution_Directory: src/DevReach2020
+      Solution_Path: src/DevReach2020/DevReach2020.Forms_iOSOnly.sln
+      Project_Directory: src/DevReach2020/DevReach2020.Forms/iOS
+      Project_Path: src/DevReach2020/DevReach2020.Forms/iOS/DevReach2020.Forms.iOS.csproj 
 
     steps:
     - name: Checkout
@@ -102,9 +111,7 @@ jobs:
         fetch-depth: 0  
     
     - name: Restore NuGet packages
-      run: |
-        nuget sources add -Name TelerikNuGetFeed -Source https://nuget.telerik.com/nuget -Username ${{ secrets.TELERIK_ACCOUNT_USERNAME }} -Password ${{ secrets.TELERIK_ACCOUNT_PASSWORD }} -StorePasswordInClearText
-        nuget restore ${{ env.Solution_Path }} -source "https://api.nuget.org/v3/index.json;https://nuget.telerik.com/nuget"
+      run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
     
     - name: Build iOS Project
       run: msbuild ${{ env.Project_Path }} /p:SolutionDir=${{ env.Solution_Directory }} /p:Configuration=${{ env.Configuration }} /p:Platform=${{ env.Platform }} /verbosity:normal /t:Rebuild
