@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="ec0cc741-fd3e-485c-81be-68815c480690"
-    Publisher="CN=Telerik"
-    Version="1.0.0.0" />
+    Name="61469LanceLotSoftware.DevReachCompanion"
+    Publisher="CN=&quot;Lancelot Software, LLC&quot;, O=&quot;Lancelot Software, LLC&quot;, L=NORTH BILLERICA, S=Massachusetts, C=US"
+    Version="2020.918.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="c8f3fa57-ab23-4546-ae44-012d8ca7ea87" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="f9c9b789-4d3a-4c26-9938-b39ac1aa35dd" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>DevReach2020.Forms.UWP</DisplayName>
-    <PublisherDisplayName>mccarthy</PublisherDisplayName>
+    <DisplayName>DevReach Companion</DisplayName>
+    <PublisherDisplayName>Lancelot Software</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -32,13 +32,19 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="DevReach2020.Forms.UWP.App">
       <uap:VisualElements
-        DisplayName="DevReach2020.Forms.UWP"
+        DisplayName="DevReach Companion"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="DevReach2020.Forms.UWP"
-        BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        Description="A application for DevReach 2020!"
+        BackgroundColor="#081681">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="DevReach">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square310x310Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square150x150Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
+        <uap:SplashScreen Image="Assets\SplashScreen.png"  BackgroundColor="#081681"/>
       </uap:VisualElements>
     </Application>
   </Applications>
