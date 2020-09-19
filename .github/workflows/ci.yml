@@ -1,0 +1,152 @@
+name: CI (Xamarin.Forms All)
+
+on:
+  push:
+    branches:
+    - main # Run for main commits
+    - dr-2020 # Run for app branch commits
+    - 'dr-2020/*' # Run for feature branch commits
+
+jobs:
+  # UWP project build
+  windows-build:
+    runs-on: windows-latest
+    env:
+      Configuration: Debug
+      Platform: x86
+      Signing_Certificate: LancelotSoftwareLLC.pfx
+      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
+      NuGetConfig_Path: src\DevReach2020\nuget.config
+      Solution_Path: src\DevReach2020\DevReach2020.Forms_UWPOnly.sln
+      Project_Directory: src\DevReach2020\DevReach2020.Forms\UWP
+      Project_Path: src\DevReach2020\DevReach2020.Forms\UWP\DevReach2020.Forms.UWP.csproj
+      AppCenterAppSlug: ${{ secrets.APPCENTER_UWP_APP_SLUG }}
+      AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.1
+
+    - name: NuGet Restore
+      run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
+    
+    - name: Generate version number
+      uses: Amadevus/pwsh-script@v1
+      id: version-creator
+      with:
+        script: |
+          $buildDay = Get-Date -Format "yyyy.Mdd"
+          $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
+          Set-ActionVariable APP_VERSION $ver
+    
+    - name: Update manifest version
+      run: |
+        [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
+        $manifest.Package.Identity.Version = "$env:APP_VERSION"
+        $manifest.save("src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest")
+    
+    - name: Decode the pfx
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
+        $certificatePath = Join-Path -Path $env:Project_Directory -ChildPath $env:Signing_Certificate
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
+    - name: Build UWP Project
+      run: msbuild $env:Solution_Path /p:Configuration=$env:Configuration /p:AppxPackageSigningEnabled=false
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: UWP Artifacts
+        path: ${{ env.Project_Directory }}\bin
+
+  # Xamarin.Android project build
+  android-build:
+    runs-on: windows-latest
+    env:
+      Configuration: Debug
+      Platform: AnyCPU
+      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
+      NuGetConfig_Path: src\DevReach2020\nuget.config
+      Solution_Directory: src\DevReach2020
+      Solution_Path: src\DevReach2020\DevReach2020.Forms_AndroidOnly.sln
+      Project_Directory: src\DevReach2020\DevReach2020.Forms\Android
+      Project_Path: src\DevReach2020\DevReach2020.Forms\Android\DevReach2020.Forms.Android.csproj
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.1
+
+    - name: Generate version number
+      uses: Amadevus/pwsh-script@v1
+      id: version-creator
+      with:
+        script: |
+          $buildDay = Get-Date -Format "yyyy.Mdd"
+          $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
+          Set-ActionVariable APP_VERSION $ver
+    
+    - name: NuGet Restore
+      run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
+    
+    - name: Build Android Project
+      run: msbuild ${{ env.Project_Path }} /p:SolutionDir=${{ env.Solution_Directory }} /p:Configuration=${{ env.Configuration }} /p:Platform=${{ env.Platform }} /verbosity:normal /t:Rebuild
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Android Artifacts
+        path: ${{ env.Project_Directory }}\bin
+
+  # Xamarin.iOS project build (important, acOS needs forward slashes for dir separators)
+  ios-build:
+    runs-on: macos-latest
+    env:
+      Configuration: Debug
+      Platform: iPhoneSimulator
+      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
+      NuGetConfig_Path: src/DevReach2020/nuget.config
+      Solution_Directory: src/DevReach2020
+      Solution_Path: src/DevReach2020/DevReach2020.Forms_iOSOnly.sln
+      Project_Directory: src/DevReach2020/DevReach2020.Forms/iOS
+      Project_Path: src/DevReach2020/DevReach2020.Forms/iOS/DevReach2020.Forms.iOS.csproj
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Generate version number
+      uses: Amadevus/pwsh-script@v1
+      id: version-creator
+      with:
+        script: |
+          $buildDay = Get-Date -Format "yyyy.Mdd"
+          $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
+          Set-ActionVariable APP_VERSION $ver
+
+    - name: Restore NuGet packages
+      run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
+    
+    - name: Build iOS Project
+      run: msbuild ${{ env.Project_Path }} /p:SolutionDir=${{ env.Solution_Directory }} /p:Configuration=${{ env.Configuration }} /p:Platform=${{ env.Platform }} /verbosity:normal /t:Rebuild
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: iOS Artifacts
+        path: ${{ env.Project_Directory }}/bin

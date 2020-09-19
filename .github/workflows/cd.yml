@@ -1,9 +1,9 @@
-name: Xamarin.Forms
+name: CD (Xamarin.Forms All)
 
 on:
   push:
     branches:
-    - main
+    - 'releases/*' # Runs for any release branch, triggering release builds and distributions defined here
 
 jobs:
   # UWP project build
@@ -91,7 +91,7 @@ jobs:
   android-build:
     runs-on: windows-latest
     env:
-      Configuration: Debug
+      Configuration: Release
       Platform: AnyCPU
       TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
       TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
@@ -138,13 +138,15 @@ jobs:
         name: Android Artifacts
         path: ${{ env.Project_Directory }}\bin
 
-  # Xamarin.iOS project build
+  # Xamarin.iOS project build (important, acOS needs forward slashes for dir separators)
   ios-build:
     runs-on: macos-latest
-    # Note: MacOS needs forward slashes for dir separators
     env:
-      Configuration: Debug
-      Platform: iPhoneSimulator
+      Configuration: Release
+      Platform: iPhone
+      SigningCertificate: Apple_Distribution_Lancelot_2021.p12
+      AdHocProvProfile: DevReachCompanion_AdHoc_2021.mobileprovision
+      ApStoreProvProfile: DevReachCompanion_AppStore_2021.mobileprovision
       TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
       TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src/DevReach2020/nuget.config
