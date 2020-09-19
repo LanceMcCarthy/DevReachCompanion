@@ -128,7 +128,73 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Contents.json">
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon1024.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon120.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon1201.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon152.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon167.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon180.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon20.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon29.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon40.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon401.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon402.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon58.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon581.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon76.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon80.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon801.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Icon87.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\Images.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\Images.imageset\icon.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\Images.imageset\icon@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\Images.imageset\icon@3x.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Media\AppIcons.appiconset\Contents.json">
@@ -136,30 +202,6 @@
     </ImageAsset>
     <ImageAsset Include="Media\LaunchImages\Contents.json">
       <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\icon.imageset\icon%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\icon.imageset\icon%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\icon.imageset\icon.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\icon.imageset\Contents.json">
-      <Visible>False</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\l_fg.imageset\l_fg%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\l_fg.imageset\l_fg%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\l_fg.imageset\l_fg.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\l_fg.imageset\Contents.json">
-      <Visible>False</Visible>
     </ImageAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
