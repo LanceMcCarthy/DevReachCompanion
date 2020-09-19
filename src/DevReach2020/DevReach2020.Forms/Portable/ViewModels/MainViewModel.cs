@@ -1,22 +1,19 @@
-﻿using DevReach2020.Forms.Portable.Models;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
+using DevReach2020.Forms.Portable.Helpers;
 using Xamarin.Forms;
 
 namespace DevReach2020.Forms.Portable.ViewModels
 {
-    public class MainViewModel : BindableBase, IInitialize, IConfirmNavigation, INavigationAware
+    public class MainViewModel : BindableBase, IInitialize, INavigationAware
     {
         private readonly INavigationService navigationService;
         private readonly IPageDialogService dialogs;
-        private bool isNavigating;
+        private bool isBusy;
         private string busyMessage;
+        private ImageSource headerImgSource;
 
         public MainViewModel(INavigationService navigationService, IPageDialogService dialogs)
         {
@@ -24,15 +21,18 @@ namespace DevReach2020.Forms.Portable.ViewModels
             this.dialogs = dialogs;
 
             NavigateCommand = new DelegateCommand<string>(OnNavigateCommandExecuted);
-            Students = new ObservableCollection<Student>();
         }
 
-        public ObservableCollection<Student> Students { get; set; }
-
-        public bool IsNavigating
+        public ImageSource HeaderImgSource
         {
-            get => isNavigating;
-            set => SetProperty(ref isNavigating, value);
+            get => headerImgSource;
+            set => SetProperty(ref headerImgSource, value);
+        }
+
+        public bool IsBusy
+        {
+            get => isBusy;
+            set => SetProperty(ref isBusy, value);
         }
 
         public string BusyMessage
@@ -43,22 +43,24 @@ namespace DevReach2020.Forms.Portable.ViewModels
 
         public DelegateCommand<string> NavigateCommand { get; }
 
-        public async void Initialize(INavigationParameters parameters)
+        public void Initialize(INavigationParameters parameters)
         {
-            BusyMessage = "...";
+            IsBusy = true;
+            BusyMessage = "Initializing...";
 
-            await Task.Delay(TimeSpan.FromSeconds(3));
-        }
+            HeaderImgSource = new StreamImageSource()
+            {
+                Stream = ImageHelpers.GetBannerImage
+            };
 
-        public bool CanNavigate(INavigationParameters parameters)
-        {
-            IsNavigating = true;
-            return true;
+            IsBusy = false;
+            BusyMessage = "";
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            IsNavigating = false;
+            IsBusy = false;
+            BusyMessage = "";
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
@@ -66,16 +68,17 @@ namespace DevReach2020.Forms.Portable.ViewModels
 
         }
 
-        private async void OnNavigateCommandExecuted(string path)
+        private async void OnNavigateCommandExecuted(string param)
         {
-            var result = await navigationService.NavigateAsync(path);
+            var result = await navigationService.NavigateAsync($"NavigationPage/LiveStreamPage?endpoint={param}");
 
             if (!result.Success)
             {
                 await dialogs.DisplayAlertAsync("Error", result.Exception.Message, "Ok");
 
-                // OnNavigatedFrom will never be reached
-                IsNavigating = false;
+                // due to error, OnNavFrom will never be hit, reset things here instead.
+                IsBusy = false;
+                BusyMessage = "";
             }
         }
     }

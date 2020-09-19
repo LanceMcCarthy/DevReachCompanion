@@ -2,34 +2,67 @@
 <dryIoc:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:dryIoc="http://prismlibrary.com"
+             xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:input="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             xmlns:chart="clr-namespace:Telerik.XamarinForms.Chart;assembly=Telerik.XamarinForms.Chart"
+             xmlns:pdfViewer="clr-namespace:Telerik.XamarinForms.PdfViewer;assembly=Telerik.XamarinForms.PdfViewer"
+             xmlns:conversationalUi="clr-namespace:Telerik.XamarinForms.ConversationalUI;assembly=Telerik.XamarinForms.ConversationalUI"
+             xmlns:imageEditor="clr-namespace:Telerik.XamarinForms.ImageEditor;assembly=Telerik.XamarinForms.ImageEditor"
+             xmlns:dataGrid="clr-namespace:Telerik.XamarinForms.DataGrid;assembly=Telerik.XamarinForms.DataGrid"
+             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:styles="clr-namespace:DevReach2020.Forms.Portable.Styles;assembly=DevReach2020.Forms.Portable"
              x:Class="DevReach2020.Forms.Portable.App">
+
     <Application.Resources>
-        <Color x:Key="PrimaryColor">#7E7D81</Color>
-        <Color x:Key="AccentColor">#00A5F2</Color>
-        <Color x:Key="TextColor">White</Color>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary MergedWith="styles:BlueThemeStyles" />
+                <ResourceDictionary MergedWith="input:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="primitives:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="chart:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="dataControls:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="dataGrid:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="imageEditor:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="conversationalUi:TelerikThemeStyles" />
+                <ResourceDictionary MergedWith="pdfViewer:TelerikThemeStyles" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <Style TargetType="TabbedPage">
-            <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}" />
-            <Setter Property="BarTextColor" Value="{StaticResource TextColor}" />
-            <Setter Property="SelectedTabColor" Value="{StaticResource AccentColor}" />
-            <Setter Property="UnselectedTabColor" Value="{StaticResource PrimaryColor}" />
-        </Style>
+            <Color x:Key="PrimaryColor">#7E7D81</Color>
+            <Color x:Key="AccentColor">#00A5F2</Color>
+            <Color x:Key="DevReachDarkBlue">#081681</Color>
+            <Color x:Key="TextColor">White</Color>
+            <Color x:Key="LightTranslucentBackgroundColor">#CCEAEAEC</Color>
+            <Color x:Key="MediumTranslucentBackgroundColor">#AA000000</Color>
 
-        <Style TargetType="NavigationPage">
-            <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}" />
-            <Setter Property="BarTextColor" Value="{StaticResource TextColor}" />
-        </Style>
+            <Style x:Key="BusyIndicatorStyle"
+                   TargetType="primitives:RadBusyIndicator">
+                <Setter Property="AnimationType"
+                        Value="Animation6" />
+                <Setter Property="AnimationContentHeightRequest"
+                        Value="100" />
+                <Setter Property="AnimationContentWidthRequest"
+                        Value="100" />
+                <Setter Property="HorizontalOptions"
+                        Value="Fill" />
+                <Setter Property="VerticalOptions"
+                        Value="Fill" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource LightTranslucentBackgroundColor}" />
+                <Setter Property="AnimationContentColor"
+                        Value="{StaticResource AccentColor}" />
+            </Style>
 
-        <Style TargetType="Button">
-            <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}" />
-            <Setter Property="TextColor" Value="{StaticResource TextColor}" />
-            <Setter Property="CornerRadius" Value="15" />
-        </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource DevReachDarkBlue}" />
+                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+                <Setter Property="CornerRadius" Value="15" />
+            </Style>
 
-        <Style TargetType="Button" x:Key="DarkButton">
-            <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
-            <Setter Property="TextColor" Value="{StaticResource TextColor}" />
-            <Setter Property="CornerRadius" Value="15" />
-        </Style>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource DevReachDarkBlue}" />
+                <Setter Property="BarTextColor" Value="{StaticResource TextColor}" />
+                <Setter Property="IconColor" Value="{StaticResource TextColor}" />
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </dryIoc:PrismApplication>

@@ -1,12 +1,12 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace DevReach2020.Forms.Portable.Views
+namespace DevReach2020.Forms.Portable.Styles
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LiveStreamPage : ContentPage
+    public partial class BlueThemeStyles : ResourceDictionary
     {
-        public LiveStreamPage()
+        public BlueThemeStyles()
         {
             InitializeComponent();
         }

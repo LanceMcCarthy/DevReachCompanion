@@ -10,6 +10,14 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Images\DevReachBanner.png" />
+    <None Remove="Images\TelerikWarriors.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\DevReachBanner.png" />
+    <EmbeddedResource Include="Images\TelerikWarriors.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
     <PackageReference Include="Telerik.UI.for.Xamarin" Version="2020.3.916.1" />
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
@@ -23,6 +31,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Styles\BlueThemeStyles.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\LiveStreamPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
