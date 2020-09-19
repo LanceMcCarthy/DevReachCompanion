@@ -56,12 +56,13 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
     - name: Build UWP Project
-      run: msbuild $env:Solution_Path /p:GenerateAppInstallerFile=True /p:AppInstallerUri=$env:AppInstUri /p:HoursBetweenUpdateChecks=6 /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=$env:Signing_Certificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      run: msbuild $env:Solution_Path /p:GenerateAppInstallerFile=$env:GenerateAppInstaller /p:AppInstallerUri=$env:AppInstallerUri /p:HoursBetweenUpdateChecks=6 /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:PackageCertificateKeyFile=$env:Signing_Certificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
-        Appx_Bundle: Always
-        Appx_Bundle_Platforms: x86
-        Appx_Package_Build_Mode: SideloadOnly
-        AppInstUri: https://dvlup.blob.core.windows.net/general-app-files/Installers/DevReachCompanion/
+        AppxBundle: Always
+        AppxBundlePlatforms: x86
+        AppxPackageBuildMode: SideloadOnly
+        GenerateAppinstaller: true
+        AppInstallerUri: https://dvlup.blob.core.windows.net/general-app-files/Installers/DevReachCompanion/
 
     - name: Remove the pfx
       run: Remove-Item -path $env:Project_Directory\$env:Signing_Certificate
@@ -72,7 +73,7 @@ jobs:
         connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
         container_name: general-app-files
         source_folder: ${{ env.Project_Directory }}\AppPackages
-        destination_folder: Installers/DevReach2020
+        destination_folder: Installers/DevReachCompanion
         clean_destination_folder: true
     
     #- name: Upload to AppCenter
