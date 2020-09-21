@@ -6,6 +6,7 @@ Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.githu
 
 | Branch        | CI Status | CD Status |
 |---------------|-----------|----------------|
+| `main` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=main) | n/a |
 | `dr-2020` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=dr-2020) | ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg?branch=dr-2020) |
 
 ### Distributions
