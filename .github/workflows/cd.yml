@@ -99,38 +99,38 @@ jobs:
 
     # ****************** STAGE 2 - Microsoft Store ******************* #
 
-    # Update the appxmanifest for Microsoft Store
-    - name: Update manifest version
-      run: |
-        [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
-        $manifest.Package.Identity.Version = "$env:App_VERSION"
-        $manifest.Package.Identity.Name = "61469LanceLotSoftware.DevReachCompanion"
-        $manifest.Package.Identity.Publisher = "CN=51B5A8B2-5D86-4826-BBE2-C92E963A4C02"
-        $manifest.Package.Properties.DisplayName = "Media File Manager"
-        $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
-        $manifest.Package.Applications.Application.VisualElements.DisplayName = "Media File Manager"
-        $manifest.save("src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest")
+    # # Update the appxmanifest for Microsoft Store
+    # - name: Update manifest version
+    #   run: |
+    #     [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
+    #     $manifest.Package.Identity.Version = "$env:App_VERSION"
+    #     $manifest.Package.Identity.Name = "61469LanceLotSoftware.DevReachCompanion"
+    #     $manifest.Package.Identity.Publisher = "CN=51B5A8B2-5D86-4826-BBE2-C92E963A4C02"
+    #     $manifest.Package.Properties.DisplayName = "Media File Manager"
+    #     $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
+    #     $manifest.Package.Applications.Application.VisualElements.DisplayName = "Media File Manager"
+    #     $manifest.save("src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest")
     
-    # Build using StoreUpload instructions, no code signing required (Microsoft signs it during certification)
-    - name: Build for Microsoft Store
-      run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageDir=$env:PackagesDir
-      env:
-        SigningEnabled: False
-        Platform: "x64"
-        AppxBundle: Always
-        AppxBundlePlatforms: "x64"
-        AppxPackageBuildMode: StoreUpload
-        PackagesDir: \AppPackages\Store\
+    # # Build using StoreUpload instructions, no code signing required (Microsoft signs it during certification)
+    # - name: Build for Microsoft Store
+    #   run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageDir=$env:PackagesDir
+    #   env:
+    #     SigningEnabled: False
+    #     Platform: "x64"
+    #     AppxBundle: Always
+    #     AppxBundlePlatforms: "x64"
+    #     AppxPackageBuildMode: StoreUpload
+    #     PackagesDir: \AppPackages\Store\
 
-    # Use Store Broker to publish to Microsoft Store
-    - name: Submit to Microsoft Store using Store Broker
-      shell: pwsh
-      run: ./.scripts/SubmitToMsftStore.ps1
-      env:
-        PartnerCenterClientSecret: ${{ secrets:PARTNERCENTER_CLIENTSECRET }} 
-        PartnerCenterTenantId: ${{ secrets:PARTNERCENTER_TENANTID }} 
-        PartnerCenterClientId: ${{ secrets:PARTNERCENTER_CLIENTID }} 
-        PartnerCenterStoreId: 9MZNMK3MPV8R
+    # # Use Store Broker to publish to Microsoft Store
+    # - name: Submit to Microsoft Store using Store Broker
+    #   shell: pwsh
+    #   run: ./.scripts/SubmitToMsftStore.ps1
+    #   env:
+    #     PartnerCenterClientSecret: ${{ secrets:PARTNERCENTER_CLIENTSECRET }} 
+    #     PartnerCenterTenantId: ${{ secrets:PARTNERCENTER_TENANTID }} 
+    #     PartnerCenterClientId: ${{ secrets:PARTNERCENTER_CLIENTID }} 
+    #     PartnerCenterStoreId: 9MZNMK3MPV8R
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
