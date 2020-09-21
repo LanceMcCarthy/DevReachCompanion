@@ -11,6 +11,7 @@ jobs:
     runs-on: windows-latest
     env:
       Configuration: Release
+      Signing_Certificate: LancelotSoftwareLLC.pfx
       TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
       TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
@@ -68,7 +69,6 @@ jobs:
       run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:GenerateAppInstallerFile=$env:GenerateAppInstaller /p:AppInstallerUri=$env:AppInstallerUri /p:HoursBetweenUpdateChecks=$env:HoursBetweenUpdateChecks /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:PackageCertificateKeyFile=$env:Signing_Certificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
         Platform: "x64"
-        Signing_Certificate: LancelotSoftwareLLC.pfx
         AppxBundle: Always
         AppxBundlePlatforms: "x64"
         AppxPackageBuildMode: SideloadOnly
@@ -194,8 +194,8 @@ jobs:
   ios-build:
     runs-on: macos-latest
     env:
-      Configuration: Release
-      Platform: iPhone
+      Configuration: Debug
+      Platform: iPhoneSimulator
       SigningCertificate: Apple_Distribution_Lancelot_2021.p12
       AdHocProvProfile: DevReachCompanion_AdHoc_2021.mobileprovision
       ApStoreProvProfile: DevReachCompanion_AppStore_2021.mobileprovision
