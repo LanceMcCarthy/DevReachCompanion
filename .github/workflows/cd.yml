@@ -75,7 +75,6 @@ jobs:
         GenerateAppInstaller: true
         HoursBetweenUpdateChecks: 24
         AppInstallerUri: https://dvlup.blob.core.windows.net/general-app-files/Installers/DevReachCompanion/
-        PackagesDir: \AppPackages\SideLoad\
     
     - name: Remove the pfx
       run: Remove-Item -path $env:Project_Directory\$env:Signing_Certificate
@@ -85,7 +84,7 @@ jobs:
       with:
         connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
         container_name: general-app-files
-        source_folder: ${{ env.Project_Directory }}\AppPackages\SideLoad\
+        source_folder: ${{ env.Project_Directory }}\AppPackages\
         destination_folder: Installers/DevReachCompanion
         clean_destination_folder: true
     
@@ -136,7 +135,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: UWP Artifacts
-        path: ${{ env.Project_Directory }}\AppPackages\SideLoad\
+        path: ${{ env.Project_Directory }}\AppPackages
 
   # Xamarin.Android project build
   android-build:
