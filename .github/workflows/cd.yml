@@ -11,7 +11,6 @@ jobs:
     runs-on: windows-latest
     env:
       Configuration: Release
-      Platform: x86
       Signing_Certificate: LancelotSoftwareLLC.pfx
       TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
       TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
@@ -19,10 +18,15 @@ jobs:
       Solution_Path: src\DevReach2020\DevReach2020.Forms_UWPOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\UWP
       Project_Path: src\DevReach2020\DevReach2020.Forms\UWP\DevReach2020.Forms.UWP.csproj
-      AppCenterAppSlug: ${{ secrets.APPCENTER_UWP_APP_SLUG }}
-      AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
 
     steps:
+    - name: Configure Pagefile (increase RAM)
+      uses: al-cheb/configure-pagefile-action@v1.2
+      with:
+        minimum-size: 32GB
+        maximum-size: 32GB
+        disk-root: "C:"
+    
     - name: Checkout
       uses: actions/checkout@v2
       with:
@@ -43,10 +47,16 @@ jobs:
           $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
           Set-ActionVariable APP_VERSION $ver
     
+    # ****************** STAGE 1 - SideLoad and AppCenter ****************** #
+
     - name: Update manifest version
       run: |
         [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
         $manifest.Package.Identity.Version = "$env:APP_VERSION"
+        $manifest.Package.Identity.Publisher = "CN='Lancelot Software, LLC', O='Lancelot Software, LLC', L=NORTH BILLERICA, S=Massachusetts, C=US"
+        $manifest.Package.Properties.DisplayName = "DevReach Companion"
+        $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
+        $manifest.Package.Applications.Application.VisualElements.DisplayName = "DevReach Companion"
         $manifest.save("src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest")
     
     - name: Decode the pfx
@@ -56,14 +66,16 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
     - name: Build UWP Project
-      run: msbuild $env:Solution_Path /p:GenerateAppInstallerFile=$env:GenerateAppInstaller /p:AppInstallerUri=$env:AppInstallerUri /p:HoursBetweenUpdateChecks=6 /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:PackageCertificateKeyFile=$env:Signing_Certificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:GenerateAppInstallerFile=$env:GenerateAppInstaller /p:AppInstallerUri=$env:AppInstallerUri /p:HoursBetweenUpdateChecks=$env:HoursBetweenUpdateChecks /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:PackageCertificateKeyFile=$env:Signing_Certificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
+        Platform: "x64"
         AppxBundle: Always
-        AppxBundlePlatforms: x86
+        AppxBundlePlatforms: "x64"
         AppxPackageBuildMode: SideloadOnly
-        GenerateAppinstaller: true
+        GenerateAppInstaller: true
+        HoursBetweenUpdateChecks: 24
         AppInstallerUri: https://dvlup.blob.core.windows.net/general-app-files/Installers/DevReachCompanion/
-
+    
     - name: Remove the pfx
       run: Remove-Item -path $env:Project_Directory\$env:Signing_Certificate
 
@@ -76,10 +88,48 @@ jobs:
         destination_folder: Installers/DevReachCompanion
         clean_destination_folder: true
     
-    #- name: Upload to AppCenter
-    #  run: |
-    #    npm install -g appcenter-cli
-    #    appcenter distribute release --file ${{ env.Project_Directory }}\AppPackages\*.appx --app $env:AppCenterAppSlug --build-number $env:AppVersion  --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
+    # - name: Upload SideLoad Package to AppCenter
+    #   run: |
+    #     npm install -g appcenter-cli
+    #     appcenter distribute release --file ${{ env.Project_Directory }}\SideLoadPackages\*.appx --app $env:AppCenterAppSlug --build-number $env:AppVersion  --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
+    #   env:
+    #     AppCenterAppSlug: ${{ secrets.APPCENTER_UWP_APP_SLUG }}
+    #     AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
+
+    # ****************** STAGE 2 - Microsoft Store ******************* #
+
+    # # Update the appxmanifest for Microsoft Store
+    # - name: Update manifest version
+    #   run: |
+    #     [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
+    #     $manifest.Package.Identity.Version = "$env:App_VERSION"
+    #     $manifest.Package.Identity.Name = "61469LanceLotSoftware.DevReachCompanion"
+    #     $manifest.Package.Identity.Publisher = "CN=51B5A8B2-5D86-4826-BBE2-C92E963A4C02"
+    #     $manifest.Package.Properties.DisplayName = "Media File Manager"
+    #     $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
+    #     $manifest.Package.Applications.Application.VisualElements.DisplayName = "Media File Manager"
+    #     $manifest.save("src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest")
+    
+    # # Build using StoreUpload instructions, no code signing required (Microsoft signs it during certification)
+    # - name: Build for Microsoft Store
+    #   run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageDir=$env:PackagesDir
+    #   env:
+    #     SigningEnabled: False
+    #     Platform: "x64"
+    #     AppxBundle: Always
+    #     AppxBundlePlatforms: "x64"
+    #     AppxPackageBuildMode: StoreUpload
+    #     PackagesDir: \AppPackages\Store\
+
+    # # Use Store Broker to publish to Microsoft Store
+    # - name: Submit to Microsoft Store using Store Broker
+    #   shell: pwsh
+    #   run: ./.scripts/SubmitToMsftStore.ps1
+    #   env:
+    #     PartnerCenterClientSecret: ${{ secrets:PARTNERCENTER_CLIENTSECRET }} 
+    #     PartnerCenterTenantId: ${{ secrets:PARTNERCENTER_TENANTID }} 
+    #     PartnerCenterClientId: ${{ secrets:PARTNERCENTER_CLIENTID }} 
+    #     PartnerCenterStoreId: 9MZNMK3MPV8R
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
@@ -100,8 +150,6 @@ jobs:
       Solution_Path: src\DevReach2020\DevReach2020.Forms_AndroidOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\Android
       Project_Path: src\DevReach2020\DevReach2020.Forms\Android\DevReach2020.Forms.Android.csproj
-      AppCenterAppSlug: ${{ secrets.APPCENTER_ANDROID_APP_SLUG }}
-      AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
       
     steps:
     - name: Checkout
@@ -127,10 +175,13 @@ jobs:
     - name: Build Android Project
       run: msbuild ${{ env.Project_Path }} /p:SolutionDir=${{ env.Solution_Directory }} /p:Configuration=${{ env.Configuration }} /p:Platform=${{ env.Platform }} /verbosity:normal /t:Rebuild
     
-    #- name: Upload to AppCenter
-    #  run: |
-    #    npm install -g appcenter-cli
-    #    appcenter distribute release --file **/*.apk --app $env:AppCenterAppSlug --build-number $env:AppVersion  --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
+    # - name: Upload to AppCenter
+    #   run: |
+    #     npm install -g appcenter-cli
+    #     appcenter distribute release --file **/*.apk --app $env:AppCenterAppSlug --build-number $env:AppVersion  --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
+    #   env:
+    #     AppCenterAppSlug: ${{ secrets.APPCENTER_UWP_APP_SLUG }}
+    #     AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
@@ -142,8 +193,8 @@ jobs:
   ios-build:
     runs-on: macos-latest
     env:
-      Configuration: Release
-      Platform: iPhone
+      Configuration: Debug
+      Platform: iPhoneSimulator
       SigningCertificate: Apple_Distribution_Lancelot_2021.p12
       AdHocProvProfile: DevReachCompanion_AdHoc_2021.mobileprovision
       ApStoreProvProfile: DevReachCompanion_AppStore_2021.mobileprovision
@@ -154,8 +205,6 @@ jobs:
       Solution_Path: src/DevReach2020/DevReach2020.Forms_iOSOnly.sln
       Project_Directory: src/DevReach2020/DevReach2020.Forms/iOS
       Project_Path: src/DevReach2020/DevReach2020.Forms/iOS/DevReach2020.Forms.iOS.csproj
-      AppCenterAppSlug: ${{ secrets.APPCENTER_IOS_APP_SLUG }}
-      AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
 
     steps:
     - name: Checkout
@@ -178,10 +227,13 @@ jobs:
     - name: Build iOS Project
       run: msbuild ${{ env.Project_Path }} /p:SolutionDir=${{ env.Solution_Directory }} /p:Configuration=${{ env.Configuration }} /p:Platform=${{ env.Platform }} /verbosity:normal /t:Rebuild
     
-    #- name: Upload to AppCenter
-    #  run: |
-    #    npm install -g appcenter-cli
-    #    appcenter distribute release --file **/*.ipa --app $env:AppCenterAppSlug --build-number $env:AppVersion  --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
+    # - name: Upload to AppCenter
+    #   run: |
+    #     npm install -g appcenter-cli
+    #     appcenter distribute release --file **/*.ipa --app $env:AppCenterAppSlug --build-number $env:AppVersion  --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
+    #   env:
+    #     AppCenterAppSlug: ${{ secrets.APPCENTER_UWP_APP_SLUG }}
+    #     AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2

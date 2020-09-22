@@ -12,9 +12,6 @@ jobs:
   windows-build:
     runs-on: windows-latest
     env:
-      Configuration: Debug
-      Platform: x86
-      Signing_Certificate: LancelotSoftwareLLC.pfx
       TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
       TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
@@ -25,6 +22,13 @@ jobs:
       AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
 
     steps:
+    - name: Configure Pagefile (increase RAM)
+      uses: al-cheb/configure-pagefile-action@v1.2
+      with:
+        minimum-size: 32GB
+        maximum-size: 32GB
+        disk-root: "C:"
+    
     - name: Checkout
       uses: actions/checkout@v2
       with:
@@ -51,14 +55,8 @@ jobs:
         $manifest.Package.Identity.Version = "$env:APP_VERSION"
         $manifest.save("src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest")
     
-    - name: Decode the pfx
-      run: |
-        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
-        $certificatePath = Join-Path -Path $env:Project_Directory -ChildPath $env:Signing_Certificate
-        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
-
     - name: Build UWP Project
-      run: msbuild $env:Solution_Path /p:Configuration=$env:Configuration /p:AppxPackageSigningEnabled=false
+      run: msbuild $env:Solution_Path /p:Platform=x64 /p:Configuration=Debug /p:AppxPackageSigningEnabled=false
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
