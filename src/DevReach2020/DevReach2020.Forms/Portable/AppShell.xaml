@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:DevReach2020.Forms.Portable.Views;assembly=DevReach2020.Forms.Portable"
+       xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+       xmlns:converters="clr-namespace:DevReach2020.Forms.Portable.Converters;assembly=DevReach2020.Forms.Portable"
+       xmlns:models="clr-namespace:DevReach2020.Forms.Portable.Models;assembly=DevReach2020.Forms.Portable"
+       x:Class="DevReach2020.Forms.Portable.AppShell">
+
+    <ContentPage.Resources>
+        <converters:InvertBoolConverter x:Key="InvertBoolConv"/>
+
+        <OnPlatform x:Key="IconsFont" x:TypeArguments="x:String">
+            <On Platform="iOS">telerikfontexamples</On>
+            <On Platform="Android">Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
+            <On Platform="UWP">/Assets/Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
+        </OnPlatform>
+
+        <Color x:Key="DevReachYellow">#FFFD7A</Color>
+        <Color x:Key="DevReachBlue">#404894</Color>
+        <Color x:Key="DevReachLightBlue">#00D9F4</Color>
+        <Color x:Key="DevReachGreen">#00C031</Color>
+        <Color x:Key="DevReachLightGreen">#00E500</Color>
+        <Color x:Key="DevReachDarkTextColor">#000000</Color>
+        <Color x:Key="DevReachLightGray">#E7E5FB</Color>
+        <Color x:Key="DevReachMediumGray">#BEBDD5</Color>
+        <Color x:Key="DevReachDarkGray">#7E7D81</Color>
+
+        <Color x:Key="LightTranslucentBackgroundColor">#CCEAEAEC</Color>
+        <Color x:Key="MediumTranslucentBackgroundColor">#AA000000</Color>
+
+        <SolidColorBrush x:Key="DarkBackgroundBrush" Color="{StaticResource DevReachBlue}" />
+        <SolidColorBrush x:Key="LightBackgroundBrush" Color="{StaticResource DevReachLightGray}" />
+
+        <Style x:Key="TabHeaderBusyIndicatorStyle"
+                   TargetType="primitives:RadBusyIndicator">
+            <Setter Property="AnimationType"
+                        Value="Animation6" />
+            <Setter Property="HeightRequest"
+                        Value="45" />
+            <Setter Property="WidthRequest"
+                        Value="45" />
+            <Setter Property="AnimationContentHeightRequest"
+                        Value="30" />
+            <Setter Property="AnimationContentWidthRequest"
+                        Value="45" />
+            <Setter Property="BackgroundColor"
+                        Value="Transparent" />
+            <Setter Property="AnimationContentColor"
+                        Value="{StaticResource DevReachBlue}" />
+        </Style>
+
+        <ControlTemplate x:Key="HeaderControlTemplate">
+            <Grid BackgroundColor="LightGray"
+                  HeightRequest="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid"
+                                 Binding="{TemplateBinding IsSelected}"
+                                 Value="True">
+                        <Setter Property="BackgroundColor"
+                                Value="#404894" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Grid"
+                                 Binding="{TemplateBinding IsSelected}"
+                                 Value="False">
+                        <Setter Property="BackgroundColor"
+                                Value="#E7E5FB" />
+                    </DataTrigger>
+                </Grid.Triggers>
+
+                <Label Text="{Binding IconFontCharacter, Source={RelativeSource AncestorType={x:Type models:TabContextBase}}}"
+                       FontFamily="{StaticResource IconsFont}" 
+                       TextColor="{StaticResource DevReachLightGray}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" 
+                       Margin="5"
+                       Grid.Column="0"/>
+
+                <Label Text="{Binding Title, Source={RelativeSource AncestorType={x:Type models:TabContextBase}}}"
+                       IsVisible="{Binding IsBusy, Converter={StaticResource InvertBoolConv}}"
+                       FontSize="16"
+                       TextColor="{StaticResource DevReachLightGray}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" 
+                       Margin="5"
+                       Grid.Column="1"/>
+
+                <primitives:RadBusyIndicator IsBusy="{Binding IsBusy, Source={RelativeSource AncestorType={x:Type models:TabContextBase}}}"
+                                             WidthRequest="45"
+                                             HeightRequest="45"
+                                             AnimationContentWidthRequest="30"
+                                             AnimationContentHeightRequest="30"
+                                             Style="{StaticResource TabHeaderBusyIndicatorStyle}"
+                                             Margin="2.5"
+                                             Grid.Column="1"/>
+            </Grid>
+        </ControlTemplate>
+    </ContentPage.Resources>
+
+    <primitives:RadTabView x:Name="tabView">
+        <primitives:RadTabView.Items>
+            <primitives:TabViewItem HeaderText="Home" 
+                                    BindingContext="{Binding HomeTabContext}">
+                <primitives:TabViewItem.Header>
+                    <primitives:TabViewHeaderItem ControlTemplate="{StaticResource HeaderControlTemplate}" />
+                </primitives:TabViewItem.Header>
+                <primitives:TabViewItem.Content>
+                    <views:HomeView BindingContext="{Binding .}"/>
+                </primitives:TabViewItem.Content>
+            </primitives:TabViewItem>
+            <primitives:TabViewItem HeaderText="Live"
+                                    BindingContext="{Binding LiveTabContext}">
+                <primitives:TabViewItem.Header>
+                    <primitives:TabViewHeaderItem ControlTemplate="{StaticResource HeaderControlTemplate}" />
+                </primitives:TabViewItem.Header>
+                <primitives:TabViewItem.Content>
+                    <views:LiveView BindingContext="{Binding .}"/>
+                </primitives:TabViewItem.Content>
+            </primitives:TabViewItem>
+            <primitives:TabViewItem HeaderText="About" 
+                                    BindingContext="{Binding AboutTabContext}">
+                <primitives:TabViewItem.Header>
+                    <primitives:TabViewHeaderItem ControlTemplate="{StaticResource HeaderControlTemplate}" />
+                </primitives:TabViewItem.Header>
+                <primitives:TabViewItem.Content>
+                    <views:AboutView BindingContext="{Binding .}"/>
+                </primitives:TabViewItem.Content>
+            </primitives:TabViewItem>
+        </primitives:RadTabView.Items>
+    </primitives:RadTabView>
+</ContentPage>
