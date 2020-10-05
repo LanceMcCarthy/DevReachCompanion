@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<dryIoc:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:dryIoc="http://prismlibrary.com"
              xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
              xmlns:input="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
              xmlns:chart="clr-namespace:Telerik.XamarinForms.Chart;assembly=Telerik.XamarinForms.Chart"
@@ -27,42 +26,27 @@
                 <ResourceDictionary MergedWith="pdfViewer:TelerikThemeStyles" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Color x:Key="PrimaryColor">#7E7D81</Color>
-            <Color x:Key="AccentColor">#00A5F2</Color>
-            <Color x:Key="DevReachDarkBlue">#081681</Color>
-            <Color x:Key="TextColor">White</Color>
+            <!--<Color x:Key="DevReachYellow">#FFFD7A</Color>
+            <Color x:Key="DevReachBlue">#404894</Color>
+            <Color x:Key="DevReachLightBlue">#00D9F4</Color>
+            <Color x:Key="DevReachGreen">#00C031</Color>
+            <Color x:Key="DevReachLightGreen">#00E500</Color>
+            <Color x:Key="DevReachDarkTextColor">#000000</Color>
+            <Color x:Key="DevReachLightGray">#E7E5FB</Color>
+            <Color x:Key="DevReachMediumGray">#BEBDD5</Color>
+            <Color x:Key="DevReachDarkGray">#7E7D81</Color>
             <Color x:Key="LightTranslucentBackgroundColor">#CCEAEAEC</Color>
             <Color x:Key="MediumTranslucentBackgroundColor">#AA000000</Color>
 
-            <Style x:Key="BusyIndicatorStyle"
-                   TargetType="primitives:RadBusyIndicator">
-                <Setter Property="AnimationType"
-                        Value="Animation6" />
-                <Setter Property="AnimationContentHeightRequest"
-                        Value="100" />
-                <Setter Property="AnimationContentWidthRequest"
-                        Value="100" />
-                <Setter Property="HorizontalOptions"
-                        Value="Fill" />
-                <Setter Property="VerticalOptions"
-                        Value="Fill" />
-                <Setter Property="BackgroundColor"
-                        Value="{StaticResource LightTranslucentBackgroundColor}" />
-                <Setter Property="AnimationContentColor"
-                        Value="{StaticResource AccentColor}" />
-            </Style>
+            <SolidColorBrush x:Key="DarkBackgroundBrush" Color="{StaticResource DevReachBlue}" />
+            <SolidColorBrush x:Key="LightBackgroundBrush" Color="{StaticResource DevReachLightGray}" />
 
-            <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{StaticResource DevReachDarkBlue}" />
-                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
-                <Setter Property="CornerRadius" Value="15" />
-            </Style>
+            <OnPlatform x:Key="IconsFont" x:TypeArguments="x:String">
+                <On Platform="iOS">telerikfontexamples</On>
+                <On Platform="Android">Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
+                <On Platform="UWP">/Assets/Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
+            </OnPlatform>-->
 
-            <Style TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="{StaticResource DevReachDarkBlue}" />
-                <Setter Property="BarTextColor" Value="{StaticResource TextColor}" />
-                <Setter Property="IconColor" Value="{StaticResource TextColor}" />
-            </Style>
         </ResourceDictionary>
     </Application.Resources>
-</dryIoc:PrismApplication>
+</Application>

@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             x:Class="DevReach2020.Forms.Portable.Views.HomeView"
+             BackgroundColor="#404894">
+
+    <ContentView.Resources>
+        <Color x:Key="DevReachBlue">#404894</Color>
+        <Color x:Key="DevReachLightGray">#E7E5FB</Color>
+
+        <Style TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource DevReachBlue}" />
+            <Setter Property="TextColor" Value="{StaticResource DevReachLightGray}" />
+            <Setter Property="CornerRadius" Value="15" />
+        </Style>
+    </ContentView.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Image Source="{Binding HeaderImgSource}" Aspect="AspectFill"/>
+
+        <StackLayout Grid.Row="1">
+            <Button Text="Home"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="home"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"/>
+            <Button Text="Live Stream"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="live"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"/>
+            <Button Text="Videos"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="about"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"/>
+        </StackLayout>
+
+        <primitives:RadBusyIndicator IsBusy="{Binding IsBusy}"
+                                     IsVisible="{Binding IsBusy}"
+                                     BusyContent="{Binding IsBusyMessage}"
+                                     AnimationType="Animation1"
+                                     AnimationContentHeightRequest="75"
+                                     AnimationContentWidthRequest="75"
+                                     BackgroundColor="#AA000000"
+                                     AnimationContentColor="#00D9F4"
+                                     VerticalOptions="Fill"
+                                     HorizontalOptions="Fill"
+                                     Grid.Row="0"
+                                     Grid.RowSpan="2">
+            <primitives:RadBusyIndicator.BusyContentTemplate>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ContentPresenter Content="{TemplateBinding Path=AnimationContent}" 
+                                          Grid.Row="1"/>
+                        <ContentPresenter Content="{TemplateBinding Path=BusyContent}"
+                                          HorizontalOptions="Center" 
+                                          Margin="20" 
+                                          Grid.Row="2"/>
+                    </Grid>
+                </ControlTemplate>
+            </primitives:RadBusyIndicator.BusyContentTemplate>
+        </primitives:RadBusyIndicator>
+    </Grid>
+</ContentView>
