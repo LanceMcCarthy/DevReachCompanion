@@ -6,8 +6,9 @@ Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.githu
 
 | Branch        | CI Status | CD Status |
 |---------------|-----------|----------------|
-| `main` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=main) | n/a |
-| `dr-2020` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=dr-2020) | ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg?branch=dr-2020) |
+| Default | ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg) | ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg) |
+| `main` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=main) | `not implemented` |
+| `v2020` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=v2020) | ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg?branch=v2020) |
 
 ### Distributions
 
@@ -17,6 +18,9 @@ Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.githu
 | iOS        | [Testers (iOS)](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-ios/distribution_groups/testers) |--| <a href='https://apps.apple.com/us/app/devreach-companion/id1483349010?ls=1'><img alt='Get it on App Store' src='https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?kind=iossoftware' width='150'/></a> |
 | Windows 10 | [Testers (UWP)](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-uwp/distribution_groups/testers) | [AppInstaller (autoupdate)](https://dvlup.blob.core.windows.net/general-app-files/Installers/DevReachCompanion/) | <a href='//www.microsoft.com/store/apps/9MZNMK3MPV8R?cid=storebadge&ocid=badge'><img src='https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png' alt='Get it on Microsoft Store' width='150'/></a> |
 
-## Android Preview
+## Previews
 
-![Beta Android](https://user-images.githubusercontent.com/3520532/95248542-71052580-07e5-11eb-967b-bb68f29015f8.png)
+| Android  | iOS                                      | UWP      |
+|----------|------------------------------------------|----------|
+| <img src="https://user-images.githubusercontent.com/3520532/95248542-71052580-07e5-11eb-967b-bb68f29015f8.png" alt="drawing" height="400" /> | <img src="https://user-images.githubusercontent.com/3520532/95267655-c05a4e80-0803-11eb-980b-2c7c51dd2323.png" alt="drawing" height="400"/> | <img src="https://user-images.githubusercontent.com/3520532/95270221-1382d000-0809-11eb-9567-a6015cce6321.png" alt="drawing" height="400"/> |
+

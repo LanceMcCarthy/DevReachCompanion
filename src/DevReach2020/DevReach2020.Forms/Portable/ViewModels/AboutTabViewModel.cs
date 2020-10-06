@@ -40,7 +40,7 @@ namespace DevReach2020.Forms.Portable.ViewModels
             get
             {
                 var versionNumber = typeof(RadGeometry).GetTypeInfo().Assembly.FullName.Split(',')[1]?.Split('=')[1];
-                return $"v {versionNumber}";
+                return $"{versionNumber}";
             }
         }
 
@@ -48,7 +48,7 @@ namespace DevReach2020.Forms.Portable.ViewModels
 
         public string AppVersion => DependencyService.Get<IVersionService>().Version;
 
-        public string AppDescription => "DevReach 2020 Companion is a Xamarin.Forms application demonstrating the use of GitHub Actions for CI/CD.";
+        public string AppDescription => "DevReach Companion is a Xamarin.Forms application that leverages GitHub Actions YAML workflows to build, test and distribute. For more information choose an option below.";
 
         public Command<string> OpenWebCommand { get; }
 

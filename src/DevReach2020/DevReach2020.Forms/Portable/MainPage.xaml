@@ -10,6 +10,7 @@
        xmlns:behaviors="clr-namespace:DevReach2020.Forms.Portable.Behaviors;assembly=DevReach2020.Forms.Portable"
        xmlns:models="clr-namespace:DevReach2020.Forms.Portable.ViewModels;assembly=DevReach2020.Forms.Portable"
        xmlns:helpers="clr-namespace:DevReach2020.Forms.Portable.Helpers;assembly=DevReach2020.Forms.Portable"
+       xmlns:system="clr-namespace:System;assembly=netstandard"
        x:Class="DevReach2020.Forms.Portable.MainPage">
 
     <ContentPage.Resources>
@@ -50,7 +51,7 @@
         <Style x:Key="UrlTextStyle"
                TargetType="Label">
             <Setter Property="TextColor"
-                        Value="{StaticResource DevReachDarkGray}" />
+                        Value="{StaticResource DevReachBlue}" />
             <Setter Property="HorizontalOptions"
                         Value="Center" />
             <Setter Property="FontSize"
@@ -66,7 +67,7 @@
             <Setter Property="TextColor"
                         Value="{StaticResource DevReachDarkGray}"/>
             <Setter Property="FontSize"
-                        Value="Body" />
+                        Value="Caption" />
         </Style>
 
         <Style x:Key="BoldBodySpanStyle"
@@ -313,38 +314,22 @@
                         <ScrollView Grid.Row="1">
                             <StackLayout Padding="15,10,15,0">
                                 <StackLayout Orientation="Horizontal"
+                                             HorizontalOptions="Center"
                                              Margin="0,0,0,5">
                                     <Label Text="{Binding AppName}"
                                            TextColor="{StaticResource DevReachDarkTextColor}"
-                                           FontSize="22"/>
+                                           FontAttributes="Bold"
+                                           FontSize="18"/>
                                     <Label Text="{Binding AppVersion}"
+                                           FontAttributes="Bold"
                                            TextColor="{StaticResource DevReachBlue}"
-                                           FontSize="22"/>
+                                           FontSize="18"/>
                                 </StackLayout>
                                 <Label Text="{Binding AppDescription}"
                                        TextColor="{StaticResource DevReachDarkGray}"
                                        FontSize="Body"
-                                        LineBreakMode="WordWrap" />
-                                <Label LineBreakMode="WordWrap"
-                                        Margin="{OnPlatform Android='0,0,0,10', iOS='0,0,0,20', UWP='0,0,0,40'}">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="It was built by Lance McCarthy for his "
-                                                  Style="{StaticResource BodySpanStyle}" />
-                                            <Span Text="Xamarin and MAUI Wednesday"
-                                                  TextColor="{StaticResource DevReachBlue}"
-                                                  Style="{StaticResource BoldBodySpanStyle}"
-                                                  TextDecorations="Underline">
-                                                <Span.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding OpenWebCommand}"
-                                                                          CommandParameter="wednesday_session" />
-                                                </Span.GestureRecognizers>
-                                            </Span>
-                                            <Span Text=" discussion. It demonstrates using YAML workflows to build, test and distribute using GitHub Actions"
-                                                  Style="{StaticResource BodySpanStyle}"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
+                                        LineBreakMode="WordWrap"
+                                       Margin="{OnPlatform Android='0,0,0,10', iOS='0,0,0,20', UWP='0,0,0,40'}"/>
                                 <Label Text="Xamarin →"
                                        Style="{StaticResource UrlTextStyle}">
                                     <Label.GestureRecognizers>
@@ -373,13 +358,37 @@
                                                               CommandParameter="github_actions" />
                                     </Label.GestureRecognizers>
                                 </Label>
-                                <Label Text="{Binding TelerikVersion, StringFormat='Built with Telerik UI for Xamarin {0}'}"
-                                       TextColor="{StaticResource DevReachBlue}"
-                                       FontSize="Caption"
-                                       HorizontalOptions="Center"
-                                       Margin="0,10,0,0" />
                             </StackLayout>
                         </ScrollView>
+
+                        <Label LineBreakMode="WordWrap"
+                               VerticalOptions="End"
+                               HorizontalOptions="Center"
+                               Margin="15,10"
+                               Grid.Row="1">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Developed by Lance McCarthy for his DevReach 2020"
+                                                  Style="{StaticResource BodySpanStyle}" />
+                                    <Span Text=" Xamarin and MAUI Day "
+                                                  TextColor="{StaticResource DevReachBlue}"
+                                                  Style="{StaticResource BoldBodySpanStyle}"/>
+                                    <Span Text="presentation. Built using "
+                                                  Style="{StaticResource BodySpanStyle}"/>
+                                    <Span Text="Telerik UI for Xamarin"
+                                                  TextColor="{StaticResource DevReachBlue}"
+                                                  Style="{StaticResource BoldBodySpanStyle}"
+                                                  TextDecorations="Underline">
+                                        <Span.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                                                          CommandParameter="telerik" />
+                                        </Span.GestureRecognizers>
+                                    </Span>
+                                    <Span Text="{Binding TelerikVersion, StringFormat=' v.{0}.'}"
+                                                  Style="{StaticResource BodySpanStyle}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
                     </Grid>
                 </primitives:TabViewItem.Content>
             </primitives:TabViewItem>
