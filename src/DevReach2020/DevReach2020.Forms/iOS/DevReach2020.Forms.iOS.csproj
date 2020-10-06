@@ -115,6 +115,12 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AppCenter.Analytics">
+      <Version>3.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Crashes">
+      <Version>3.4.3</Version>
+    </PackageReference>
     <PackageReference Include="Telerik.UI.for.Xamarin">
       <Version>2020.3.916.1</Version>
     </PackageReference>
@@ -181,6 +187,9 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Banner_Light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\TelerikWarriors_NoBubble.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
