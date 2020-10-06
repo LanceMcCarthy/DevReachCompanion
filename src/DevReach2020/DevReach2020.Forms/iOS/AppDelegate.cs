@@ -1,30 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Foundation;
+using Microsoft.AppCenter.Crashes;
 using UIKit;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
 namespace DevReach2020.Forms.iOS
 {
-    // The UIApplicationDelegate for the application. This class is responsible for launching the 
-    // User Interface of the application, as well as listening (and optionally responding) to 
-    // application events from iOS.
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-        //
-        // This method is invoked when the application has loaded and is ready to run. In this 
-        // method you should instantiate the window, load the UI into it and then make the window
-        // visible.
-        //
-        // You have 17 seconds to return from this method, or iOS will terminate your application.
-        //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            //GlobalExceptionHelper.RegisterForGlobalExceptionHandling();
+
+            if (UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) is UIView statusBar 
+                && statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
+            {
+                statusBar.BackgroundColor = Color.FromHex("#404894").ToUIColor();
+            }
+
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new Portable.App());
 
             return base.FinishedLaunching(app, options);
+        }
+    }
+
+    public static class GlobalExceptionHelper
+    {
+        public static void RegisterForGlobalExceptionHandling()
+        {
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                Crashes.TrackError(new System.Exception("CurrentDomainOnUnhandledException",
+                    args.ExceptionObject as System.Exception));
+            };
+
+            TaskScheduler.UnobservedTaskException += (sender, args) =>
+            {
+                Crashes.TrackError(new ApplicationException(
+                    "TaskSchedulerOnUnobservedTaskException",
+                    args.Exception));
+            };
         }
     }
 }

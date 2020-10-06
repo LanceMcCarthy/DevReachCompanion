@@ -28,13 +28,21 @@
 	<string>com.LancelotSoftware.DevReachCompanion</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>UIStatusBarHidden</key>
-	<true/>
 	<key>CFBundleShortVersionString</key>
-	<string>2020.921.1.0</string>
+	<string>2020.1006.1</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Fonts/telerikfontexamples.ttf</string>
+	</array>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

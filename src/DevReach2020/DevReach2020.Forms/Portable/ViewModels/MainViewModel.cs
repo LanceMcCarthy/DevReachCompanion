@@ -1,84 +1,43 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Navigation;
-using Prism.Services;
+﻿using System;
+using System.Collections.Generic;
+using CommonHelpers.Common;
 using DevReach2020.Forms.Portable.Helpers;
-using Xamarin.Forms;
+using Microsoft.AppCenter.Crashes;
 
 namespace DevReach2020.Forms.Portable.ViewModels
 {
-    public class MainViewModel : BindableBase, IInitialize, INavigationAware
+    public class MainViewModel : ViewModelBase, ITabAwareViewModel
     {
-        private readonly INavigationService navigationService;
-        private readonly IPageDialogService dialogs;
-        private bool isBusy;
-        private string busyMessage;
-        private ImageSource headerImgSource;
-
-        public MainViewModel(INavigationService navigationService, IPageDialogService dialogs)
+        public MainViewModel()
         {
-            this.navigationService = navigationService;
-            this.dialogs = dialogs;
-
-            NavigateCommand = new DelegateCommand<string>(OnNavigateCommandExecuted);
+            HomeTabViewModel = new HomeTabViewModel { TabNavigator = this };
+            LiveTabViewModel = new LiveTabViewModel { TabNavigator = this };
+            AboutTabViewModel = new AboutTabViewModel { TabNavigator = this };
         }
 
-        public ImageSource HeaderImgSource
+        public TabViewModelBase HomeTabViewModel { get; set; }
+
+        public TabViewModelBase LiveTabViewModel { get; set; }
+
+        public TabViewModelBase AboutTabViewModel { get; set; }
+
+
+        public ITabAwarePage TabAwarePage { get; set; }
+
+        public void InvokeTabSelection(string title)
         {
-            get => headerImgSource;
-            set => SetProperty(ref headerImgSource, value);
-        }
-
-        public bool IsBusy
-        {
-            get => isBusy;
-            set => SetProperty(ref isBusy, value);
-        }
-
-        public string BusyMessage
-        {
-            get => busyMessage;
-            set => SetProperty(ref busyMessage, value);
-        }
-
-        public DelegateCommand<string> NavigateCommand { get; }
-
-        public void Initialize(INavigationParameters parameters)
-        {
-            IsBusy = true;
-            BusyMessage = "Initializing...";
-
-            HeaderImgSource = new StreamImageSource()
+            try
             {
-                Stream = ImageHelpers.GetBannerImage
-            };
-
-            IsBusy = false;
-            BusyMessage = "";
-        }
-
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-            IsBusy = false;
-            BusyMessage = "";
-        }
-
-        public void OnNavigatedTo(INavigationParameters parameters)
-        {
-
-        }
-
-        private async void OnNavigateCommandExecuted(string param)
-        {
-            var result = await navigationService.NavigateAsync($"NavigationPage/LiveStreamPage?endpoint={param}");
-
-            if (!result.Success)
+                this.TabAwarePage.SelectTab(title);
+            }
+            catch (Exception ex)
             {
-                await dialogs.DisplayAlertAsync("Error", result.Exception.Message, "Ok");
-
-                // due to error, OnNavFrom will never be hit, reset things here instead.
-                IsBusy = false;
-                BusyMessage = "";
+                Crashes.TrackError(ex, new Dictionary<string, string>
+                {
+                    { "Location", "MainViewModel" },
+                    { "Method", "InvokeTabSelection" },
+                    { "TabName", title }
+                });
             }
         }
     }
