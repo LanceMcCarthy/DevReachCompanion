@@ -358,7 +358,6 @@
                                                               CommandParameter="github_actions" />
                                     </Label.GestureRecognizers>
                                 </Label>
-                                
                             </StackLayout>
                         </ScrollView>
 
