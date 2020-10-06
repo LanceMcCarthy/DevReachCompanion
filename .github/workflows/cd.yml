@@ -3,7 +3,8 @@ name: CD (Xamarin.Forms All)
 on:
   push:
     branches:
-    - 'releases/*' # Runs for any release branch, triggering release builds and distributions defined here
+    - releases/** # Runs for any release branch, triggering release builds and distributions defined here
+    - test-release/** 
 
 jobs:
   # UWP project build

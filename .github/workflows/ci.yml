@@ -4,8 +4,7 @@ on:
   push:
     branches:
     - main # Run for main commits
-    - dr-2020 # Run for app branch commits
-    - 'dr-2020/*' # Run for feature branch commits
+    - 'v2020/**' # Run for any feature dev branches
 
 jobs:
   # UWP project build
