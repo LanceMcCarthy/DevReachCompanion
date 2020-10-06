@@ -3,8 +3,9 @@ name: CI (Xamarin.Forms All)
 on:
   push:
     branches:
-    - main # Run for main commits
-    - 'v2020/**' # Run for any feature dev branches
+    - main
+    - v2020
+    - 'v2020/**'
 
 jobs:
   # UWP project build
