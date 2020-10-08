@@ -11,18 +11,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - name: Install AppCenter CLI Tools
-      run: npm install -g appcenter-cli
-
-    - name: Trigger AppCenter Build
-      env:
-        AppCenterAppSlug: ${{ secrets.APPCENTER_ANDROID_APP_SLUG }}
-        AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
-        BranchToTrigger: ${{ env:github.ref }}
+    - name: AppCenter Release to Beta
       run: |
-        # $filePath = "src\DevReach2020\DevReach2020.Forms\Android\Properties\AndroidManifest.xml"
-        # [xml]$XML = Get-Content -Path $filePath
-        # $buildNum = $XML.manifest.versionCode
-        # $buildName = $XML.manifest.versionName
-        
-        appcenter build queue --app $env:AppCenterAppSlug --branch $BranchToTrigger --token $AppCenterApiToken
+        npm install -g appcenter-cli
+        appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-android" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}

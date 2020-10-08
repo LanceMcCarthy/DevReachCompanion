@@ -91,12 +91,9 @@ jobs:
     
     # Installing appCenter CLI and upload to tester groups
     - name: Upload SideLoad Package to AppCenter
-      env:
-        AppCenterAppSlug: ${{ secrets.APPCENTER_UWP_APP_SLUG }}
-        AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
       run: |
         npm install -g appcenter-cli
-        appcenter distribute release --file ${{ env.Project_Directory }}\SideLoadPackages\*.appx --app $env:AppCenterAppSlug --build-number $env:AppVersion --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
+        appcenter distribute release --app "lance-mccarthy-1uw5/devreach-2020-uwp" --file ${{ env.Project_Directory }}\SideLoadPackages\*.appx --build-number $env:AppVersion --build-version $env:AppVersion --group Testers --token ${{ secrets.APPCENTER_API_TOKEN }}
 
     # ****************** STAGE 2 - Microsoft Store ******************* #
 

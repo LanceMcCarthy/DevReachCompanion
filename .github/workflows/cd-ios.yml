@@ -7,17 +7,11 @@ on:
     - appcenter-ios
 
 jobs:
-  # Xamarin.iOS project build (dont forget, MacOS needs forward slashes for dir separators)
   ios-build:
     runs-on: macos-latest
     
     steps:
-    - name: Trigger AppCenter Build & Release
-      env:
-        AppCenterAppSlug: ${{ secrets.APPCENTER_IOS_APP_SLUG }}
-        AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
-        BranchToTrigger: ${{ env:github.ref }}
+    - name: AppCenter Release to Beta
       run: |
         npm install -g appcenter-cli
-        # $ver = defaults read src\DevReach2020\DevReach2020.Forms\iOS\Info CFBundleShortVersionString
-        appcenter build queue --app $AppCenterAppSlug --branch $BranchToTrigger --token $AppCenterApiToken
+        appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-ios" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}
