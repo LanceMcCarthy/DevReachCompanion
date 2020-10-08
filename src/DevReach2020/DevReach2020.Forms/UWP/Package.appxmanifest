@@ -9,7 +9,7 @@
   <Identity
     Name="61469LanceLotSoftware.DevReachCompanion"
     Publisher="CN=&quot;Lancelot Software, LLC&quot;, O=&quot;Lancelot Software, LLC&quot;, L=NORTH BILLERICA, S=Massachusetts, C=US"
-    Version="2020.1006.1.0" />
+    Version="2020.1008.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="f9c9b789-4d3a-4c26-9938-b39ac1aa35dd" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

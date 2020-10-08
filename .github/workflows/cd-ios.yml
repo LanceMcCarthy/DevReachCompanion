@@ -3,57 +3,21 @@ name: CD (iOS)
 on:
   push:
     branches:
-    - test-releases/ios/** 
+    - appcenter
+    - appcenter-ios
 
 jobs:
-  # Xamarin.iOS project build (important, MacOS needs forward slashes for dir separators)
+  # Xamarin.iOS project build (dont forget, MacOS needs forward slashes for dir separators)
   ios-build:
     runs-on: macos-latest
-    env:
-      Configuration: Debug
-      Platform: iPhoneSimulator
-      SigningCertificate: Apple_Distribution_Lancelot_2021.p12
-      AdHocProvProfile: DevReachCompanion_AdHoc_2021.mobileprovision
-      ApStoreProvProfile: DevReachCompanion_AppStore_2021.mobileprovision
-      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
-      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
-      NuGetConfig_Path: src/DevReach2020/nuget.config
-      Solution_Directory: src/DevReach2020
-      Solution_Path: src/DevReach2020/DevReach2020.Forms_iOSOnly.sln
-      Project_Directory: src/DevReach2020/DevReach2020.Forms/iOS
-      Project_Path: src/DevReach2020/DevReach2020.Forms/iOS/DevReach2020.Forms.iOS.csproj
-
+    
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Generate version number
-      uses: Amadevus/pwsh-script@v1
-      id: version-creator
-      with:
-        script: |
-          $buildDay = Get-Date -Format "yyyy.Mdd"
-          $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
-          Set-ActionVariable APP_VERSION $ver
-
-    - name: Restore NuGet packages
-      run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
-    
-    - name: Build iOS Project
-      run: msbuild ${{ env.Project_Path }} /p:SolutionDir=${{ env.Solution_Directory }} /p:Configuration=${{ env.Configuration }} /p:Platform=${{ env.Platform }} /verbosity:normal /t:Rebuild
-    
-    # - name: Upload to AppCenter
-    #   run: |
-    #     npm install -g appcenter-cli
-    #     appcenter distribute release --file **/*.ipa --app $env:AppCenterAppSlug --build-number $env:AppVersion  --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
-    #   env:
-    #     AppCenterAppSlug: ${{ secrets.APPCENTER_UWP_APP_SLUG }}
-    #     AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }
-    
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: iOS Artifacts
-        path: ${{ env.Project_Directory }}/bin
+    - name: Trigger AppCenter Build & Release
+      env:
+        AppCenterAppSlug: ${{ secrets.APPCENTER_IOS_APP_SLUG }}
+        AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
+        BranchToTrigger: ${{ env:github.ref }}
+      run: |
+        npm install -g appcenter-cli
+        # $ver = defaults read src\DevReach2020\DevReach2020.Forms\iOS\Info CFBundleShortVersionString
+        appcenter build queue --app $AppCenterAppSlug --branch $BranchToTrigger --token $AppCenterApiToken

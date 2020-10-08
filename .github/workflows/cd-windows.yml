@@ -3,7 +3,8 @@ name: CD (Windows)
 on:
   push:
     branches:
-    - test-releases/windows/**
+    - appcenter
+    - appcenter-uwp
 
 jobs:
   # UWP project build
@@ -88,13 +89,14 @@ jobs:
         destination_folder: Installers/DevReachCompanion
         clean_destination_folder: true
     
-    # - name: Upload SideLoad Package to AppCenter
-    #   run: |
-    #     npm install -g appcenter-cli
-    #     appcenter distribute release --file ${{ env.Project_Directory }}\SideLoadPackages\*.appx --app $env:AppCenterAppSlug --build-number $env:AppVersion  --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
-    #   env:
-    #     AppCenterAppSlug: ${{ secrets.APPCENTER_UWP_APP_SLUG }}
-    #     AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
+    # Installing appCenter CLI and upload to tester groups
+    - name: Upload SideLoad Package to AppCenter
+      env:
+        AppCenterAppSlug: ${{ secrets.APPCENTER_UWP_APP_SLUG }}
+        AppCenterApiToken: ${{ secrets.APPCENTER_API_TOKEN }}
+      run: |
+        npm install -g appcenter-cli
+        appcenter distribute release --file ${{ env.Project_Directory }}\SideLoadPackages\*.appx --app $env:AppCenterAppSlug --build-number $env:AppVersion --build-version $env:AppVersion --group Testers --token $env:AppCenterApiToken
 
     # ****************** STAGE 2 - Microsoft Store ******************* #
 
@@ -131,8 +133,8 @@ jobs:
     #     PartnerCenterClientId: ${{ secrets:PARTNERCENTER_CLIENTID }} 
     #     PartnerCenterStoreId: 9MZNMK3MPV8R
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: UWP Artifacts
-        path: ${{ env.Project_Directory }}\AppPackages
+    # - name: Upload build artifacts
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: UWP Artifacts
+    #     path: ${{ env.Project_Directory }}\AppPackages
