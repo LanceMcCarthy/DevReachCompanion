@@ -93,9 +93,7 @@ jobs:
     - name: Upload SideLoad Package to AppCenter
       run: |
         npm install -g appcenter-cli
-        appcenter distribute release --app "lance-mccarthy-1uw5/devreach-2020-uwp" --file $env:source_folder --build-number $env:AppVersion --build-version $env:AppVersion --group Testers --token ${{ secrets.APPCENTER_API_TOKEN }}
-      env:
-        source_folder: ${{ env.Project_Directory }}\AppPackages\*.appx
+        appcenter distribute release --app "lance-mccarthy-1uw5/devreach-2020-uwp" --file ${{ env.Project_Directory }}\AppPackages\**\*.appx --build-number $env:AppVersion --build-version $env:AppVersion --group Testers --token ${{ secrets.APPCENTER_API_TOKEN }}
 
     # ****************** STAGE 2 - Microsoft Store ******************* #
 
