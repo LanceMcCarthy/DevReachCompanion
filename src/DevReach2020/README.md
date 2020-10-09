@@ -2,25 +2,23 @@
 
 Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.github/Workflows` folder.
 
-### GitHub 
+## GitHub
 
-#### CI Workflows
+### CI Workflows
 
-| Branch        | Status | 
+| Branch        | Status |
 |---------------|-----------|
-| Default | ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg) | 
-| `main` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=main) | 
+| Default | ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg) |
+| `main` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=main) |
 | `v2020` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=v2020) |
 
-#### CD Workflows
+### CD Workflows
 
-| Platform | GitHub Actions | AppCenter                                |
-|----------|------------------------------------------|
+| Platform | GitHub Actions | AppCenter |
+|----------|----------------|-----------|
 | Android  | ![CD (Android)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Android)/badge.svg) | ![Android appCenter](https://build.appcenter.ms/v0.1/apps/ef428033-8891-4add-95f2-7fc4f54c9923/branches/appcenter/badge) |
 | iOS      | ![CD (iOS)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(iOS)/badge.svg) | ![iOS appCenter](https://build.appcenter.ms/v0.1/apps/a01fbcb4-c5b2-48d3-87fa-79ae2bf9a1b7/branches/appcenter/badge) |
 | UWP      | ![CD (Windows)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Windows)/badge.svg) |  See **Distributions** below |
-
-
 
 ### Distributions
 
@@ -35,4 +33,3 @@ Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.githu
 | Android  | iOS                                      | UWP      |
 |----------|------------------------------------------|----------|
 | <img src="https://user-images.githubusercontent.com/3520532/95248542-71052580-07e5-11eb-967b-bb68f29015f8.png" alt="drawing" height="400" /> | <img src="https://user-images.githubusercontent.com/3520532/95267655-c05a4e80-0803-11eb-980b-2c7c51dd2323.png" alt="drawing" height="400"/> | <img src="https://user-images.githubusercontent.com/3520532/95270221-1382d000-0809-11eb-9567-a6015cce6321.png" alt="drawing" height="400"/> |
-
