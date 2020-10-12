@@ -11,6 +11,7 @@ jobs:
     runs-on: macos-latest
     
     steps:
+    # Trigger AppCenter release (i.e. release to QA testers and/or Store)
     - name: AppCenter Release to Beta
       run: |
         npm install -g appcenter-cli
