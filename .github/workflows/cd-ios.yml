@@ -11,6 +11,15 @@ jobs:
     runs-on: macos-latest
     
     steps:
+    - name: Generate version number
+      run: |
+        buildDay=`date +%Y.%m%d`
+        echo $buildDay
+        ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
+        echo $ver
+        echo "APP_VERSION=$ver" >> $GITHUB_ENV
+
+    # Trigger AppCenter release (i.e. release to QA testers and/or Store)
     - name: AppCenter Release to Beta
       run: |
         npm install -g appcenter-cli

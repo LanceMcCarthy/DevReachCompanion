@@ -11,6 +11,13 @@ jobs:
     runs-on: windows-latest
     
     steps:
+    - name: Generate version number
+      run: |
+        $buildDay = Get-Date -Format "yyyy.Mdd"
+        $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
+        echo "APP_VERSION=$ver" >> $GITHUB_ENV
+
+    # Trigger AppCenter release (i.e. release to QA testers and/or Store)
     - name: AppCenter Release to Beta
       run: |
         npm install -g appcenter-cli
