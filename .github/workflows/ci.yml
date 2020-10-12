@@ -32,10 +32,11 @@ jobs:
         fetch-depth: 0
         
     - name: Generate version number
-        run: |
-          $buildDay = Get-Date -Format "yyyy.Mdd"
-          $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
-          echo "APP_VERSION=$ver" >> $GITHUB_ENV
+      shell: pwsh
+      run: |
+        $buildDay = Get-Date -Format "yyyy.Mdd"
+        $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
+        echo "APP_VERSION=$ver" >> $GITHUB_ENV
           
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
@@ -73,11 +74,12 @@ jobs:
         fetch-depth: 0
 
     - name: Generate version number
+      shell: pwsh
       run: |
         $buildDay = Get-Date -Format "yyyy.Mdd"
         $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
         echo "APP_VERSION=$ver" >> $GITHUB_ENV
-
+    
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
@@ -125,6 +127,7 @@ jobs:
       run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
     
     - name: Generate version number
+      shell: bash
       run: |
         buildDay=`date +%Y.%m%d`
         echo $buildDay
