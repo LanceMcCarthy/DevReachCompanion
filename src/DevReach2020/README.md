@@ -18,7 +18,7 @@ Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.githu
 |----------|----------------|-------------------------|
 | Android  | ![CD (Android)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Android)/badge.svg) | ![Android appCenter](https://build.appcenter.ms/v0.1/apps/ef428033-8891-4add-95f2-7fc4f54c9923/branches/appcenter/badge) |
 | iOS      | ![CD (iOS)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(iOS)/badge.svg) | ![iOS appCenter](https://build.appcenter.ms/v0.1/apps/a01fbcb4-c5b2-48d3-87fa-79ae2bf9a1b7/branches/appcenter/badge) |
-| UWP      | ![CD (Windows)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Windows)/badge.svg) |  [![CD UWP AppCenter](https://build.appcenter.ms/v0.1/apps/61cec370-f860-4668-814e-8c22b64badd7/branches/appcenter/badge)](https://appcenter.ms) |
+| UWP      | ![CD (Windows)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Windows)/badge.svg) |  [![CD UWP AppCenter](https://build.appcenter.ms/v0.1/apps/0915d3ca-e6c5-4b9c-b932-3ab15d014a40/branches/appcenter/badge)](https://appcenter.ms) |
 
 ### Distributions
 

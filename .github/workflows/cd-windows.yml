@@ -27,7 +27,8 @@ jobs:
     # ****************** Option 1 - AppCenter Release ****************** #
 
     # Trigger AppCenter release (i.e. release to QA testers and/or Store)
-    - name: AppCenter Release to QA Groups
+    - name: AppCenter Build and Release to QA Groups
+      shell: pwsh
       run: |
         npm install -g appcenter-cli
         appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-uwp" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}
@@ -47,6 +48,7 @@ jobs:
         fetch-depth: 0
 
     - name: Generate version number
+      shell: pwsh
       run: |
         $buildDay = Get-Date -Format "yyyy.Mdd"
         $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
