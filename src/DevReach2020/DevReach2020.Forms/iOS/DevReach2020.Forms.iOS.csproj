@@ -191,5 +191,6 @@
   <ItemGroup>
     <BundleResource Include="Resources\TelerikWarriors_NoBubble.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

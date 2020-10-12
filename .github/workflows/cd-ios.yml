@@ -11,7 +11,18 @@ jobs:
     runs-on: macos-latest
     
     steps:
-    - name: AppCenter Release to Beta
+    - name: Generate version number
+      shell: bash
+      run: |
+        buildDay=`date +%Y.%m%d`
+        echo $buildDay
+        runNum=${{ github.run_number }}
+        ver="${buildDay}.${runNum}.0"
+        echo $ver
+        echo "APP_VERSION=$ver" >> $GITHUB_ENV
+
+    # Trigger AppCenter release (i.e. release to QA testers and/or Store)
+    - name: AppCenter Build and Release
       run: |
         npm install -g appcenter-cli
         appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-ios" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}

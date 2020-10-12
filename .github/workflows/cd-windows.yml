@@ -12,6 +12,9 @@ jobs:
     runs-on: windows-latest
     env:
       Configuration: Release
+      Platform: "x64"
+      AppxBundlePlatforms: "x64"
+      AppxBundle: Always
       Signing_Certificate: LancelotSoftwareLLC.pfx
       TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
       TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
@@ -21,6 +24,17 @@ jobs:
       Project_Path: src\DevReach2020\DevReach2020.Forms\UWP\DevReach2020.Forms.UWP.csproj
 
     steps:
+    # ****************** Option 1 - AppCenter Release ****************** #
+
+    # Trigger AppCenter release (i.e. release to QA testers and/or Store)
+    - name: AppCenter Build and Release to QA Groups
+      shell: pwsh
+      run: |
+        npm install -g appcenter-cli
+        appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-uwp" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}
+    
+    # ****************** Option 2 - Side-Loadable Package (bonus! hosted appinstaller webpage on Azure blob storage ****************** #
+
     - name: Configure Pagefile (increase RAM)
       uses: al-cheb/configure-pagefile-action@v1.2
       with:
@@ -34,26 +48,14 @@ jobs:
         fetch-depth: 0
 
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.1
+      uses: microsoft/setup-msbuild@v1.0.2
 
     - name: NuGet Restore
       run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
     
-    - name: Generate version number
-      uses: Amadevus/pwsh-script@v1
-      id: version-creator
-      with:
-        script: |
-          $buildDay = Get-Date -Format "yyyy.Mdd"
-          $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
-          Set-ActionVariable APP_VERSION $ver
-    
-    # ****************** STAGE 1 - SideLoad and AppCenter ****************** #
-
     - name: Update manifest version
       run: |
         [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
-        $manifest.Package.Identity.Version = "$env:APP_VERSION"
         $manifest.Package.Identity.Publisher = "CN='Lancelot Software, LLC', O='Lancelot Software, LLC', L=NORTH BILLERICA, S=Massachusetts, C=US"
         $manifest.Package.Properties.DisplayName = "DevReach Companion"
         $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
@@ -69,9 +71,6 @@ jobs:
     - name: Build UWP Project
       run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:GenerateAppInstallerFile=$env:GenerateAppInstaller /p:AppInstallerUri=$env:AppInstallerUri /p:HoursBetweenUpdateChecks=$env:HoursBetweenUpdateChecks /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:PackageCertificateKeyFile=$env:Signing_Certificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
-        Platform: "x64"
-        AppxBundle: Always
-        AppxBundlePlatforms: "x64"
         AppxPackageBuildMode: SideloadOnly
         GenerateAppInstaller: true
         HoursBetweenUpdateChecks: 24
@@ -88,41 +87,36 @@ jobs:
         source_folder: ${{ env.Project_Directory }}\AppPackages\
         destination_folder: Installers/DevReachCompanion
         clean_destination_folder: true
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: UWP_Sideload_Artifacts
+        path: ${{ env.Project_Directory }}\AppPackages\
     
-    # Installing appCenter CLI and upload to tester groups
-    - name: Upload SideLoad Package to AppCenter
+    
+    # ****************** Option 3 - Upload Directly to Microsoft Store  ******************* #
+
+    # Update the appxmanifest for Microsoft Store using the publisher info
+    - name: Update manifest version
       run: |
-        npm install -g appcenter-cli
-        appcenter distribute release --app "lance-mccarthy-1uw5/devreach-2020-uwp" --file $env:source_folder --build-number $env:AppVersion --build-version $env:AppVersion --group Testers --token ${{ secrets.APPCENTER_API_TOKEN }}
-      env:
-        source_folder: ${{ env.Project_Directory }}\AppPackages\*.appx
-
-    # ****************** STAGE 2 - Microsoft Store ******************* #
-
-    # # Update the appxmanifest for Microsoft Store
-    # - name: Update manifest version
-    #   run: |
-    #     [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
-    #     $manifest.Package.Identity.Version = "$env:App_VERSION"
-    #     $manifest.Package.Identity.Name = "61469LanceLotSoftware.DevReachCompanion"
-    #     $manifest.Package.Identity.Publisher = "CN=51B5A8B2-5D86-4826-BBE2-C92E963A4C02"
-    #     $manifest.Package.Properties.DisplayName = "Media File Manager"
-    #     $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
-    #     $manifest.Package.Applications.Application.VisualElements.DisplayName = "Media File Manager"
-    #     $manifest.save("src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest")
+        [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
+        $manifest.Package.Identity.Name = "61469LanceLotSoftware.DevReachCompanion"
+        $manifest.Package.Identity.Publisher = "CN=51B5A8B2-5D86-4826-BBE2-C92E963A4C02"
+        $manifest.Package.Properties.DisplayName = "Media File Manager"
+        $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
+        $manifest.Package.Applications.Application.VisualElements.DisplayName = "Media File Manager"
+        $manifest.save("src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest")
     
-    # # Build using StoreUpload instructions, no code signing required (Microsoft signs it during certification)
-    # - name: Build for Microsoft Store
-    #   run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageDir=$env:PackagesDir
-    #   env:
-    #     SigningEnabled: False
-    #     Platform: "x64"
-    #     AppxBundle: Always
-    #     AppxBundlePlatforms: "x64"
-    #     AppxPackageBuildMode: StoreUpload
-    #     PackagesDir: \AppPackages\Store\
+    # Build using StoreUpload instructions, no code signing required (Microsoft signs it during certification)
+    - name: Build for Microsoft Store
+      run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageDir=$env:PackagesDir
+      env:
+        SigningEnabled: False
+        AppxPackageBuildMode: StoreUpload
+        PackagesDir: \AppPackagesStore\
 
-    # # Use Store Broker to publish to Microsoft Store
+    # Use Store Broker to directly publish the package to Microsoft Store
     # - name: Submit to Microsoft Store using Store Broker
     #   shell: pwsh
     #   run: ./.scripts/SubmitToMsftStore.ps1
@@ -132,8 +126,8 @@ jobs:
     #     PartnerCenterClientId: ${{ secrets:PARTNERCENTER_CLIENTID }} 
     #     PartnerCenterStoreId: 9MZNMK3MPV8R
 
-    # - name: Upload build artifacts
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: UWP Artifacts
-    #     path: ${{ env.Project_Directory }}\AppPackages
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: UWP_Store_Artifacts
+        path: ${{ env.Project_Directory }}\AppPackagesStore\

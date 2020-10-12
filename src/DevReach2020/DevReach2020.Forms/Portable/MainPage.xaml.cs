@@ -22,13 +22,13 @@ namespace DevReach2020.Forms.Portable
             switch (tabName)
             {
                 case AppConstants.HomeTabName:
-                    tabView.SelectedItem = tabView.Items[0];
+                    MainTabView.SelectedItem = MainTabView.Items[0];
                     break;
                 case AppConstants.LiveTabName:
-                    tabView.SelectedItem = tabView.Items[1];
+                    MainTabView.SelectedItem = MainTabView.Items[1];
                     break;
                 case AppConstants.AboutTabName:
-                    tabView.SelectedItem = tabView.Items[2];
+                    MainTabView.SelectedItem = MainTabView.Items[2];
                     break;
                 default:
                     Trace.WriteLine($"Invalid selection: {tabName}");
