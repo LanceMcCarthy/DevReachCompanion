@@ -12,6 +12,9 @@ jobs:
     runs-on: windows-latest
     env:
       Configuration: Release
+      Platform: "x64"
+      AppxBundlePlatforms: "x64"
+      AppxBundle: Always
       Signing_Certificate: LancelotSoftwareLLC.pfx
       TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
       TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
@@ -43,6 +46,12 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Generate version number
+      run: |
+        $buildDay = Get-Date -Format "yyyy.Mdd"
+        $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
+        echo "APP_VERSION=$ver" >> $GITHUB_ENV
+
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
@@ -52,6 +61,7 @@ jobs:
     - name: Update manifest version
       run: |
         [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
+        $manifest.Package.Identity.Version = "$env:APP_VERSION"
         $manifest.Package.Identity.Publisher = "CN='Lancelot Software, LLC', O='Lancelot Software, LLC', L=NORTH BILLERICA, S=Massachusetts, C=US"
         $manifest.Package.Properties.DisplayName = "DevReach Companion"
         $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
@@ -67,9 +77,6 @@ jobs:
     - name: Build UWP Project
       run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:GenerateAppInstallerFile=$env:GenerateAppInstaller /p:AppInstallerUri=$env:AppInstallerUri /p:HoursBetweenUpdateChecks=$env:HoursBetweenUpdateChecks /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:PackageCertificateKeyFile=$env:Signing_Certificate /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
-        Platform: "x64"
-        AppxBundle: Always
-        AppxBundlePlatforms: "x64"
         AppxPackageBuildMode: SideloadOnly
         GenerateAppInstaller: true
         HoursBetweenUpdateChecks: 24
@@ -100,6 +107,7 @@ jobs:
     - name: Update manifest version
       run: |
         [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
+        $manifest.Package.Identity.Version = "$env:APP_VERSION"
         $manifest.Package.Identity.Name = "61469LanceLotSoftware.DevReachCompanion"
         $manifest.Package.Identity.Publisher = "CN=51B5A8B2-5D86-4826-BBE2-C92E963A4C02"
         $manifest.Package.Properties.DisplayName = "Media File Manager"
@@ -112,11 +120,8 @@ jobs:
       run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageDir=$env:PackagesDir
       env:
         SigningEnabled: False
-        Platform: "x64"
-        AppxBundle: Always
-        AppxBundlePlatforms: "x64"
         AppxPackageBuildMode: StoreUpload
-        PackagesDir: \AppPackages\Store\
+        PackagesDir: \AppPackagesStore\
 
     # Use Store Broker to directly publish the package to Microsoft Store
     # - name: Submit to Microsoft Store using Store Broker
@@ -132,4 +137,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: UWP_Store_Artifacts
-        path: ${{ env.Project_Directory }}\AppPackages\Store
+        path: ${{ env.Project_Directory }}\\AppPackagesStore\
