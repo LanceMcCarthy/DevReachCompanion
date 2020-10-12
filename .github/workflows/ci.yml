@@ -7,7 +7,6 @@ on:
     - v2020
     paths-ignore:
       - '**/*.md'
-      - '**/*.yml'
       - '**/*.ps1'
       - '**/*.sh'
       - '**/*.gitignore'
