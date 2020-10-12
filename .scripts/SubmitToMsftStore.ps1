@@ -1,7 +1,9 @@
 Set-ExecutionPolicy RemoteSigned -Force
 
 # Prepare materials from previous steps and runner environment variables src\DevReach2020\DevReach2020.Forms\UWP
-$appxUploadFilePath = "D:\a\DevReachCompanion\DevReachCompanion\src\DevReach2020\DevReach2020.Forms\UWP\AppPackages\Store\DevReach2020.Forms.UWP_" + $env:APP_VERSION + "_" + $env:AppxBundlePlatforms + "_bundle.appxupload"
+$appxFiles = Get-ChildItem -Recurse -Path 'src\DevReach2020\DevReach2020.Forms\UWP\' -Include *.appxupload
+$appxUploadFilePath = $appxFiles[0]
+
 $username = $env:PartnerCenterClientId
 $password = ConvertTo-SecureString $env:PartnerCenterClientSecret -AsPlainText -Force
 $appStoreId = $env:PartnerCenterStoreId
