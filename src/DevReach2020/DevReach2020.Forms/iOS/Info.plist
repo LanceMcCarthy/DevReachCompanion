@@ -21,7 +21,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>12.1</string>
+	<string>14.0</string>
 	<key>CFBundleDisplayName</key>
 	<string>DevReach Companion</string>
 	<key>CFBundleIdentifier</key>
@@ -29,7 +29,7 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2020.1009.1</string>
+	<string>2020.1012.1</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UILaunchStoryboardName</key>
