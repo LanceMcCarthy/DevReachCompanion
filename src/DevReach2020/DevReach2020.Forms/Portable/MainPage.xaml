@@ -1,116 +1,121 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-       ios:Page.PrefersStatusBarHidden="True"
-       ios:Page.PreferredStatusBarUpdateAnimation="Fade"
-       xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-       xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
-       xmlns:converters="clr-namespace:DevReach2020.Forms.Portable.Converters;assembly=DevReach2020.Forms.Portable"
-       xmlns:behaviors="clr-namespace:DevReach2020.Forms.Portable.Behaviors;assembly=DevReach2020.Forms.Portable"
-       xmlns:models="clr-namespace:DevReach2020.Forms.Portable.ViewModels;assembly=DevReach2020.Forms.Portable"
-       xmlns:helpers="clr-namespace:DevReach2020.Forms.Portable.Helpers;assembly=DevReach2020.Forms.Portable"
-       xmlns:system="clr-namespace:System;assembly=netstandard"
-       x:Class="DevReach2020.Forms.Portable.MainPage">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DevReach2020.Forms.Portable.MainPage"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:uwp="clr-namespace:Xamarin.Forms.PlatformConfiguration.WindowsSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:primitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:converters="clr-namespace:DevReach2020.Forms.Portable.Converters;assembly=DevReach2020.Forms.Portable"
+             xmlns:behaviors="clr-namespace:DevReach2020.Forms.Portable.Behaviors;assembly=DevReach2020.Forms.Portable"
+             xmlns:models="clr-namespace:DevReach2020.Forms.Portable.ViewModels;assembly=DevReach2020.Forms.Portable"
+             xmlns:helpers="clr-namespace:DevReach2020.Forms.Portable.Helpers;assembly=DevReach2020.Forms.Portable"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             ios:Page.PrefersStatusBarHidden="False"
+             ios:Page.PreferredStatusBarUpdateAnimation="Fade"
+             ios:Page.UseSafeArea="true"
+             uwp:WebView.IsJavaScriptAlertEnabled="False"
+             BackgroundColor="#030221">
 
     <ContentPage.Resources>
-        <converters:InvertBoolConverter x:Key="InvertBoolConv"/>
+        <converters:InvertBoolConverter x:Key="InvertBoolConv" />
 
-        <OnPlatform x:Key="TelerikIconsFont" x:TypeArguments="x:String">
+        <OnPlatform x:Key="TelerikIconsFont"
+                    x:TypeArguments="x:String">
             <On Platform="iOS">telerikfontexamples</On>
             <On Platform="Android">Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
             <On Platform="UWP">/Assets/Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
         </OnPlatform>
 
-        <Color x:Key="DevReachYellow">#FFFD7A</Color>
+        <Color x:Key="LightTranslucentBackgroundColor">#CCEAEAEC</Color>
         <Color x:Key="DevReachBlue">#404894</Color>
         <Color x:Key="DevReachLightBlue">#00D9F4</Color>
-        <Color x:Key="DevReachGreen">#00C031</Color>
-        <Color x:Key="DevReachLightGreen">#00E500</Color>
         <Color x:Key="DevReachDarkTextColor">#000000</Color>
         <Color x:Key="DevReachLightGray">#E7E5FB</Color>
-        <Color x:Key="DevReachMediumGray">#BEBDD5</Color>
         <Color x:Key="DevReachDarkGray">#7E7D81</Color>
         <Color x:Key="WarriorsBackgroundColor">#EDF4FF</Color>
         <Color x:Key="WarriorsForegroundColor">#FFFFFF</Color>
 
-        <Color x:Key="LightTranslucentBackgroundColor">#CCEAEAEC</Color>
-        <Color x:Key="MediumTranslucentBackgroundColor">#AA000000</Color>
-
         <Style x:Key="HomeViewButtonStyle"
                TargetType="Button">
-            <Setter Property="BackgroundColor" Value="{StaticResource DevReachBlue}" />
-            <Setter Property="TextColor" Value="{StaticResource DevReachLightGray}" />
-            <Setter Property="CornerRadius" Value="5" />
-            <Setter Property="Margin" Value="10" />
-            <Setter Property="VerticalOptions" Value="Center" />
-            <Setter Property="HorizontalOptions" Value="Center" />
-            <Setter Property="WidthRequest" Value="250" />
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource DevReachBlue}" />
+            <Setter Property="TextColor"
+                    Value="{StaticResource DevReachLightGray}" />
+            <Setter Property="CornerRadius"
+                    Value="5" />
+            <Setter Property="Margin"
+                    Value="7.5" />
+            <Setter Property="VerticalOptions"
+                    Value="Center" />
+            <Setter Property="HorizontalOptions"
+                    Value="Center" />
+            <Setter Property="WidthRequest"
+                    Value="250" />
         </Style>
 
         <Style x:Key="UrlTextStyle"
                TargetType="Label">
             <Setter Property="TextColor"
-                        Value="{StaticResource DevReachBlue}" />
+                    Value="{StaticResource DevReachBlue}" />
             <Setter Property="HorizontalOptions"
-                        Value="Center" />
+                    Value="Center" />
             <Setter Property="FontSize"
-                        Value="Body" />
+                    Value="Body" />
             <Setter Property="Margin"
-                        Value="0,0,0,5" />
+                    Value="0,0,0,5" />
             <Setter Property="TextDecorations"
-                        Value="Underline"/>
+                    Value="Underline" />
         </Style>
 
-        <Style x:Key="BodySpanStyle" 
-                   TargetType="Span">
+        <Style x:Key="BodySpanStyle"
+               TargetType="Span">
             <Setter Property="TextColor"
-                        Value="{StaticResource DevReachDarkGray}"/>
+                    Value="{StaticResource DevReachDarkGray}" />
             <Setter Property="FontSize"
-                        Value="Caption" />
+                    Value="Caption" />
         </Style>
 
         <Style x:Key="BoldBodySpanStyle"
-                   BasedOn="{StaticResource BodySpanStyle}"
-                   TargetType="Span">
+               BasedOn="{StaticResource BodySpanStyle}"
+               TargetType="Span">
             <Setter Property="FontAttributes"
-                        Value="Bold" />
+                    Value="Bold" />
         </Style>
 
         <Style x:Key="TabHeaderBusyIndicatorStyle"
-                   TargetType="primitives:RadBusyIndicator">
+               TargetType="primitives:RadBusyIndicator">
             <Setter Property="AnimationType"
-                        Value="Animation6" />
+                    Value="Animation6" />
             <Setter Property="HeightRequest"
-                        Value="45" />
+                    Value="45" />
             <Setter Property="WidthRequest"
-                        Value="45" />
+                    Value="45" />
             <Setter Property="AnimationContentHeightRequest"
-                        Value="30" />
+                    Value="30" />
             <Setter Property="AnimationContentWidthRequest"
-                        Value="45" />
+                    Value="45" />
             <Setter Property="BackgroundColor"
-                        Value="Transparent" />
+                    Value="Transparent" />
             <Setter Property="AnimationContentColor"
-                        Value="{StaticResource DevReachLightBlue}" />
+                    Value="{StaticResource DevReachLightBlue}" />
         </Style>
 
         <Style x:Key="OverlayBusyIndicatorStyle"
-                   TargetType="primitives:RadBusyIndicator">
+               TargetType="primitives:RadBusyIndicator">
             <Setter Property="AnimationType"
-                        Value="Animation1" />
+                    Value="Animation1" />
             <Setter Property="AnimationContentHeightRequest"
-                        Value="75" />
+                    Value="75" />
             <Setter Property="AnimationContentWidthRequest"
-                        Value="75" />
+                    Value="75" />
             <Setter Property="BackgroundColor"
-                        Value="{StaticResource LightTranslucentBackgroundColor}" />
+                    Value="{StaticResource LightTranslucentBackgroundColor}" />
             <Setter Property="AnimationContentColor"
-                        Value="{StaticResource DevReachDarkGray}" />
+                    Value="{StaticResource DevReachDarkGray}" />
             <Setter Property="VerticalOptions"
-                        Value="Fill" />
+                    Value="Fill" />
             <Setter Property="HorizontalOptions"
-                        Value="Fill" />
+                    Value="Fill" />
             <Setter Property="BusyContentTemplate">
                 <Setter.Value>
                     <ControlTemplate>
@@ -121,12 +126,12 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <ContentPresenter Content="{TemplateBinding Path=AnimationContent}" 
-                                                  Grid.Row="1"/>
+                            <ContentPresenter Content="{TemplateBinding Path=AnimationContent}"
+                                              Grid.Row="1" />
                             <ContentPresenter Content="{TemplateBinding Path=BusyContent}"
-                                                  HorizontalOptions="Center" 
-                                                  Margin="20" 
-                                                  Grid.Row="2"/>
+                                              HorizontalOptions="Center"
+                                              Margin="20"
+                                              Grid.Row="2" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -137,30 +142,30 @@
             <Grid BackgroundColor="{StaticResource DevReachLightGray}"
                   HeightRequest="50">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.Triggers>
                     <DataTrigger TargetType="Grid"
                                  Binding="{TemplateBinding IsSelected}"
                                  Value="True">
                         <Setter Property="BackgroundColor"
-                                Value="{StaticResource DevReachBlue}" />
+                                Value="{StaticResource WarriorsBackgroundColor}" />
                     </DataTrigger>
                     <DataTrigger TargetType="Grid"
                                  Binding="{TemplateBinding IsSelected}"
                                  Value="False">
                         <Setter Property="BackgroundColor"
-                                Value="{StaticResource DevReachLightGray}" />
+                                Value="{StaticResource DevReachBlue}" />
                     </DataTrigger>
                 </Grid.Triggers>
 
                 <Label Text="{TemplateBinding Text}"
-                       FontFamily="{StaticResource TelerikIconsFont}" 
+                       FontFamily="{StaticResource TelerikIconsFont}"
                        TextColor="{StaticResource DevReachLightGray}"
                        FontSize="Large"
                        HorizontalOptions="Start"
-                       VerticalOptions="Center" 
+                       VerticalOptions="Center"
                        Margin="10,5,5,5"
                        Grid.Column="0">
                     <Label.Triggers>
@@ -168,13 +173,13 @@
                                      Binding="{TemplateBinding IsSelected}"
                                      Value="True">
                             <Setter Property="TextColor"
-                                    Value="{StaticResource DevReachLightGray}" />
+                                    Value="{StaticResource DevReachBlue}" />
                         </DataTrigger>
                         <DataTrigger TargetType="Label"
                                      Binding="{TemplateBinding IsSelected}"
                                      Value="False">
                             <Setter Property="TextColor"
-                                    Value="{StaticResource DevReachBlue}" />
+                                    Value="{StaticResource WarriorsBackgroundColor}" />
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
@@ -182,22 +187,21 @@
                 <Label Text="{Binding Title, Source={RelativeSource AncestorType={x:Type models:TabViewModelBase}}}"
                        IsVisible="{Binding IsBusy, Converter={StaticResource InvertBoolConv}}"
                        FontSize="Medium"
-                       TextColor="{StaticResource DevReachLightGray}"
                        HorizontalOptions="Start"
-                       VerticalOptions="Center" 
+                       VerticalOptions="Center"
                        Grid.Column="1">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{TemplateBinding IsSelected}"
                                      Value="True">
                             <Setter Property="TextColor"
-                                    Value="{StaticResource DevReachLightGray}" />
+                                    Value="{StaticResource DevReachBlue}" />
                         </DataTrigger>
                         <DataTrigger TargetType="Label"
                                      Binding="{TemplateBinding IsSelected}"
                                      Value="False">
                             <Setter Property="TextColor"
-                                    Value="{StaticResource DevReachBlue}" />
+                                    Value="{StaticResource WarriorsBackgroundColor}" />
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
@@ -217,13 +221,13 @@
                                      Binding="{TemplateBinding IsSelected}"
                                      Value="True">
                             <Setter Property="AnimationContentColor"
-                                    Value="{StaticResource DevReachLightGray}" />
+                                    Value="{StaticResource DevReachBlue}" />
                         </DataTrigger>
                         <DataTrigger TargetType="primitives:RadBusyIndicator"
                                      Binding="{TemplateBinding IsSelected}"
                                      Value="False">
                             <Setter Property="AnimationContentColor"
-                                    Value="{StaticResource DevReachBlue}" />
+                                    Value="{StaticResource WarriorsBackgroundColor}" />
                         </DataTrigger>
                     </primitives:RadBusyIndicator.Triggers>
                 </primitives:RadBusyIndicator>
@@ -231,20 +235,23 @@
         </ControlTemplate>
     </ContentPage.Resources>
 
-    <primitives:RadTabView x:Name="tabView" HeaderPosition="Bottom">
+    <primitives:RadTabView x:Name="MainTabView"
+                           HeaderPosition="Bottom">
         <primitives:RadTabView.Items>
             <primitives:TabViewItem BindingContext="{Binding HomeTabViewModel}">
                 <primitives:TabViewItem.Header>
-                    <primitives:TabViewHeaderItem Text="&#xE85B;" ControlTemplate="{StaticResource HeaderControlTemplate}" />
+                    <primitives:TabViewHeaderItem Text="&#xE85B;"
+                                                  ControlTemplate="{StaticResource HeaderControlTemplate}" />
                 </primitives:TabViewItem.Header>
                 <primitives:TabViewItem.Content>
                     <Grid BackgroundColor="{StaticResource WarriorsBackgroundColor}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Image Source="Banner.png" Aspect="AspectFill"/>
+                        <Image Source="Banner.png"
+                               Aspect="AspectFill" />
 
                         <Grid BackgroundColor="{StaticResource WarriorsForegroundColor}"
                               VerticalOptions="Start"
@@ -252,64 +259,71 @@
                               Margin="20"
                               Grid.Row="1">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Image Source="TelerikWarriors_NoBubble.png" Aspect="AspectFit"/>
+                            <Image Source="TelerikWarriors_NoBubble.png"
+                                   Aspect="AspectFit" />
 
-                            <StackLayout Grid.Row="1" Padding="0,0,0,0">
+                            <StackLayout Grid.Row="1"
+                                         Padding="0,0,0,0">
                                 <Button Text="Home"
                                         Command="{Binding NavigateCommand}"
                                         CommandParameter="{x:Static helpers:AppConstants.HomeTabName}"
-                                        Style="{StaticResource HomeViewButtonStyle}"/>
+                                        Style="{StaticResource HomeViewButtonStyle}" />
                                 <Button Text="Live Stream"
                                         Command="{Binding NavigateCommand}"
                                         CommandParameter="{x:Static helpers:AppConstants.LiveTabName}"
-                                        Style="{StaticResource HomeViewButtonStyle}"/>
+                                        Style="{StaticResource HomeViewButtonStyle}" />
                                 <Button Text="About"
                                         Command="{Binding NavigateCommand}"
                                         CommandParameter="{x:Static helpers:AppConstants.AboutTabName}"
                                         Style="{StaticResource HomeViewButtonStyle}"
-                                        Margin="15,15,15,30"/>
+                                        Margin="7.5,7.5,7.5,30" />
                             </StackLayout>
 
                         </Grid>
-                        
+
                         <primitives:RadBusyIndicator IsBusy="{Binding IsBusy}"
                                                      IsVisible="{Binding IsBusy}"
                                                      BusyContent="{Binding IsBusyMessage}"
                                                      Style="{StaticResource OverlayBusyIndicatorStyle}"
-                                                     Grid.RowSpan="2"/>
-                        
+                                                     Grid.RowSpan="2" />
+
                     </Grid>
                 </primitives:TabViewItem.Content>
             </primitives:TabViewItem>
             <primitives:TabViewItem BindingContext="{Binding LiveTabViewModel}">
                 <primitives:TabViewItem.Header>
-                    <primitives:TabViewHeaderItem Text="&#xE85F;" ControlTemplate="{StaticResource HeaderControlTemplate}" />
+                    <primitives:TabViewHeaderItem Text="&#xE85F;"
+                                                  ControlTemplate="{StaticResource HeaderControlTemplate}" />
                 </primitives:TabViewItem.Header>
                 <primitives:TabViewItem.Content>
                     <WebView Source="{Binding WebSource}">
                         <WebView.Behaviors>
-                            <behaviors:EventToCommandBehavior EventName="Navigating" Command="{Binding WebViewNavigatingCommand}"/>
-                            <behaviors:EventToCommandBehavior EventName="Navigated" Command="{Binding WebViewNavigatedCommand}"/>
+                            <behaviors:EventToCommandBehavior EventName="Navigating"
+                                                              Command="{Binding WebViewNavigatingCommand}" />
+                            <behaviors:EventToCommandBehavior EventName="Navigated"
+                                                              Command="{Binding WebViewNavigatedCommand}" />
                         </WebView.Behaviors>
                     </WebView>
                 </primitives:TabViewItem.Content>
             </primitives:TabViewItem>
             <primitives:TabViewItem BindingContext="{Binding AboutTabViewModel}">
                 <primitives:TabViewItem.Header>
-                    <primitives:TabViewHeaderItem Text="&#xE815;" ControlTemplate="{StaticResource HeaderControlTemplate}" />
+                    <primitives:TabViewHeaderItem Text="&#xE815;"
+                                                  ControlTemplate="{StaticResource HeaderControlTemplate}" />
                 </primitives:TabViewItem.Header>
                 <primitives:TabViewItem.Content>
-                    <Grid>
+                    <Grid BackgroundColor="{StaticResource WarriorsBackgroundColor}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Image Source="{Binding HeaderImgSource}" Aspect="AspectFill"/>
+                        <Image Source="Banner.png"
+                               Aspect="AspectFill" />
 
                         <ScrollView Grid.Row="1">
                             <StackLayout Padding="15,10,15,0">
@@ -319,17 +333,17 @@
                                     <Label Text="{Binding AppName}"
                                            TextColor="{StaticResource DevReachDarkTextColor}"
                                            FontAttributes="Bold"
-                                           FontSize="18"/>
+                                           FontSize="18" />
                                     <Label Text="{Binding AppVersion}"
                                            FontAttributes="Bold"
                                            TextColor="{StaticResource DevReachBlue}"
-                                           FontSize="18"/>
+                                           FontSize="18" />
                                 </StackLayout>
                                 <Label Text="{Binding AppDescription}"
                                        TextColor="{StaticResource DevReachDarkGray}"
                                        FontSize="Body"
-                                        LineBreakMode="WordWrap"
-                                       Margin="{OnPlatform Android='0,0,0,10', iOS='0,0,0,20', UWP='0,0,0,40'}"/>
+                                       LineBreakMode="WordWrap"
+                                       Margin="{OnPlatform Android='0,0,0,10', iOS='0,0,0,20', UWP='0,0,0,40'}" />
                                 <Label Text="Xamarin →"
                                        Style="{StaticResource UrlTextStyle}">
                                     <Label.GestureRecognizers>
@@ -369,23 +383,23 @@
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="Developed by Lance McCarthy for his DevReach 2020"
-                                                  Style="{StaticResource BodySpanStyle}" />
+                                          Style="{StaticResource BodySpanStyle}" />
                                     <Span Text=" Xamarin and MAUI Day "
-                                                  TextColor="{StaticResource DevReachBlue}"
-                                                  Style="{StaticResource BoldBodySpanStyle}"/>
+                                          TextColor="{StaticResource DevReachBlue}"
+                                          Style="{StaticResource BoldBodySpanStyle}" />
                                     <Span Text="presentation. Built using "
-                                                  Style="{StaticResource BodySpanStyle}"/>
+                                          Style="{StaticResource BodySpanStyle}" />
                                     <Span Text="Telerik UI for Xamarin"
-                                                  TextColor="{StaticResource DevReachBlue}"
-                                                  Style="{StaticResource BoldBodySpanStyle}"
-                                                  TextDecorations="Underline">
+                                          TextColor="{StaticResource DevReachBlue}"
+                                          Style="{StaticResource BoldBodySpanStyle}"
+                                          TextDecorations="Underline">
                                         <Span.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding OpenWebCommand}"
-                                                                          CommandParameter="telerik" />
+                                                                  CommandParameter="telerik" />
                                         </Span.GestureRecognizers>
                                     </Span>
                                     <Span Text="{Binding TelerikVersion, StringFormat=' v.{0}.'}"
-                                                  Style="{StaticResource BodySpanStyle}"/>
+                                          Style="{StaticResource BodySpanStyle}" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
