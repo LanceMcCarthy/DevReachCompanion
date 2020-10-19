@@ -1,32 +1,23 @@
 # DevReach 2020
 
-Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.github/Workflows` folder.
+Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.github/workflows` folder.
 
 ## GitHub Actions
 
-### Continuous Integration (aka CI)
+### Continuous Integration
 
-| Branch        | Status |
-|---------------|-----------|
-| Default | ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg) |
-| `main` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=main) |
-| `v2020` | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=v2020) |
+| Default  | `main` branch | `v2020` branch |
+|----------|------|----------|
+| ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg) | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=main) | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=v2020) |
 
-### Continuous Deployment (aka CD)
+### Continuous Deployment
 
-| CD Workflow     | Status |
-|-----------------|--------|
-| AppCenter       | todo  |
-| iOS Release     | todo  |
-| Android Release | todo  |
-| Windows Release | todo  |
-
-
-| Platform | GitHub Actions | AppCenter Prerelease | AppCenter Release |
-|----------|----------------|----------------|-------------------|
-| Android  | ![CD (Android)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Android)/badge.svg) | ![Android release AppCenter](https://build.appcenter.ms/v0.1/apps/ef428033-8891-4add-95f2-7fc4f54c9923/branches/appcenter/badge) | [![Build status](https://build.appcenter.ms/v0.1/apps/ef428033-8891-4add-95f2-7fc4f54c9923/branches/release-android/badge)](https://appcenter.ms) |
-| iOS      | ![CD (iOS)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(iOS)/badge.svg) | ![iOS Release AppCenter](https://build.appcenter.ms/v0.1/apps/a01fbcb4-c5b2-48d3-87fa-79ae2bf9a1b7/branches/appcenter/badge) | [![Build status](https://build.appcenter.ms/v0.1/apps/a01fbcb4-c5b2-48d3-87fa-79ae2bf9a1b7/branches/release-ios/badge)](https://appcenter.ms) |
-| UWP      | ![CD (Windows)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Windows)/badge.svg) |  [![CD UWP AppCenter](https://build.appcenter.ms/v0.1/apps/0915d3ca-e6c5-4b9c-b932-3ab15d014a40/branches/appcenter/badge)](https://appcenter.ms) | n/a |
+| Workflow | Status |
+|----------|--------|
+| AppCenter       | ![CD (AppCenter)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(AppCenter)/badge.svg) |
+| iOS Release     | ![CD (iOS)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(iOS)/badge.svg) |
+| Android Release | ![CD (Android)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Android)/badge.svg) |
+| Windows Release | ![CD (Windows)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Windows)/badge.svg) |
 
 ## AppCenter
 
