@@ -21,15 +21,15 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>13.6</string>
+	<string>10.0</string>
 	<key>CFBundleDisplayName</key>
 	<string>DevReach Companion</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.LancelotSoftware.DevReachCompanion</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>2020.1019.1</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2020.1012.1</string>
+	<string>2020.1019.1</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UILaunchStoryboardName</key>
@@ -40,9 +40,11 @@
 	</array>
 	<key>UIStatusBarHidden</key>
 	<false/>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleLightContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>User calendar is not used by this app.</string>
 </dict>
 </plist>

@@ -1,14 +1,15 @@
+# For more information about StoreBroker, visit https://github.com/Microsoft/StoreBroker
 Set-ExecutionPolicy RemoteSigned -Force
 
-# Prepare materials from previous steps and runner environment variables src\DevReach2020\DevReach2020.Forms\UWP
-$appxUploadFilePath = "D:\a\DevReachCompanion\DevReachCompanion\src\DevReach2020\DevReach2020.Forms\UWP\AppPackages\Store\DevReach2020.Forms.UWP_" + $env:APP_VERSION + "_" + $env:AppxBundlePlatforms + "_bundle.appxupload"
+# Prepare Authentication
 $username = $env:PartnerCenterClientId
 $password = ConvertTo-SecureString $env:PartnerCenterClientSecret -AsPlainText -Force
 $appStoreId = $env:PartnerCenterStoreId
 $tenantId = $env:PartnerCenterTenantId
 
 # ********* Create temporary directory for submission artifacts *********
-$sbTempFolderPath = New-Item -Type Directory -Force -Path (Join-Path -Path 'D:\a\DevReachCompanion\DevReachCompanion\' -ChildPath 'SBTemp')
+$currentPath = Get-Location
+$sbTempFolderPath = New-Item -Type Directory -Force -Path (Join-Path -Path $currentPath -ChildPath 'SBTemp')
 
 # ********* Install StoreBroker and import PowerShell Module *********
 Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
@@ -19,7 +20,8 @@ $cred = New-Object System.Management.Automation.PSCredential ($username, $passwo
 Set-StoreBrokerAuthentication -TenantId $tenantId -Credential $cred
 
 # ********* Prepare Submission Package *********
-$configFilePath = 'D:\a\DevReachCompanion\DevReachCompanion\.scripts\SBConfig.json'
+$appxUploadFilePath = (Get-ChildItem -Recurse -Include *.appxupload -ErrorAction SilentlyContinue).fullname | Select-Object -First 1
+$configFilePath = (Get-ChildItem -Recurse -Include SBConfig.json -ErrorAction SilentlyContinue).fullname | Select-Object -First 1
 New-SubmissionPackage -ConfigPath $configFilePath -AppxPath $appxUploadFilePath -OutPath $sbTempFolderPath -OutName 'submission'
 
 # ********* UPDATE & COMMIT SUBMISSION *********
