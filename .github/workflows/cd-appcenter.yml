@@ -49,9 +49,9 @@ jobs:
     steps:
     # AppCenter release to AppCenter's Collaborators and Testers groups
     - name: AppCenter Build and Release
-    run: |
-      npm install -g appcenter-cli
-      appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-uwp" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}
+      run: |
+        npm install -g appcenter-cli
+        appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-uwp" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}
 
     # ******* BONUS! Everything under here shows how you can distribbute your Windows 10 app with your own website via AppInstaller! ********** #
     - name: Checkout
