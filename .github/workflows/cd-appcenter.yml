@@ -1,4 +1,4 @@
-name: CD (iOS)
+name: CD (AppCenter)
 
 on:
   push:

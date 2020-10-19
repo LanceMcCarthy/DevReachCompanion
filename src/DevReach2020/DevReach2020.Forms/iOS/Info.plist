@@ -27,9 +27,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.LancelotSoftware.DevReachCompanion</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>2020.1019.1</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2020.1014.2</string>
+	<string>2020.1019.1</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UILaunchStoryboardName</key>
@@ -44,7 +44,7 @@
 	<false/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleLightContent</string>
-  <key>NSCalendarsUsageDescription</key>
+	<key>NSCalendarsUsageDescription</key>
 	<string>User calendar is not used by this app.</string>
 </dict>
 </plist>
