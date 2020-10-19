@@ -27,9 +27,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.LancelotSoftware.DevReachCompanion</string>
 	<key>CFBundleVersion</key>
-	<string>2020.1019.1</string>
+	<string>2020.1020.1</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2020.1019.1</string>
+	<string>2020.1020.1</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UILaunchStoryboardName</key>
