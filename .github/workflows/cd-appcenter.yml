@@ -1,13 +1,36 @@
-name: CD (Windows)
+name: CD (iOS)
 
 on:
   push:
     branches:
     - appcenter
-    - appcenter-uwp
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.gitignore'
+      - '**/*.gitattributes'
 
 jobs:
-  # UWP project build
+  # iOS Job
+  ios-build:
+    runs-on: macos-latest
+    steps:
+    # AppCenter release to TestFlight's BetaTesters group
+    - name: AppCenter Build and Release
+      run: |
+        npm install -g appcenter-cli
+        appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-ios" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}
+  
+  # Android Job
+  android-build:
+    runs-on: windows-latest
+    steps:
+    # AppCenter release to Google Play Beta rollout
+    - name: AppCenter Build and Release
+      run: |
+        npm install -g appcenter-cli
+        appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-android" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}
+        
+  # UWP Job
   windows-build:
     runs-on: windows-latest
     env:
@@ -16,25 +39,26 @@ jobs:
       AppxBundlePlatforms: "x64"
       AppxBundle: Always
       Signing_Certificate: LancelotSoftwareLLC.pfx
-      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
-      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
+      TELERIK_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
       Solution_Path: src\DevReach2020\DevReach2020.Forms_UWPOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\UWP
       Project_Path: src\DevReach2020\DevReach2020.Forms\UWP\DevReach2020.Forms.UWP.csproj
 
     steps:
-    # ****************** Option 1 - AppCenter Release ****************** #
+    # AppCenter release to AppCenter's Collaborators and Testers groups
+    - name: AppCenter Build and Release
+    run: |
+      npm install -g appcenter-cli
+      appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-uwp" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}
 
-    # Trigger AppCenter release (i.e. release to QA testers and/or Store)
-    - name: AppCenter Build and Release to QA Groups
-      shell: pwsh
-      run: |
-        npm install -g appcenter-cli
-        appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-uwp" --branch "appcenter" --token ${{ secrets.APPCENTER_API_TOKEN }}
+    # ******* BONUS! Everything under here shows how you can distribbute your Windows 10 app with your own website via AppInstaller! ********** #
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     
-    # ****************** Option 2 - Side-Loadable Package (bonus! hosted appinstaller webpage on Azure blob storage ****************** #
-
     - name: Configure Pagefile (increase RAM)
       uses: al-cheb/configure-pagefile-action@v1.2
       with:
@@ -42,11 +66,6 @@ jobs:
         maximum-size: 32GB
         disk-root: "C:"
     
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
@@ -93,41 +112,3 @@ jobs:
       with:
         name: UWP_Sideload_Artifacts
         path: ${{ env.Project_Directory }}\AppPackages\
-    
-    
-    # ****************** Option 3 - Upload Directly to Microsoft Store  ******************* #
-
-    # Update the appxmanifest for Microsoft Store using the publisher info
-    - name: Update manifest version
-      run: |
-        [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
-        $manifest.Package.Identity.Name = "61469LanceLotSoftware.DevReachCompanion"
-        $manifest.Package.Identity.Publisher = "CN=51B5A8B2-5D86-4826-BBE2-C92E963A4C02"
-        $manifest.Package.Properties.DisplayName = "Media File Manager"
-        $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
-        $manifest.Package.Applications.Application.VisualElements.DisplayName = "Media File Manager"
-        $manifest.save("src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest")
-    
-    # Build using StoreUpload instructions, no code signing required (Microsoft signs it during certification)
-    - name: Build for Microsoft Store
-      run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageDir=$env:PackagesDir
-      env:
-        SigningEnabled: False
-        AppxPackageBuildMode: StoreUpload
-        PackagesDir: \AppPackagesStore\
-
-    # Use Store Broker to directly publish the package to Microsoft Store
-    # - name: Submit to Microsoft Store using Store Broker
-    #   shell: pwsh
-    #   run: ./.scripts/SubmitToMsftStore.ps1
-    #   env:
-    #     PartnerCenterClientSecret: ${{ secrets:PARTNERCENTER_CLIENTSECRET }} 
-    #     PartnerCenterTenantId: ${{ secrets:PARTNERCENTER_TENANTID }} 
-    #     PartnerCenterClientId: ${{ secrets:PARTNERCENTER_CLIENTID }} 
-    #     PartnerCenterStoreId: 9MZNMK3MPV8R
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: UWP_Store_Artifacts
-        path: ${{ env.Project_Directory }}\AppPackagesStore\

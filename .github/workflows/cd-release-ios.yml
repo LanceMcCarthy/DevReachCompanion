@@ -1,0 +1,21 @@
+name: CD (iOS)
+
+on:
+  push:
+    branches:
+    - release-ios
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.gitignore'
+      - '**/*.gitattributes'
+
+jobs:
+  ios-build:
+    runs-on: windows-latest
+    
+    steps:
+    # AppCenter Release to AppStore
+    - name: AppCenter Build and Release
+      run: |
+        npm install -g appcenter-cli
+        appcenter build queue --app "lance-mccarthy-1uw5/devreach-2020-ios" --branch "release-ios" --token ${{ secrets.APPCENTER_API_TOKEN }}
