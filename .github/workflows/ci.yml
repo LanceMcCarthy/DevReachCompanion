@@ -7,8 +7,6 @@ on:
     - v2020
     paths-ignore:
       - '**/*.md'
-      - '**/*.ps1'
-      - '**/*.sh'
       - '**/*.gitignore'
       - '**/*.gitattributes'
 
@@ -17,8 +15,8 @@ jobs:
   windows-build:
     runs-on: windows-latest
     env:
-      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
-      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
+      TELERIK_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
       Solution_Path: src\DevReach2020\DevReach2020.Forms_UWPOnly.sln
       Project_Directory: src\DevReach2020\DevReach2020.Forms\UWP
@@ -58,8 +56,8 @@ jobs:
     env:
       Configuration: Debug
       Platform: AnyCPU
-      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
-      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
+      TELERIK_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src\DevReach2020\nuget.config
       Solution_Directory: src\DevReach2020
       Solution_Path: src\DevReach2020\DevReach2020.Forms_AndroidOnly.sln
@@ -100,8 +98,8 @@ jobs:
     env:
       Configuration: Debug
       Platform: iPhoneSimulator
-      TELERIK_ACCOUNT_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
-      TELERIK_ACCOUNT_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
+      TELERIK_USERNAME: ${{ secrets.TELERIK_ACCOUNT_USERNAME }}
+      TELERIK_PASSWORD: ${{ secrets.TELERIK_ACCOUNT_PASSWORD }}
       NuGetConfig_Path: src/DevReach2020/nuget.config
       Solution_Directory: src/DevReach2020
       Solution_Path: src/DevReach2020/DevReach2020.Forms_iOSOnly.sln
