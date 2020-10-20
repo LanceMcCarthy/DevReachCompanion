@@ -69,9 +69,9 @@ jobs:
       shell: pwsh
       run: ./.scripts/SubmitToMsftStore.ps1
       env:
-        PartnerCenterClientSecret: ${{ secrets:PARTNERCENTER_CLIENTSECRET }} 
-        PartnerCenterTenantId: ${{ secrets:PARTNERCENTER_TENANTID }} 
-        PartnerCenterClientId: ${{ secrets:PARTNERCENTER_CLIENTID }} 
+        PartnerCenterClientSecret: ${{ secrets.PARTNERCENTER_CLIENTSECRET }} 
+        PartnerCenterTenantId: ${{ secrets.PARTNERCENTER_TENANTID }} 
+        PartnerCenterClientId: ${{ secrets.PARTNERCENTER_CLIENTID }} 
         PartnerCenterStoreId: 9MZNMK3MPV8R
 
     - name: Upload build artifacts
