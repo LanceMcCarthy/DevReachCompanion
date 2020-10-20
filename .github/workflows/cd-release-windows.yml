@@ -42,6 +42,12 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
+    - name: Generate version number
+      run: |
+        $buildDay = Get-Date -Format "yyyy.Mdd"
+        $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
+        echo "APP_VERSION=$ver" >> $GITHUB_ENV
+
     - name: NuGet Restore
       run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
     
@@ -50,6 +56,7 @@ jobs:
       run: |
         [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
         $manifest.Package.Identity.Name = "61469LanceLotSoftware.DevReachCompanion"
+        $manifest.Package.Identity.Version = "$env:APP_VERSION"
         $manifest.Package.Identity.Publisher = "CN=51B5A8B2-5D86-4826-BBE2-C92E963A4C02"
         $manifest.Package.Properties.DisplayName = "Media File Manager"
         $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
@@ -73,8 +80,9 @@ jobs:
         PartnerCenterClientId: ${{ secrets.PARTNERCENTER_CLIENTID }} 
         PartnerCenterStoreId: 9MZNMK3MPV8R
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: UWP_Store_Artifacts
-        path: ${{ env.Project_Directory }}\AppPackages\
+    # Temporarily commenting out artifacts upload due to GitHub service issues - Oct 20 5 PM Eastern US
+    # - name: Upload build artifacts
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: UWP_Store_Artifacts
+    #     path: ${{ env.Project_Directory }}\AppPackages\
