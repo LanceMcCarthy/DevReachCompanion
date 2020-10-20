@@ -58,11 +58,10 @@ jobs:
     
     # Build using StoreUpload instructions, no code signing required (Microsoft signs it during certification)
     - name: Build for Microsoft Store
-      run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageDir=$env:PackagesDir
+      run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle
       env:
         SigningEnabled: False
         AppxPackageBuildMode: StoreUpload
-        PackagesDir: \AppPackages\
 
     # Use Store Broker to directly publish the package to Microsoft Store
     - name: Submit to Microsoft Store using Store Broker
