@@ -38,17 +38,17 @@ Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.githu
 
 **Distributions**
 
-| Platform   | Beta Installation | Production Installation |
+| Platform   | Beta      | Store      |
 |------------|-----------|------------|
-| Android    |  [Install from AppCenter](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-android/distribution_groups/testers) | <a href='http://play.google.com/store/apps/details?id=com.LancelotSoftware.DevReachCompanion'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width='150'/></a>     |
-| iOS        |  [Install from AppCenter](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-ios/distribution_groups/testers) | <a href='https://apps.apple.com/us/app/devreach-companion/id1483349010?ls=1'><img alt='Get it on App Store' src='https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?kind=iossoftware' width='150'/></a> |
-| Windows | [Install from AppCenter](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-uwp/distribution_groups/testers) or  [**use AppInstaller** (*recommended*)](https://dvlup.blob.core.windows.net/general-app-files/Installers/DevReachCompanion/index.html) | <a href='//www.microsoft.com/store/apps/9MZNMK3MPV8R?cid=storebadge&ocid=badge'><img src='https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png' alt='Get it on Microsoft Store' width='150'/></a> |
+| Android    |  [AppCenter Install](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-android/distribution_groups/testers) | <a href='http://play.google.com/store/apps/details?id=com.LancelotSoftware.DevReachCompanion'><img alt='Get it on Google Play' src='.images/StoreBadges/GooglePlayBadge.png' width='150'/></a>     |
+| iOS        |  [AppCenter Install](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-ios/distribution_groups/testers) | <a href='https://apps.apple.com/us/app/devreach-companion/id1483349010?ls=1'><img alt='Get it on App Store' src='.images/StoreBadges/AppleAppStoreBadge.svg' width='150'/></a> |
+| Windows | 1. [AppCenter Install](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-uwp/distribution_groups/testers) or  2. [**AppInstaller** (*recommended*)](https://dvlup.blob.core.windows.net/general-app-files/Installers/DevReachCompanion/index.html) | <a href='//www.microsoft.com/store/apps/9MZNMK3MPV8R?cid=storebadge&ocid=badge'><img src='.images/StoreBadges/MsftStoreBadge_Large.png' alt='Get it on Microsoft Store' width='150'/></a> |
 
 ## Previews
 
-| Android  | iOS                                      | UWP      |
+| Android  | iOS                                      | Windows  |
 |----------|------------------------------------------|----------|
-| <img src="https://user-images.githubusercontent.com/3520532/95248542-71052580-07e5-11eb-967b-bb68f29015f8.png" alt="drawing" height="400" /> | <img src="https://user-images.githubusercontent.com/3520532/95267655-c05a4e80-0803-11eb-980b-2c7c51dd2323.png" alt="drawing" height="400"/> | <img src="https://user-images.githubusercontent.com/3520532/95270221-1382d000-0809-11eb-9567-a6015cce6321.png" alt="drawing" height="400"/> |
+| <img src=".images/Screenshots/Android_Home.png" alt="drawing" height="400" /> | <img src=".images/Screenshots/iOS_Home.png" alt="drawing" height="400"/> | <img src=".images/Screenshots/Windows_Home.png" alt="drawing" height="400"/> |
 
 ## Project Summary
 
