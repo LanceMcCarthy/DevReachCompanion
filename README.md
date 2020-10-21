@@ -38,15 +38,15 @@ Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.githu
 
 **Distributions**
 
-| Platform   | Beta Installation | Production Installation |
+| Platform   | Beta      | Store      |
 |------------|-----------|------------|
-| Android    |  [Install from AppCenter](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-android/distribution_groups/testers) | <a href='http://play.google.com/store/apps/details?id=com.LancelotSoftware.DevReachCompanion'><img alt='Get it on Google Play' src='.images/StoreBadges/GooglePlayBadge.png' width='150'/></a>     |
-| iOS        |  [Install from AppCenter](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-ios/distribution_groups/testers) | <a href='https://apps.apple.com/us/app/devreach-companion/id1483349010?ls=1'><img alt='Get it on App Store' src='.images/StoreBadges/AppleAppStoreBadge.svg' width='150'/></a> |
-| Windows | [Install from AppCenter](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-uwp/distribution_groups/testers) or  [**use AppInstaller** (*recommended*)](https://dvlup.blob.core.windows.net/general-app-files/Installers/DevReachCompanion/index.html) | <a href='//www.microsoft.com/store/apps/9MZNMK3MPV8R?cid=storebadge&ocid=badge'><img src='.images/StoreBadges/MsftStoreBadge_Large.png' alt='Get it on Microsoft Store' width='150'/></a> |
+| Android    |  [AppCenter Install](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-android/distribution_groups/testers) | <a href='http://play.google.com/store/apps/details?id=com.LancelotSoftware.DevReachCompanion'><img alt='Get it on Google Play' src='.images/StoreBadges/GooglePlayBadge.png' width='150'/></a>     |
+| iOS        |  [AppCenter Install](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-ios/distribution_groups/testers) | <a href='https://apps.apple.com/us/app/devreach-companion/id1483349010?ls=1'><img alt='Get it on App Store' src='.images/StoreBadges/AppleAppStoreBadge.svg' width='150'/></a> |
+| Windows | 1. [AppCenter Install](install.appcenter.ms/users/lance-mccarthy-1uw5/apps/devreach-2020-uwp/distribution_groups/testers) or  2. [**AppInstaller** (*recommended*)](https://dvlup.blob.core.windows.net/general-app-files/Installers/DevReachCompanion/index.html) | <a href='//www.microsoft.com/store/apps/9MZNMK3MPV8R?cid=storebadge&ocid=badge'><img src='.images/StoreBadges/MsftStoreBadge_Large.png' alt='Get it on Microsoft Store' width='150'/></a> |
 
 ## Previews
 
-| Android  | iOS                                      | Windows      |
+| Android  | iOS                                      | Windows  |
 |----------|------------------------------------------|----------|
 | <img src=".images/Screenshots/Android_Home.png" alt="drawing" height="400" /> | <img src=".images/Screenshots/iOS_Home.png" alt="drawing" height="400"/> | <img src=".images/Screenshots/Windows_Home.png" alt="drawing" height="400"/> |
 
