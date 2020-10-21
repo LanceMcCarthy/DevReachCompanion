@@ -42,6 +42,15 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
+    - name: Generate version number
+      uses: Amadevus/pwsh-script@v2
+      id: version-creator
+      with:
+        script: |
+          $buildDay = Get-Date -Format "yyyy.Mdd"
+          $ver = $buildDay + "." + $env:GITHUB_RUN_NUMBER + ".0"
+          Set-ActionVariable APP_VERSION $ver
+
     - name: NuGet Restore
       run: nuget restore ${{ env.Solution_Path }} -ConfigFile ${{ env.NuGetConfig_Path }}
     
@@ -50,6 +59,7 @@ jobs:
       run: |
         [xml]$manifest = get-content "src\DevReach2020\DevReach2020.Forms\UWP\Package.appxmanifest"
         $manifest.Package.Identity.Name = "61469LanceLotSoftware.DevReachCompanion"
+        $manifest.Package.Identity.Version = "$env:APP_VERSION"
         $manifest.Package.Identity.Publisher = "CN=51B5A8B2-5D86-4826-BBE2-C92E963A4C02"
         $manifest.Package.Properties.DisplayName = "Media File Manager"
         $manifest.Package.Properties.PublisherDisplayName = "Lancelot Software"
@@ -58,24 +68,24 @@ jobs:
     
     # Build using StoreUpload instructions, no code signing required (Microsoft signs it during certification)
     - name: Build for Microsoft Store
-      run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageDir=$env:PackagesDir
+      run: msbuild $env:Solution_Path /p:Platform=$env:Platform /p:AppxBundlePlatforms=$env:AppxBundlePlatforms /p:AppxPackageSigningEnabled=$env:SigningEnabled /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:AppxPackageBuildMode /p:AppxBundle=$env:AppxBundle
       env:
         SigningEnabled: False
         AppxPackageBuildMode: StoreUpload
-        PackagesDir: \AppPackages\
 
     # Use Store Broker to directly publish the package to Microsoft Store
     - name: Submit to Microsoft Store using Store Broker
       shell: pwsh
       run: ./.scripts/SubmitToMsftStore.ps1
       env:
-        PartnerCenterClientSecret: ${{ secrets:PARTNERCENTER_CLIENTSECRET }} 
-        PartnerCenterTenantId: ${{ secrets:PARTNERCENTER_TENANTID }} 
-        PartnerCenterClientId: ${{ secrets:PARTNERCENTER_CLIENTID }} 
+        PartnerCenterClientSecret: ${{ secrets.PARTNERCENTER_CLIENTSECRET }} 
+        PartnerCenterTenantId: ${{ secrets.PARTNERCENTER_TENANTID }} 
+        PartnerCenterClientId: ${{ secrets.PARTNERCENTER_CLIENTID }} 
         PartnerCenterStoreId: 9MZNMK3MPV8R
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: UWP_Store_Artifacts
-        path: ${{ env.Project_Directory }}\AppPackages\
+    # Temporarily commenting out artifacts upload due to GitHub service issues - Oct 20 5 PM Eastern US
+    # - name: Upload build artifacts
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: UWP_Store_Artifacts
+    #     path: ${{ env.Project_Directory }}\AppPackages\
