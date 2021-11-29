@@ -13,8 +13,7 @@ namespace DevReach2020.Forms.Portable
         {
             InitializeComponent();
 
-            BindingContext = new MainViewModel();
-            (BindingContext as MainViewModel).TabAwarePage = this;
+            BindingContext = new MainViewModel { TabAwarePage = this };
         }
 
         public void SelectTab(string tabName)
