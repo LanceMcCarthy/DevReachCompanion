@@ -22,6 +22,7 @@ namespace DevReach2020.Forms.Portable.Converters
             {
                 return !val;
             }
+
             return value;
         }
     }

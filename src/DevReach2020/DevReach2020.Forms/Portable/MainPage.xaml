@@ -9,7 +9,6 @@
              xmlns:behaviors="clr-namespace:DevReach2020.Forms.Portable.Behaviors;assembly=DevReach2020.Forms.Portable"
              xmlns:models="clr-namespace:DevReach2020.Forms.Portable.ViewModels;assembly=DevReach2020.Forms.Portable"
              xmlns:helpers="clr-namespace:DevReach2020.Forms.Portable.Helpers;assembly=DevReach2020.Forms.Portable"
-             xmlns:system="clr-namespace:System;assembly=netstandard"
              ios:Page.PrefersStatusBarHidden="False"
              ios:Page.PreferredStatusBarUpdateAnimation="Fade"
              ios:Page.UseSafeArea="true"
@@ -287,9 +286,15 @@
 
                         <primitives:RadBusyIndicator IsBusy="{Binding IsBusy}"
                                                      IsVisible="{Binding IsBusy}"
-                                                     BusyContent="{Binding IsBusyMessage}"
                                                      Style="{StaticResource OverlayBusyIndicatorStyle}"
-                                                     Grid.RowSpan="2" />
+                                                     Grid.Row="0" 
+                                                     Grid.RowSpan="2">
+                            <primitives:RadBusyIndicator.BusyContent>
+                                <Grid BindingContext="{Binding BindingContext, Source={RelativeSource AncestorType={x:Type primitives:RadBusyIndicator}}}">
+                                    <Label Text="{Binding IsBusyMessage}" />
+                                </Grid>
+                            </primitives:RadBusyIndicator.BusyContent>
+                        </primitives:RadBusyIndicator>
 
                     </Grid>
                 </primitives:TabViewItem.Content>
@@ -382,7 +387,7 @@
                                Grid.Row="1">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="Developed by Lance McCarthy for his DevReach 2020"
+                                    <Span Text="Developed by Lance McCarthy for his DevReach"
                                           Style="{StaticResource BodySpanStyle}" />
                                     <Span Text=" Xamarin and MAUI Day "
                                           TextColor="{StaticResource DevReachBlue}"

@@ -38,6 +38,7 @@ namespace DevReach2020.Forms.Portable.Behaviors
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
+
             BindingContext = AssociatedObject.BindingContext;
         }
     }

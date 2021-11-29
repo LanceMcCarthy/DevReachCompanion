@@ -6,7 +6,7 @@ namespace DevReach2020.Forms.Portable.Behaviors
 {
     public class EventToCommandBehavior : BehaviorBase<View>
     {
-        private Delegate _eventHandler;
+        private Delegate eventHandler;
 
         public static readonly BindableProperty EventNameProperty = BindableProperty.Create("EventName", typeof(string), typeof(EventToCommandBehavior), null, propertyChanged: OnEventNameChanged);
         public static readonly BindableProperty CommandProperty = BindableProperty.Create("Command", typeof(Command), typeof(EventToCommandBehavior));
@@ -40,12 +40,14 @@ namespace DevReach2020.Forms.Portable.Behaviors
         protected override void OnAttachedTo(View bindable)
         {
             base.OnAttachedTo(bindable);
+
             RegisterEvent(EventName);
         }
 
         protected override void OnDetachingFrom(View bindable)
         {
             base.OnDetachingFrom(bindable);
+
             DeregisterEvent(EventName);
         }
 
@@ -65,9 +67,9 @@ namespace DevReach2020.Forms.Portable.Behaviors
 
             MethodInfo methodInfo = typeof(EventToCommandBehavior).GetTypeInfo().GetDeclaredMethod("OnEvent");
 
-            _eventHandler = methodInfo.CreateDelegate(eventInfo.EventHandlerType, this);
+            eventHandler = methodInfo.CreateDelegate(eventInfo.EventHandlerType, this);
 
-            eventInfo.AddEventHandler(AssociatedObject, _eventHandler);
+            eventInfo.AddEventHandler(AssociatedObject, eventHandler);
         }
 
         private void DeregisterEvent(string name)
@@ -77,7 +79,7 @@ namespace DevReach2020.Forms.Portable.Behaviors
                 return;
             }
 
-            if (_eventHandler == null)
+            if (eventHandler == null)
             {
                 return;
             }
@@ -89,9 +91,9 @@ namespace DevReach2020.Forms.Portable.Behaviors
                 throw new ArgumentException($"EventToCommandBehavior: Can't de-register the '{EventName}' event.");
             }
 
-            eventInfo.RemoveEventHandler(AssociatedObject, _eventHandler);
+            eventInfo.RemoveEventHandler(AssociatedObject, eventHandler);
 
-            _eventHandler = null;
+            eventHandler = null;
         }
 
         private void OnEvent(object sender, object eventArgs)
