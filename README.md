@@ -13,9 +13,9 @@ Demonstrating the use of the GitHub Actions CI-CD, find the workflows in `.githu
 
 ### Continuous Integration
 
-| Default  | `main` branch | `v2020` branch |
-|----------|------|----------|
-| ![CD (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CD%20(Xamarin.Forms%20All)/badge.svg) | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=main) | ![CI (Xamarin.Forms All)](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=v2020) |
+| Branch | Status |
+|--------|--------|
+| main | ![CI](https://github.com/LanceMcCarthy/DevReachCompanion/workflows/CI%20(Xamarin.Forms%20All)/badge.svg?branch=main) |
 
 ### Continuous Deployment
 
