@@ -6,7 +6,10 @@
 trigger:
   branches:
     include:
-    - dr-2019
+    - main
+  paths:
+    include:
+      - 'src/DevReach2019'
 
 pr: none
 
