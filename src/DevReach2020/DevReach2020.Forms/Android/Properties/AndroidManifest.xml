@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.LancelotSoftware.DevReachCompanion" android:versionName="2021.1130.1" android:versionCode="32" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.LancelotSoftware.DevReachCompanion" android:versionName="2022.615.1" android:versionCode="33" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="29" />
 	<application android:label="DevReach Companion" android:icon="@mipmap/icon" android:theme="@style/MainTheme"></application>
 </manifest>
