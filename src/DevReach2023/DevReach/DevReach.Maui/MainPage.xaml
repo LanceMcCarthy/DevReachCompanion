@@ -1,0 +1,410 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"
+             xmlns:converters="clr-namespace:DevReach.Maui.Converters"
+             xmlns:models="clr-namespace:DevReach.Maui.ViewModels"
+             xmlns:helpers="clr-namespace:DevReach.Maui.Helpers"
+             xmlns:behaviors="clr-namespace:DevReach.Maui.Behaviors"
+             x:Class="DevReach.Maui.MainPage">
+
+    <ContentPage.Resources>
+        <converters:InvertBoolConverter x:Key="InvertBoolConv" />
+
+        <OnPlatform x:Key="TelerikIconsFont"
+                    x:TypeArguments="x:String">
+            <On Platform="iOS">telerikfontexamples</On>
+            <On Platform="Android">Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
+            <On Platform="UWP">/Assets/Fonts/telerikfontexamples.ttf#telerikfontexamples</On>
+        </OnPlatform>
+
+        <Color x:Key="LightTranslucentBackgroundColor">#CCEAEAEC</Color>
+        <Color x:Key="DevReachBlue">#404894</Color>
+        <Color x:Key="DevReachLightBlue">#00D9F4</Color>
+        <Color x:Key="DevReachDarkTextColor">#000000</Color>
+        <Color x:Key="DevReachLightGray">#E7E5FB</Color>
+        <Color x:Key="DevReachDarkGray">#7E7D81</Color>
+        <Color x:Key="WarriorsBackgroundColor">#EDF4FF</Color>
+        <Color x:Key="WarriorsForegroundColor">#FFFFFF</Color>
+
+        <Style x:Key="HomeViewButtonStyle"
+               TargetType="Button">
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource DevReachBlue}" />
+            <Setter Property="TextColor"
+                    Value="{StaticResource DevReachLightGray}" />
+            <Setter Property="CornerRadius"
+                    Value="5" />
+            <Setter Property="Margin"
+                    Value="7.5" />
+            <Setter Property="VerticalOptions"
+                    Value="Center" />
+            <Setter Property="HorizontalOptions"
+                    Value="Center" />
+            <Setter Property="WidthRequest"
+                    Value="250" />
+        </Style>
+
+        <Style x:Key="UrlTextStyle"
+               TargetType="Label">
+            <Setter Property="TextColor"
+                    Value="{StaticResource DevReachBlue}" />
+            <Setter Property="HorizontalOptions"
+                    Value="Center" />
+            <Setter Property="FontSize"
+                    Value="Body" />
+            <Setter Property="Margin"
+                    Value="0,0,0,5" />
+            <Setter Property="TextDecorations"
+                    Value="Underline" />
+        </Style>
+
+        <Style x:Key="BodySpanStyle"
+               TargetType="Span">
+            <Setter Property="TextColor"
+                    Value="{StaticResource DevReachDarkGray}" />
+            <Setter Property="FontSize"
+                    Value="Caption" />
+        </Style>
+
+        <Style x:Key="BoldBodySpanStyle"
+               BasedOn="{StaticResource BodySpanStyle}"
+               TargetType="Span">
+            <Setter Property="FontAttributes"
+                    Value="Bold" />
+        </Style>
+
+        <Style x:Key="TabHeaderBusyIndicatorStyle"
+               TargetType="telerik:RadBusyIndicator">
+            <Setter Property="AnimationType"
+                    Value="Animation6" />
+            <Setter Property="HeightRequest"
+                    Value="45" />
+            <Setter Property="WidthRequest"
+                    Value="45" />
+            <Setter Property="AnimationContentHeightRequest"
+                    Value="30" />
+            <Setter Property="AnimationContentWidthRequest"
+                    Value="45" />
+            <Setter Property="BackgroundColor"
+                    Value="Transparent" />
+            <Setter Property="AnimationContentColor"
+                    Value="{StaticResource DevReachLightBlue}" />
+        </Style>
+
+        <Style x:Key="OverlayBusyIndicatorStyle"
+               TargetType="telerik:RadBusyIndicator">
+            <Setter Property="AnimationType"
+                    Value="Animation1" />
+            <Setter Property="AnimationContentHeightRequest"
+                    Value="75" />
+            <Setter Property="AnimationContentWidthRequest"
+                    Value="75" />
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource LightTranslucentBackgroundColor}" />
+            <Setter Property="AnimationContentColor"
+                    Value="{StaticResource DevReachDarkGray}" />
+            <Setter Property="VerticalOptions"
+                    Value="Fill" />
+            <Setter Property="HorizontalOptions"
+                    Value="Fill" />
+            <Setter Property="BusyContentTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <ContentPresenter Content="{TemplateBinding Path=AnimationContent}"
+                                              Grid.Row="1" />
+                            <ContentPresenter Content="{TemplateBinding Path=BusyContent}"
+                                              HorizontalOptions="Center"
+                                              Margin="20"
+                                              Grid.Row="2" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="HeaderControlTemplate">
+            <Grid BackgroundColor="{StaticResource DevReachLightGray}"
+                  HeightRequest="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid"
+                                 Binding="{TemplateBinding IsSelected}"
+                                 Value="True">
+                        <Setter Property="BackgroundColor"
+                                Value="{StaticResource WarriorsBackgroundColor}" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Grid"
+                                 Binding="{TemplateBinding IsSelected}"
+                                 Value="False">
+                        <Setter Property="BackgroundColor"
+                                Value="{StaticResource DevReachBlue}" />
+                    </DataTrigger>
+                </Grid.Triggers>
+
+                <Label Text="{TemplateBinding Text}"
+                       FontFamily="{StaticResource TelerikIconsFont}"
+                       TextColor="{StaticResource DevReachLightGray}"
+                       FontSize="Large"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Margin="10,5,5,5"
+                       Grid.Column="0">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="True">
+                            <Setter Property="TextColor"
+                                    Value="{StaticResource DevReachBlue}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="False">
+                            <Setter Property="TextColor"
+                                    Value="{StaticResource WarriorsBackgroundColor}" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+
+                <Label Text="{Binding Title, Source={RelativeSource AncestorType={x:Type models:TabViewModelBase}}}"
+                       IsVisible="{Binding IsBusy, Converter={StaticResource InvertBoolConv}}"
+                       FontSize="Medium"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="True">
+                            <Setter Property="TextColor"
+                                    Value="{StaticResource DevReachBlue}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="False">
+                            <Setter Property="TextColor"
+                                    Value="{StaticResource WarriorsBackgroundColor}" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+
+                <telerik:RadBusyIndicator IsBusy="{Binding IsBusy, Source={RelativeSource AncestorType={x:Type models:TabViewModelBase}}}"
+                                          IsVisible="{Binding IsBusy, Source={RelativeSource AncestorType={x:Type models:TabViewModelBase}}}"
+                                          WidthRequest="65"
+                                          HeightRequest="45"
+                                          AnimationContentWidthRequest="30"
+                                          AnimationContentHeightRequest="25"
+                                          HorizontalOptions="Start"
+                                          Style="{StaticResource TabHeaderBusyIndicatorStyle}"
+                                          AnimationContentColor="{StaticResource DevReachLightGray}"
+                                          Grid.Column="1">
+                    <telerik:RadBusyIndicator.Triggers>
+                        <DataTrigger TargetType="telerik:RadBusyIndicator"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="True">
+                            <Setter Property="AnimationContentColor"
+                                    Value="{StaticResource DevReachBlue}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="telerik:RadBusyIndicator"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="False">
+                            <Setter Property="AnimationContentColor"
+                                    Value="{StaticResource WarriorsBackgroundColor}" />
+                        </DataTrigger>
+                    </telerik:RadBusyIndicator.Triggers>
+                </telerik:RadBusyIndicator>
+            </Grid>
+        </ControlTemplate>
+    </ContentPage.Resources>
+
+    <telerik:RadTabView x:Name="MainTabView"
+                        HeaderPosition="Bottom">
+        <telerik:RadTabView.Items>
+            <telerik:TabViewItem BindingContext="{Binding HomeTabViewModel}"
+                                 HeaderText="&#xE85B;">
+                <!--<telerik:TabViewItem.Header>
+                    <telerik:TabViewHeaderItem Text="&#xE85B;"
+                                               ControlTemplate="{StaticResource HeaderControlTemplate}" />
+                </telerik:TabViewItem.Header>-->
+                <telerik:TabViewItem.Content>
+                    <Grid BackgroundColor="{StaticResource WarriorsBackgroundColor}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Image Source="Banner.png"
+                               Aspect="AspectFill" />
+
+                        <Grid BackgroundColor="{StaticResource WarriorsForegroundColor}"
+                              VerticalOptions="Start"
+                              HorizontalOptions="Center"
+                              Margin="20"
+                              Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Image Source="TelerikWarriors_NoBubble.png"
+                                   Aspect="AspectFit" />
+
+                            <StackLayout Grid.Row="1"
+                                         Padding="0,0,0,0">
+                                <Button Text="Home"
+                                        Command="{Binding NavigateCommand}"
+                                        CommandParameter="{x:Static helpers:AppConstants.HomeTabName}"
+                                        Style="{StaticResource HomeViewButtonStyle}" />
+                                <Button Text="Live Stream"
+                                        Command="{Binding NavigateCommand}"
+                                        CommandParameter="{x:Static helpers:AppConstants.LiveTabName}"
+                                        Style="{StaticResource HomeViewButtonStyle}" />
+                                <Button Text="About"
+                                        Command="{Binding NavigateCommand}"
+                                        CommandParameter="{x:Static helpers:AppConstants.AboutTabName}"
+                                        Style="{StaticResource HomeViewButtonStyle}"
+                                        Margin="7.5,7.5,7.5,30" />
+                            </StackLayout>
+
+                        </Grid>
+
+                        <telerik:RadBusyIndicator IsBusy="{Binding IsBusy}"
+                                                  IsVisible="{Binding IsBusy}"
+                                                  Style="{StaticResource OverlayBusyIndicatorStyle}"
+                                                  Grid.Row="0" 
+                                                  Grid.RowSpan="2">
+                            <telerik:RadBusyIndicator.BusyContent>
+                                <Grid BindingContext="{Binding BindingContext, Source={RelativeSource AncestorType={x:Type telerik:RadBusyIndicator}}}">
+                                    <Label Text="{Binding IsBusyMessage}" />
+                                </Grid>
+                            </telerik:RadBusyIndicator.BusyContent>
+                        </telerik:RadBusyIndicator>
+
+                    </Grid>
+                </telerik:TabViewItem.Content>
+            </telerik:TabViewItem>
+            <telerik:TabViewItem BindingContext="{Binding LiveTabViewModel}">
+                <!--<telerik:TabViewItem.Header>
+                    <telerik:TabViewHeaderItem Text="&#xE85F;"
+                                               ControlTemplate="{StaticResource HeaderControlTemplate}" />
+                </telerik:TabViewItem.Header>-->
+                <telerik:TabViewItem.Content>
+                    <WebView Source="{Binding WebSource}">
+                        <WebView.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="Navigating"
+                                                              Command="{Binding WebViewNavigatingCommand}" />
+                            <behaviors:EventToCommandBehavior EventName="Navigated"
+                                                              Command="{Binding WebViewNavigatedCommand}" />
+                        </WebView.Behaviors>
+                    </WebView>
+                </telerik:TabViewItem.Content>
+            </telerik:TabViewItem>
+            <telerik:TabViewItem BindingContext="{Binding AboutTabViewModel}" HeaderText="&#xE815;">
+                <!--<telerik:TabViewItem.Header>
+                    <telerik:TabViewHeaderItem Text="&#xE815;"
+                                               ControlTemplate="{StaticResource HeaderControlTemplate}" />
+                </telerik:TabViewItem.Header>-->
+                <telerik:TabViewItem.Content>
+                    <Grid BackgroundColor="{StaticResource WarriorsBackgroundColor}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Image Source="Banner.png"
+                               Aspect="AspectFill" />
+
+                        <ScrollView Grid.Row="1">
+                            <StackLayout Padding="15,10,15,0">
+                                <StackLayout Orientation="Horizontal"
+                                             HorizontalOptions="Center"
+                                             Margin="0,0,0,5">
+                                    <Label Text="{Binding AppName}"
+                                           TextColor="{StaticResource DevReachDarkTextColor}"
+                                           FontAttributes="Bold"
+                                           FontSize="18" />
+                                    <Label Text="{Binding AppVersion}"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource DevReachBlue}"
+                                           FontSize="18" />
+                                </StackLayout>
+                                <Label Text="{Binding AppDescription}"
+                                       TextColor="{StaticResource DevReachDarkGray}"
+                                       FontSize="Body"
+                                       LineBreakMode="WordWrap"
+                                       Margin="{OnPlatform Android='0,0,0,10', iOS='0,0,0,20', UWP='0,0,0,40'}" />
+                                <Label Text="Xamarin →"
+                                       Style="{StaticResource UrlTextStyle}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                                              CommandParameter="xamarin" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <Label Text="Telerik UI for Xamarin →"
+                                       Style="{StaticResource UrlTextStyle}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                                              CommandParameter="telerik" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <Label Text="Explore the Source Code →"
+                                       Style="{StaticResource UrlTextStyle}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                                              CommandParameter="github" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <Label Text="GitHub Actions Workflow →"
+                                       Style="{StaticResource UrlTextStyle}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                                              CommandParameter="github_actions" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </ScrollView>
+
+                        <Label LineBreakMode="WordWrap"
+                               VerticalOptions="End"
+                               HorizontalOptions="Center"
+                               Margin="15,10"
+                               Grid.Row="1">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Developed by Lance McCarthy for his DevReach"
+                                          Style="{StaticResource BodySpanStyle}" />
+                                    <Span Text=" Xamarin and MAUI Day "
+                                          TextColor="{StaticResource DevReachBlue}"
+                                          Style="{StaticResource BoldBodySpanStyle}" />
+                                    <Span Text="presentation. Built using "
+                                          Style="{StaticResource BodySpanStyle}" />
+                                    <Span Text="Telerik UI for Xamarin"
+                                          TextColor="{StaticResource DevReachBlue}"
+                                          Style="{StaticResource BoldBodySpanStyle}"
+                                          TextDecorations="Underline">
+                                        <Span.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding OpenWebCommand}"
+                                                                  CommandParameter="telerik" />
+                                        </Span.GestureRecognizers>
+                                    </Span>
+                                    <Span Text="{Binding TelerikVersion, StringFormat=' v.{0}.'}"
+                                          Style="{StaticResource BodySpanStyle}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </telerik:TabViewItem.Content>
+            </telerik:TabViewItem>
+        </telerik:RadTabView.Items>
+    </telerik:RadTabView>
+</ContentPage>
