@@ -2,6 +2,7 @@
 using System.Reflection;
 using DevReach.Maui.Helpers;
 using DevReach.Maui.Interfaces;
+using Microsoft.AppCenter.Crashes;
 using Telerik.Maui.Controls;
 
 namespace DevReach.Maui.ViewModels;

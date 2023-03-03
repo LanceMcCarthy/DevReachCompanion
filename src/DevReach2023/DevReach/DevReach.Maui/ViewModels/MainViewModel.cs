@@ -1,5 +1,6 @@
 ﻿using CommonHelpers.Common;
 using DevReach.Maui.Interfaces;
+using Microsoft.AppCenter.Crashes;
 
 namespace DevReach.Maui.ViewModels;
 

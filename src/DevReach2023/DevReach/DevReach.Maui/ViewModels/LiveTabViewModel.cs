@@ -16,7 +16,7 @@ public class LiveTabViewModel : TabViewModelBase
 
     public UrlWebViewSource WebSource
     {
-        get => webSource ?? (webSource = new UrlWebViewSource { Url = "https://www.twitch.tv/codeitlive/" });
+        get => webSource ??= new UrlWebViewSource { Url = "https://www.twitch.tv/codeitlive/" };
         set => SetProperty(ref webSource, value);
     }
 
